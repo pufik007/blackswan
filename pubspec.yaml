@@ -1,0 +1,50 @@
+name: tensorfit
+description: Tensorfit fitness application.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_svg: ^0.15.0
+
+  flutter_bloc: ^3.0.0
+
+  equatable: ^1.0.1
+
+  shared_preferences: ^0.5.4
+
+  intl: ^0.16.0
+
+  firebase_core: ^0.4.3+1
+
+  # Flutter plugin for Firebase Auth, enabling Android and iOS authentication
+  # using passwords, phone numbers and identity providers like Google, Facebook and
+  firebase_auth: ^0.15.3
+
+  # Flutter plugin for Google Sign-In, a secure authentication system for signing in
+  # with a Google account on Android and iOS.
+  google_sign_in: ^4.1.1
+
+  flutter_facebook_login: ^3.0.0
+
+  apple_sign_in: ^0.1.0
+
+  #cupertino_icons: ^0.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/logo.png
+    - assets/login/facebook.svg
+    - assets/login/google.svg
+    - assets/login/apple.svg

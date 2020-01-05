@@ -1,0 +1,87 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'generated/i18n.dart';
+
+import 'data/navigator_bloc/navigator_bloc.dart';
+import 'data/app_bloc/bloc.dart';
+
+import 'ui/pages/create_account_page.dart';
+import 'ui/pages/first_page.dart';
+import 'ui/pages/home_page.dart';
+import 'ui/pages/log_in_page.dart';
+import 'ui/pages/logo_page.dart';
+
+void main() => runApp(App());
+
+class App extends StatefulWidget {
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  // ignore: close_sinks
+  final _appBloc = AppBloc()..add(Load());
+
+  final GlobalKey<NavigatorState> _loginNavKey = GlobalKey();
+  final GlobalKey<NavigatorState> _homeNavKey = GlobalKey();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => this._appBloc,
+      child: BlocBuilder<AppBloc, AppState>(
+        bloc: this._appBloc,
+        builder: (context, state) {
+          var title = 'Tensorfit';
+
+          if (state is Loading) {
+            return MaterialApp(
+              title: title,
+              home: LogoPage(),
+            );
+          }
+          if (state is LoggedOff) {
+            return BlocProvider(
+              create: (context) => LoginNavigatorBloc(navigatorKey: this._loginNavKey),
+              child: MaterialApp(
+                title: title,
+                theme: state.theme,
+                localizationsDelegates: [S.delegate],
+                supportedLocales: S.delegate.supportedLocales,
+                localeResolutionCallback: S.delegate.resolution(fallback: Locale("en", "")),
+                navigatorKey: this._loginNavKey,
+                routes: {
+                  '/log_in': (context) => LogInPage(),
+                  '/create_account': (context) => CreateAccountPage(),
+                },
+                home: FirstPage(),
+              ),
+            );
+          }
+          if (state is LoggedIn) {
+            return BlocProvider(
+              create: (context) => HomeNavigatorBloc(navigatorKey: this._homeNavKey),
+              child: MaterialApp(
+                title: title,
+                theme: state.theme,
+                localizationsDelegates: [S.delegate],
+                supportedLocales: S.delegate.supportedLocales,
+                localeResolutionCallback: S.delegate.resolution(fallback: Locale("en", "")),
+                navigatorKey: this._homeNavKey,
+                routes: {},
+                home: HomePage(),
+              ),
+            );
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    this._appBloc.close();
+    super.dispose();
+  }
+}

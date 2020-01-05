@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>ic/fb_signup</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Jorney" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Log-in" transform="translate(-44.000000, -186.000000)">
+            <g id="fb_signup" transform="translate(32.000000, 173.000000)">
+                <g id="ic/fb_signup" transform="translate(12.000000, 13.000000)">
+                    <rect id="Button" fill="#4B6FA8" x="0" y="0" width="24" height="24" rx="4"></rect>
+                    <path d="M16.612176,9.88378076 C16.612176,8.14219922 19.6525136,9.03546101 19.6525136,9.03546101 L20.0487096,6.33088003 C20.0487096,6.33088003 18.4865001,5.93012101 16.612176,6.01070674 C12.7529462,6.17497764 12.8864292,9.21925846 12.8864292,9.21925846 L12.8864292,11.8782775 L11,11.8782775 L11,14.6287304 L12.8864292,14.6287304 L12.8864292,23.8424685 L16.612176,23.8424685 L16.612176,14.6287304 L19.4431285,14.6287304 L19.6606927,11.8782775 L16.612176,11.8782775 L16.612176,9.88378076" id="ic_facebook" fill="#FFFFFF"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

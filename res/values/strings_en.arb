@@ -1,0 +1,18 @@
+{
+  "first_create_account": "CREATE ACCOUNT",
+  "first_skip": "SKIP",
+  "first_welcome": "welcome to",
+  "first_tagline": "we help you achieve something by doing something else",
+  "first_have_account": "Already have an account?",
+  "login_forgot_your_password": "Forgot your password?",
+  "login_facebook": "Continue with Facebook",
+  "login_google": "Continue with Google",
+  "login_apple": "Continue with Apple",
+  "login_or": "OR",
+  "login_email": "Email",
+  "login_password": "Password",
+  "login_log_in": "LOG IN",
+  "login_join": "JOIN TENSORFIT",
+  "login_terms_text": "By joining Tensorfit, you agree to\nour",
+  "login_terms_url": "Terms of Service"
+}
