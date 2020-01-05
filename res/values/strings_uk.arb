@@ -13,6 +13,6 @@
   "login_password": "Password",
   "login_log_in": "LOG IN",
   "login_join": "JOIN TENSORFIT",
-  "login_terms_text": "By joining Tensorfit, you agree to\nour",
+  "login_terms_text": "By joining Tensorfit, you agree to\nour ",
   "login_terms_url": "Terms of Service"
 }

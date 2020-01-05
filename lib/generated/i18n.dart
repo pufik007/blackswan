@@ -35,7 +35,7 @@ class S implements WidgetsLocalizations {
   String get login_log_in => "LOG IN";
   String get login_or => "OR";
   String get login_password => "Password";
-  String get login_terms_text => "By joining Tensorfit, you agree to\nour";
+  String get login_terms_text => "By joining Tensorfit, you agree to\nour ";
   String get login_terms_url => "Terms of Service";
 }
 
@@ -54,7 +54,7 @@ class $uk extends S {
   @override
   String get first_skip => "SKIP";
   @override
-  String get login_terms_text => "By joining Tensorfit, you agree to\nour";
+  String get login_terms_text => "By joining Tensorfit, you agree to\nour ";
   @override
   String get login_apple => "Continue with Apple";
   @override
