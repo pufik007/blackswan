@@ -163,7 +163,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             color: theme.errorColor,
                           ),
                           onPressed: () {
-                            this._showError(context, 'Login failed', state.error);
+                            this._showError(context, 'Create account failed', state.error);
                           },
                         ),
                       ],

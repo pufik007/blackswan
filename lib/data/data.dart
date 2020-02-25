@@ -3,6 +3,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 
+import 'api/api.dart';
 import 'settings.dart';
 
 class Data {
@@ -20,12 +21,6 @@ class Data {
   String get token => this._settings.token;
 
   Settings _settings;
-
-  final _errors = [
-    'first error example',
-    'second error example',
-  ];
-  var _attemptsCount = 0;
 
   loginFacebook() async {
     final facebookSignIn = FacebookLogin();
@@ -86,23 +81,44 @@ class Data {
     */
   }
 
-  Future<String> createAccount(String email, String password) async {
-    if (this._attemptsCount < this._errors.length) {
-      var res = this._errors[this._attemptsCount];
-      this._attemptsCount++;
-      return res;
-    } else {
-      await this._settings.setToken('create_account_token_${DateFormat('y-MM-dd_hh-mm-ss').format(DateTime.now())}');
+  Future<String> register(String email, String password) async {
+    var res = await Api.register(email, password);
+    if (res.user != null && res.token != null && res.client != null) {
+      await this._settings.setUser(
+            res.client,
+            res.user.email,
+            res.token,
+          );
       return null;
+    } else if (res.errors != null) {
+      return res.errors.first;
+    } else {
+      return 'DATA: invalid http response';
     }
   }
 
   Future<String> login(String email, String password) async {
-    await this._settings.setToken('login_token_${DateFormat('y-MM-dd_hh-mm-ss').format(DateTime.now())}');
-    return null;
+    var res = await Api.login(email, password);
+    if (res.user != null && res.token != null && res.client != null) {
+      await this._settings.setUser(
+            res.client,
+            res.user.email,
+            res.token,
+          );
+      return null;
+    } else if (res.errors != null) {
+      return res.errors.first;
+    } else {
+      return 'DATA: invalid http response';
+    }
   }
 
   Future logout() async {
-    await this._settings.setToken(null);
+    Api.logout(
+      this._settings.email,
+      this._settings.client,
+      this._settings.token,
+    );
+    await this._settings.setUser(null, null, null);
   }
 }

@@ -33,15 +33,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       this._showPassword = !this._showPassword;
       yield this._state();
     } else if (event is CreateAccount) {
-      this._error = await Data.instance.createAccount(this._email, this._password);
-      if(this._error != null) {
+      this._error = await Data.instance.register(this._email, this._password);
+      if (this._error != null) {
         yield this._state();
       } else {
         this._appBloc.add(app.Login());
       }
     } else if (event is Login) {
       this._error = await Data.instance.login(this._email, this._password);
-      if(this._error != null) {
+      if (this._error != null) {
         yield this._state();
       } else {
         this._appBloc.add(app.Login());

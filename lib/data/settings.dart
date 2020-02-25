@@ -11,18 +11,36 @@ class Settings {
     return Settings._().._load();
   }
 
+  String get client => this._client;
+
+  String get email => this._email;
+
   String get token => this._token;
 
+  String _client;
+  String _email;
   String _token;
 
   Settings._();
 
-  setToken(String token) async {
+  setUser(String client, String email, String token) async {
+    await Settings._prefs.setString('client', client);
+    await Settings._prefs.setString('client_email', email);
     await Settings._prefs.setString('login_token', token);
+    this._client = client;
+    this._email = email;
     this._token = token;
   }
 
   _load() {
+    var client = Settings._prefs.getString('client');
+    if (client != null) {
+      this._client = client;
+    }
+    var email = Settings._prefs.getString('client_email');
+    if (email != null) {
+      this._email = email;
+    }
     var token = Settings._prefs.getString('login_token');
     if (token != null) {
       this._token = token;
