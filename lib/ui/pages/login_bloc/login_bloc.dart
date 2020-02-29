@@ -37,14 +37,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (this._error != null) {
         yield this._state();
       } else {
-        this._appBloc.add(app.Login());
+        this._appBloc.add(app.Update());
       }
     } else if (event is Login) {
       this._error = await Data.instance.login(this._email, this._password);
       if (this._error != null) {
         yield this._state();
       } else {
-        this._appBloc.add(app.Login());
+        this._appBloc.add(app.Update());
       }
     } else if (event is LoginByFacebook) {
       await Data.instance.loginFacebook();

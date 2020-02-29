@@ -34,6 +34,10 @@ dependencies:
 
   apple_sign_in: ^0.1.0
 
+  dots_indicator: ^1.0.0
+
+  flutter_picker: ^1.1.0
+
   #cupertino_icons: ^0.1.2
 
 dev_dependencies:
@@ -48,3 +52,4 @@ flutter:
     - assets/login/facebook.svg
     - assets/login/google.svg
     - assets/login/apple.svg
+    - assets/arrow_next.svg

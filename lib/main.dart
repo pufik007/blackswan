@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tensorfit/ui/pages/journey_page.dart';
 import 'generated/i18n.dart';
 
 import 'data/navigator_bloc/navigator_bloc.dart';
@@ -57,8 +58,29 @@ class _AppState extends State<App> {
                 home: FirstPage(),
               ),
             );
-          }
-          if (state is LoggedIn) {
+          } else if (state is JourneyCreation) {
+            return MaterialApp(
+              title: title,
+              theme: state.theme,
+              localizationsDelegates: [S.delegate],
+              supportedLocales: S.delegate.supportedLocales,
+              localeResolutionCallback: S.delegate.resolution(fallback: Locale("en", "")),
+              home: JourneyPage(state.fillUserData, false),
+            );
+          } else if (state is JourneyValidation) {
+            return MaterialApp(
+              title: title,
+              theme: state.theme,
+              localizationsDelegates: [S.delegate],
+              supportedLocales: S.delegate.supportedLocales,
+              localeResolutionCallback: S.delegate.resolution(fallback: Locale("en", "")),
+              home: Scaffold(
+                body: Center(
+                  child: Text('Preparing journey... It may take some time.'),
+                ),
+              ),
+            );
+          } else if (state is LoggedIn) {
             return BlocProvider(
               create: (context) => HomeNavigatorBloc(navigatorKey: this._homeNavKey),
               child: MaterialApp(
@@ -68,7 +90,9 @@ class _AppState extends State<App> {
                 supportedLocales: S.delegate.supportedLocales,
                 localeResolutionCallback: S.delegate.resolution(fallback: Locale("en", "")),
                 navigatorKey: this._homeNavKey,
-                routes: {},
+                routes: {
+                  '/create_journey': (context) => JourneyPage(false, true),
+                },
                 home: HomePage(),
               ),
             );

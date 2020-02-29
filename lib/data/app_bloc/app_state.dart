@@ -27,3 +27,16 @@ class LoggedIn extends AppState {
 
   LoggedIn(this.theme) : super([theme]);
 }
+
+class JourneyCreation extends AppState {
+  final ThemeData theme;
+  final bool fillUserData;
+
+  JourneyCreation(this.theme, this.fillUserData) : super([theme,fillUserData]);
+}
+
+class JourneyValidation extends AppState {
+  final ThemeData theme;
+
+  JourneyValidation(this.theme) : super([theme]);
+}

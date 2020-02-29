@@ -1,15 +1,20 @@
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:intl/intl.dart';
+import 'package:tensorfit/data/api/entities/goal.dart';
+import 'package:tensorfit/data/api/entities/journey.dart';
+import 'package:tensorfit/data/api/responses/user_response.dart';
+import 'package:tensorfit/ui/pages/journey_bloc/user_gender_type.dart';
 
 import 'api/api.dart';
+import 'api/entities/user.dart';
 import 'settings.dart';
 
 class Data {
   static load() async {
     Data._instance = Data._();
     Data.instance._settings = await Settings.load();
+    await Data.instance._loadGoals();
   }
 
   static Data get instance => Data._instance;
@@ -20,7 +25,22 @@ class Data {
 
   String get token => this._settings.token;
 
+  bool get needFillUserData =>
+      this._settings.user.dateOfBirth == null ||
+      this._settings.user.height == null ||
+      this._settings.user.weight == null ||
+      //     this._settings.user.gender == null ||
+      this._settings.user.locale == null;
+
+  List<Goal> get goals {
+    if (this._goals.length == 0) {
+      this._loadGoals();
+    }
+    return this._goals;
+  }
+
   Settings _settings;
+  List<Goal> _goals = [];
 
   loginFacebook() async {
     final facebookSignIn = FacebookLogin();
@@ -83,12 +103,10 @@ class Data {
 
   Future<String> register(String email, String password) async {
     var res = await Api.register(email, password);
-    if (res.user != null && res.token != null && res.client != null) {
-      await this._settings.setUser(
-            res.client,
-            res.user.email,
-            res.token,
-          );
+    if (res.token != null && res.response != null && res.response is UserResponse) {
+      await this._settings.setClient(res.response.client);
+      await this._settings.setToken(res.token);
+      await this._settings.setUser(res.response.user);
       return null;
     } else if (res.errors != null) {
       return res.errors.first;
@@ -99,12 +117,10 @@ class Data {
 
   Future<String> login(String email, String password) async {
     var res = await Api.login(email, password);
-    if (res.user != null && res.token != null && res.client != null) {
-      await this._settings.setUser(
-            res.client,
-            res.user.email,
-            res.token,
-          );
+    if (res.token != null && res.response != null && res.response is UserResponse) {
+      await this._settings.setClient(res.response.client);
+      await this._settings.setToken(res.token);
+      await this._settings.setUser(res.response.user);
       return null;
     } else if (res.errors != null) {
       return res.errors.first;
@@ -115,10 +131,87 @@ class Data {
 
   Future logout() async {
     Api.logout(
-      this._settings.email,
+      this._settings.user.email,
       this._settings.client,
       this._settings.token,
     );
-    await this._settings.setUser(null, null, null);
+    await this._settings.clear();
+  }
+
+  Journey journey;
+
+  Future<Journey> getJourney() async {
+    var res = await Api.getJourney(
+      this._settings.user.email,
+      this._settings.client,
+      this._settings.token,
+    );
+    if (res.token != null && res.response != null && res.response is Journey) {
+      await this._settings.setToken(res.token);
+      this.journey = res.response;
+      return res.response;
+    } else {
+      return null;
+    }
+  }
+
+  Future<String> createJourney(List<Goal> goals) async {
+    var res = await Api.updateGoals(
+      this._settings.user.email,
+      this._settings.client,
+      this._settings.token,
+      goals,
+    );
+
+    if (res.token != null) {
+      await this._settings.setToken(res.token);
+    } else if (res.errors != null) {
+      return res.errors.first;
+    } else {
+      return 'DATA: invalid http response';
+    }
+
+    res = await Api.createJourney(
+      this._settings.user.email,
+      this._settings.client,
+      this._settings.token,
+    );
+
+    if (res.token != null && res.response != null && res.response is Journey) {
+      await this._settings.setToken(res.token);
+      this.journey = res.response;
+      return null;
+    } else if (res.errors != null) {
+      return res.errors.first;
+    } else {
+      return 'DATA: invalid http response';
+    }
+  }
+
+  Future<String> fillUserData(DateTime dateOfBirth, int height, int weight, UserGenderType gender) async {
+    var newUser = this._settings.user.update(dateOfBirth, height, weight, gender, 'ru');
+
+    var res = await Api.updateUser(
+      newUser,
+      this._settings.client,
+      this._settings.token,
+    );
+
+    if (res.token != null && res.response != null && res.response is User) {
+      await this._settings.setToken(res.token);
+      await this._settings.setUser(res.response);
+      return null;
+    } else if (res.errors != null) {
+      return res.errors.first;
+    } else {
+      return 'DATA: invalid http response';
+    }
+  }
+
+  Future _loadGoals() async {
+    var res = await Api.getGoals();
+    if (res.response != null && res.response is List<Goal>) {
+      this._goals = res.response;
+    }
   }
 }

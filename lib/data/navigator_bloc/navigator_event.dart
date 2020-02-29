@@ -19,6 +19,10 @@ class NavigateToCreateAccount extends NavigatorEvent {
   NavigateToCreateAccount() : super([]);
 }
 
+class NavigateToCreateJourney extends NavigatorEvent {
+  NavigateToCreateJourney() : super([]);
+}
+
 class NavigateBack extends NavigatorEvent {
   NavigateBack() : super([]);
 }

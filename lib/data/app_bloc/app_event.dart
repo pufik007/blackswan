@@ -16,8 +16,8 @@ class Load extends AppEvent {
   Load() : super([]);
 }
 
-class Login extends AppEvent {
-  Login() : super([]);
+class Update extends AppEvent {
+  Update() : super([]);
 }
 
 class Logout extends AppEvent {

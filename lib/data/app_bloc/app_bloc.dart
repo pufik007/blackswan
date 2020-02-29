@@ -19,13 +19,25 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       if (Data.instance.token == null) {
         yield LoggedOff(this._getTheme());
       } else {
-        yield LoggedIn(this._getTheme());
+        yield await this.checkJourney();
       }
-    } else if (event is Login) {
-      yield LoggedIn(this._getTheme());
+    } else if (event is Update) {
+      yield await this.checkJourney();
     } else if (event is Logout) {
       await Data.instance.logout();
       yield LoggedOff(this._getTheme());
+    }
+  }
+
+  Future<AppState> checkJourney() async {
+    var journey = await Data.instance.getJourney();
+
+    if (journey == null) {
+      return JourneyCreation(this._getTheme(), Data.instance.needFillUserData);
+    } else if (journey.state == 'completed') {
+      return LoggedIn(this._getTheme());
+    } else {
+      return JourneyValidation(this._getTheme());
     }
   }
 
