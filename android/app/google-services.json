@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1051163571001",
+    "firebase_url": "https://tensorfit.firebaseio.com",
+    "project_id": "tensorfit",
+    "storage_bucket": "tensorfit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1051163571001:android:37a243b7dfdd6b8fc7eee8",
+        "android_client_info": {
+          "package_name": "com.tensorfit.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1051163571001-472bdcvkqf39i70mpcpm7km8pp8g3ghh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tensorfit.app",
+            "certificate_hash": "4fbdb3b0060878ab4bbd7fe7b9f6d511e75115a0"
+          }
+        },
+        {
+          "client_id": "1051163571001-o5790j49ju0i79t54cdvp3cmtbru4k90.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMPKZA0T-mca6RsRAOEgMC-8I-Tyhcn3Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1051163571001-o5790j49ju0i79t54cdvp3cmtbru4k90.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

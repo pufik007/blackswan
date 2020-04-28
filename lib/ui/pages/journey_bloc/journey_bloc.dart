@@ -101,7 +101,7 @@ class JourneyBloc extends Bloc<JourneyEvent, JourneyState> {
         yield this._state();
       }
     } else if (event is SelectGoal) {
-      if (this._inputType == JourneyInputType.UserGoal && !this._selectedGoals.contains(event.goalID)) {
+      if (this._inputType == JourneyInputType.UserGoal && !this._selectedGoals.contains(event.goalID) && this._selectedGoals.length < 2) {
         this._selectedGoals.add(event.goalID);
         yield this._state();
       }

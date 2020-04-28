@@ -13,62 +13,50 @@ import 'package:tensorfit/ui/widgets/login_adapt.dart';
 import 'journey_bloc/user_data_type.dart';
 import 'journey_bloc/user_gender_type.dart';
 
-class JourneyPage extends StatefulWidget {
+class JourneyPage extends StatelessWidget {
+  var _controller = FixedExtentScrollController();
+
   final bool fillUserData;
   final bool isReset;
 
   JourneyPage(this.fillUserData, this.isReset);
 
   @override
-  _JourneyPageState createState() => _JourneyPageState();
-}
-
-class _JourneyPageState extends State<JourneyPage> {
-  // ignore: close_sinks
-  JourneyBloc _bloc;
-  FixedExtentScrollController _controller = FixedExtentScrollController();
-
-  @override
   Widget build(BuildContext context) {
-    if (this._bloc == null) {
-      this._bloc = JourneyBloc(
+    return BlocProvider(
+      create: (context) => JourneyBloc(
         BlocProvider.of<AppBloc>(context),
-        widget.fillUserData,
+        this.fillUserData,
         DateTime.now(),
         60,
         170,
         UserGenderType.Male,
         [],
-      );
-    }
-
-    return AdaptLogin(
-      child: this._buildBody(context),
-      minAspectRatio: 0.8,
+      ),
+      child: LoginAdapt(
+        child: this._buildBody(context),
+        minAspectRatio: 0.8,
+        bgSVGFileName: 'assets/journey/bg.svg',
+      ),
     );
-  }
-
-  @override
-  void dispose() {
-    this._bloc.close();
-    super.dispose();
   }
 
   Widget _buildBody(BuildContext context) {
     var theme = Theme.of(context);
     theme = theme.copyWith(
       accentColor: theme.dialogBackgroundColor,
+      /*
       cupertinoOverrideTheme: CupertinoThemeData(
         textTheme: CupertinoTextThemeData(
-            //pickerTextStyle: TextStyle(color: Colors.blue, fontSize: 12),
-            ),
+          pickerTextStyle: TextStyle(color: Colors.blue, fontSize: 12),
+        ),
       ),
+       */
     );
 
     return Theme(
       data: theme,
-      child: BlocBuilder(
-        bloc: this._bloc,
+      child: BlocBuilder<JourneyBloc, JourneyState>(
         builder: (context, state) {
           if (state is JourneyDataState) {
             return this._buildUserData(context, state);
@@ -78,7 +66,7 @@ class _JourneyPageState extends State<JourneyPage> {
             return this._buildUserGoal(context, state);
           }
 
-          return Text('somthing went wrong...');
+          return null;
         },
       ),
     );
@@ -91,10 +79,10 @@ class _JourneyPageState extends State<JourneyPage> {
     switch (state.type) {
       case UserDataType.DateOfBirth:
         selectWidget = CupertinoDatePicker(
-          initialDateTime: state.dateOfBirth??DateTime.now(),
+          initialDateTime: state.dateOfBirth ?? DateTime.now(),
           mode: CupertinoDatePickerMode.date,
           onDateTimeChanged: (DateTime value) {
-            this._bloc.add(SelectDateOfBirth(value));
+            BlocProvider.of<JourneyBloc>(context).add(SelectDateOfBirth(value));
           },
         );
         break;
@@ -118,7 +106,7 @@ class _JourneyPageState extends State<JourneyPage> {
               return Center(child: Text('${items[index]}${this._info(UserDataType.Height)}'));
             },
             onSelectedItemChanged: (int index) {
-              this._bloc.add(SelectHeight(items[index]));
+              BlocProvider.of<JourneyBloc>(context).add(SelectHeight(items[index]));
             },
             backgroundColor: Colors.transparent,
           ),
@@ -144,7 +132,7 @@ class _JourneyPageState extends State<JourneyPage> {
               return Center(child: Text('${items[index]}${this._info(UserDataType.Weight)}'));
             },
             onSelectedItemChanged: (int index) {
-              this._bloc.add(SelectWeight(items[index]));
+              BlocProvider.of<JourneyBloc>(context).add(SelectWeight(items[index]));
             },
             backgroundColor: Colors.transparent,
           ),
@@ -170,7 +158,7 @@ class _JourneyPageState extends State<JourneyPage> {
               return Center(child: Text(this._gender(items[index])));
             },
             onSelectedItemChanged: (int index) {
-              this._bloc.add(SelectGender(items[index]));
+              BlocProvider.of<JourneyBloc>(context).add(SelectGender(items[index]));
             },
             backgroundColor: Colors.transparent,
           ),
@@ -223,7 +211,7 @@ class _JourneyPageState extends State<JourneyPage> {
                               child: selectWidget,
                             ),
                           ),
-                          this._userDataButton(state.type == UserDataType.Gender),
+                          this._userDataButton(context, state.type == UserDataType.Gender),
                         ],
                       ),
                     ),
@@ -251,7 +239,7 @@ class _JourneyPageState extends State<JourneyPage> {
       ),
       onWillPop: () async {
         if (state.type != UserDataType.values.first) {
-          this._bloc.add(Prev());
+          BlocProvider.of<JourneyBloc>(context).add(Prev());
           return false;
         } else {
           return true;
@@ -284,8 +272,8 @@ class _JourneyPageState extends State<JourneyPage> {
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               onPressed: state.valid
                   ? () {
-                      this._bloc.add(CreateJourney());
-                      if(widget.isReset) {
+                      BlocProvider.of<JourneyBloc>(context).add(CreateJourney());
+                      if (this.isReset) {
                         Navigator.pop(context);
                       }
                     }
@@ -297,7 +285,7 @@ class _JourneyPageState extends State<JourneyPage> {
       ),
       onWillPop: () async {
         if (state.changeUserData) {
-          this._bloc.add(Prev());
+          BlocProvider.of<JourneyBloc>(context).add(Prev());
           return false;
         } else {
           return true;
@@ -370,9 +358,9 @@ class _JourneyPageState extends State<JourneyPage> {
       onPressed: enabled || selected
           ? () {
               if (selected) {
-                this._bloc.add(DeselectGoal(goal.id));
+                BlocProvider.of<JourneyBloc>(context).add(DeselectGoal(goal.id));
               } else {
-                this._bloc.add(SelectGoal(goal.id));
+                BlocProvider.of<JourneyBloc>(context).add(SelectGoal(goal.id));
               }
             }
           : null,
@@ -454,28 +442,29 @@ class _JourneyPageState extends State<JourneyPage> {
     }
   }
 
-  Widget _userDataButton(bool isLast) {
+  Widget _userDataButton(BuildContext context, bool isLast) {
     Widget child;
     if (isLast) {
       child = Row(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text('Next'),
           SizedBox(width: 10),
-          SvgPicture.asset('assets/arrow_next.svg', width: 25),
+          SvgPicture.asset('assets/journey/next_active.svg', width: 40),
         ],
       );
     } else {
-      child = SvgPicture.asset('assets/arrow_next.svg', width: 40);
+      child = SvgPicture.asset('assets/journey/next_active.svg', width: 40);
     }
 
     return FlatButton(
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       onPressed: () {
         if (isLast) {
-          this._bloc.add(UpdateUser());
+          BlocProvider.of<JourneyBloc>(context).add(UpdateUser());
         } else {
-          this._bloc.add(Next());
+          BlocProvider.of<JourneyBloc>(context).add(Next());
         }
       },
       child: child,

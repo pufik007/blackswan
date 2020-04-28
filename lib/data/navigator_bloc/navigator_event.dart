@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:tensorfit/data/api/entities/level.dart';
 
 @immutable
 abstract class NavigatorEvent extends Equatable {
@@ -21,6 +22,12 @@ class NavigateToCreateAccount extends NavigatorEvent {
 
 class NavigateToCreateJourney extends NavigatorEvent {
   NavigateToCreateJourney() : super([]);
+}
+
+class NavigateToLevel extends NavigatorEvent {
+  final Level level;
+
+  NavigateToLevel(this.level) : super([level]);
 }
 
 class NavigateBack extends NavigatorEvent {

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tensorfit/ui/pages/journey_page.dart';
 import 'generated/i18n.dart';
 
 import 'data/navigator_bloc/navigator_bloc.dart';
 import 'data/app_bloc/bloc.dart';
-
+import 'data/api/entities/level.dart';
 import 'ui/pages/create_account_page.dart';
 import 'ui/pages/first_page.dart';
 import 'ui/pages/home_page.dart';
 import 'ui/pages/log_in_page.dart';
 import 'ui/pages/logo_page.dart';
+import 'ui/pages/journey_page.dart';
+import 'ui/pages/level_page.dart';
 
 void main() => runApp(App());
 
@@ -90,6 +92,20 @@ class _AppState extends State<App> {
                 supportedLocales: S.delegate.supportedLocales,
                 localeResolutionCallback: S.delegate.resolution(fallback: Locale("en", "")),
                 navigatorKey: this._homeNavKey,
+                onGenerateRoute: (settings) {
+                  switch(settings.name) {
+                    case '/level':
+                      final Level level = settings.arguments;
+                      return MaterialPageRoute(
+                        builder: (context) {
+                          return LevelPage(level,
+                          );
+                        },
+                      );
+                    default:
+                      return null;
+                  }
+                },
                 routes: {
                   '/create_journey': (context) => JourneyPage(false, true),
                 },

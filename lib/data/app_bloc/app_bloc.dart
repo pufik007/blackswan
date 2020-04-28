@@ -30,7 +30,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   }
 
   Future<AppState> checkJourney() async {
-    var journey = await Data.instance.getJourney();
+    var journey = await Data.instance.getJourney(true);
 
     if (journey == null) {
       return JourneyCreation(this._getTheme(), Data.instance.needFillUserData);

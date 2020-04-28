@@ -15,7 +15,7 @@ abstract class NavigatorBloc extends Bloc<NavigatorEvent, dynamic> {
   @override
   Stream<dynamic> mapEventToState(NavigatorEvent event) async* {
     if (event is NavigateBack) {
-      if(navigatorKey.currentState.canPop()) {
+      if (navigatorKey.currentState.canPop()) {
         navigatorKey.currentState.pop();
       }
     }
@@ -23,8 +23,7 @@ abstract class NavigatorBloc extends Bloc<NavigatorEvent, dynamic> {
 }
 
 class LoginNavigatorBloc extends NavigatorBloc {
-
-  LoginNavigatorBloc({GlobalKey<NavigatorState> navigatorKey}) : super(navigatorKey:navigatorKey);
+  LoginNavigatorBloc({GlobalKey<NavigatorState> navigatorKey}) : super(navigatorKey: navigatorKey);
 
   @override
   Stream<dynamic> mapEventToState(NavigatorEvent event) async* {
@@ -39,16 +38,16 @@ class LoginNavigatorBloc extends NavigatorBloc {
 }
 
 class HomeNavigatorBloc extends NavigatorBloc {
-
-  HomeNavigatorBloc({GlobalKey<NavigatorState> navigatorKey}) : super(navigatorKey:navigatorKey);
+  HomeNavigatorBloc({GlobalKey<NavigatorState> navigatorKey}) : super(navigatorKey: navigatorKey);
 
   @override
   Stream<dynamic> mapEventToState(NavigatorEvent event) async* {
     if (event is NavigateToCreateJourney) {
       navigatorKey.currentState.pushNamed('/create_journey');
+    } else if (event is NavigateToLevel) {
+      navigatorKey.currentState.pushNamed('/level', arguments: event.level);
     }
 
     yield* super.mapEventToState(event);
   }
 }
-

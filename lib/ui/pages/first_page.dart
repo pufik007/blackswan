@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 import 'package:tensorfit/generated/i18n.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +9,7 @@ import 'package:tensorfit/ui/widgets/login_adapt.dart';
 class FirstPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return AdaptLogin(
+    return LoginAdapt(
       child: this._buildBody(context),
       minAspectRatio: 1,
     );
@@ -31,10 +32,9 @@ class FirstPage extends StatelessWidget {
                 child: Text(S.of(context).first_welcome, style: theme.textTheme.display1),
               ),
             ),
-            Image(
-              image: AssetImage('assets/logo.png'),
-              width: double.infinity,
-              fit: BoxFit.fitWidth,
+            AspectRatio(
+              aspectRatio:5,
+              child: SvgPicture.asset('assets/logo.svg',fit: BoxFit.fitWidth,),
             ),
             Expanded(
               flex: 3,

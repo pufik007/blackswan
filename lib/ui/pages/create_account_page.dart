@@ -11,7 +11,6 @@ import 'Dart:io' show Platform;
 
 import 'login_bloc/bloc.dart';
 
-const _maxItemHeight = 50.0;
 const _dividerThickness = 2.0;
 
 class CreateAccountPage extends StatefulWidget {
@@ -38,7 +37,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       this._bloc = LoginBloc(BlocProvider.of<AppBloc>(context));
     }
 
-    return AdaptLogin(
+    return LoginAdapt(
       child: this._buildBody(context),
       minAspectRatio: 0.7,
     );
@@ -62,7 +61,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     var loginButtons = List<Widget>();
     loginButtons.add(TensorfitBorderedButton(
       title: S.of(context).login_facebook,
-      height: _maxItemHeight,
+      height: double.maxFinite,
       icon: SvgPicture.asset('assets/login/facebook.svg'),
       onPressed: () {
         this._bloc.add(LoginByFacebook());
@@ -70,7 +69,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     ));
     loginButtons.add(TensorfitBorderedButton(
       title: S.of(context).login_google,
-      height: _maxItemHeight,
+      height: double.maxFinite,
       icon: SvgPicture.asset('assets/login/google.svg'),
       onPressed: () {
         this._bloc.add(LoginByGoogle());
@@ -80,7 +79,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     if (Platform.isMacOS) {
       loginButtons.add(TensorfitBorderedButton(
         title: S.of(context).login_apple,
-        height: _maxItemHeight,
+        height: double.maxFinite,
         icon: SvgPicture.asset('assets/login/apple.svg'),
         onPressed: () {
           this._bloc.add(LoginByApple());
@@ -99,14 +98,15 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 children: <Widget>[
                   FractionallySizedBox(
                     widthFactor: 0.5,
-                    child: Image(
-                      image: AssetImage('assets/logo.png'),
-                      width: double.infinity,
-                      fit: BoxFit.fitWidth,
+                    child: AspectRatio(
+                      aspectRatio: 5,
+                      child: SvgPicture.asset('assets/logo.svg', fit: BoxFit.fitWidth),
                     ),
                   ),
                   Expanded(
-                    child: this._wrap(loginButtons, _maxItemHeight),
+                    child: this._wrap(
+                      loginButtons,
+                    ),
                   ),
                 ],
               ),
@@ -130,8 +130,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 builder: (context, state) {
                   Color emailColor = state.error == null ? theme.buttonColor : theme.errorColor;
 
-                  Widget emailButton = TextField(
-                    autocorrect: true,
+                  Widget emailTextField = TextField(
+                    autocorrect: false,
+                    keyboardType: TextInputType.emailAddress,
                     controller: this._emailController,
                     decoration: InputDecoration(
                       labelText: S.of(context).login_email,
@@ -147,16 +148,17 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       this._bloc.add(ChangeEmail(value));
                     },
                   );
+
                   if (state.error == null) {
-                    emailButton = Stack(
+                    emailTextField = Stack(
                       alignment: Alignment.centerRight,
-                      children: <Widget>[emailButton],
+                      children: <Widget>[emailTextField],
                     );
                   } else {
-                    emailButton = Stack(
+                    emailTextField = Stack(
                       alignment: Alignment.centerRight,
                       children: <Widget>[
-                        emailButton,
+                        emailTextField,
                         IconButton(
                           icon: Icon(
                             Icons.error_outline,
@@ -169,11 +171,11 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       ],
                     );
                   }
-
-                  var passwordButton = Stack(
+                  var passwordTextField = Stack(
                     alignment: Alignment.centerRight,
                     children: <Widget>[
                       TextField(
+                        autocorrect: false,
                         controller: this._passwordController,
                         obscureText: !state.showPassword,
                         decoration: InputDecoration(
@@ -207,8 +209,10 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     children: <Widget>[
                       Expanded(
                         child: this._wrap(
-                          [emailButton, passwordButton],
-                          _maxItemHeight,
+                          [
+                            emailTextField,
+                            passwordTextField,
+                          ],
                         ),
                       ),
                       TensorfitButton(
@@ -232,7 +236,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                               ),
                               TextSpan(
                                 text: S.of(context).login_terms_url,
-                                style: theme.textTheme.button.copyWith(color: theme.disabledColor, decoration: TextDecoration.underline,fontWeight: FontWeight.w900),
+                                style: theme.textTheme.button
+                                    .copyWith(color: theme.disabledColor, decoration: TextDecoration.underline, fontWeight: FontWeight.w900),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     print('terms_of_service');
@@ -253,57 +258,28 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     );
   }
 
-  Widget _wrap(List<Widget> items, double maxItemHeight) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxHeight * (1 - 0.05 * (items.length - 1)) > maxItemHeight * items.length) {
-          var rows = List<Widget>();
+  Widget _wrap(List<Widget> items) {
+    var rows = List<Widget>();
 
-          for (var item in items) {
-            if (rows.length > 0) {
-              rows.add(
-                Container(
-                  height: constraints.maxHeight * 0.05,
-                ),
-              );
-            }
-            rows.add(
-              Container(
-                height: maxItemHeight,
-                child: item,
-              ),
-            );
-          }
+    for (var item in items) {
+      if (rows.length > 0) {
+        rows.add(
+          AspectRatio(
+            aspectRatio: 20,
+          ),
+        );
+      }
+      rows.add(
+        AspectRatio(
+          aspectRatio: 7,
+          child: item,
+        ),
+      );
+    }
 
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: rows,
-          );
-        } else {
-          var rows = List<Widget>();
-
-          for (var item in items) {
-            if (rows.length > 0) {
-              rows.add(
-                Container(
-                  height: constraints.maxHeight * 0.05,
-                ),
-              );
-            }
-            rows.add(
-              Expanded(
-                child: item,
-              ),
-            );
-          }
-
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: rows,
-          );
-        }
-      },
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: rows,
     );
   }
 

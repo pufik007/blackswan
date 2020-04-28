@@ -10,7 +10,6 @@ import 'Dart:io' show Platform;
 
 import 'login_bloc/bloc.dart';
 
-const _maxItemHeight = 50.0;
 const _dividerThickness = 2.0;
 
 class LogInPage extends StatefulWidget {
@@ -37,7 +36,7 @@ class _LogInPageState extends State<LogInPage> {
       this._bloc = LoginBloc(BlocProvider.of<AppBloc>(context));
     }
 
-    return AdaptLogin(
+    return LoginAdapt(
       child: this._buildBody(context),
       minAspectRatio: 0.7,
     );
@@ -61,7 +60,7 @@ class _LogInPageState extends State<LogInPage> {
     var loginButtons = List<Widget>();
     loginButtons.add(TensorfitBorderedButton(
       title: S.of(context).login_facebook,
-      height: _maxItemHeight,
+      height: double.maxFinite,
       icon: SvgPicture.asset('assets/login/facebook.svg'),
       onPressed: () {
         this._bloc.add(LoginByFacebook());
@@ -69,7 +68,7 @@ class _LogInPageState extends State<LogInPage> {
     ));
     loginButtons.add(TensorfitBorderedButton(
       title: S.of(context).login_google,
-      height: _maxItemHeight,
+      height: double.maxFinite,
       icon: SvgPicture.asset('assets/login/google.svg'),
       onPressed: () {
         this._bloc.add(LoginByGoogle());
@@ -79,7 +78,7 @@ class _LogInPageState extends State<LogInPage> {
     if (Platform.isMacOS) {
       loginButtons.add(TensorfitBorderedButton(
         title: S.of(context).login_apple,
-        height: _maxItemHeight,
+        height: double.maxFinite,
         icon: SvgPicture.asset('assets/login/apple.svg'),
         onPressed: () {
           this._bloc.add(LoginByApple());
@@ -98,14 +97,13 @@ class _LogInPageState extends State<LogInPage> {
                 children: <Widget>[
                   FractionallySizedBox(
                     widthFactor: 0.5,
-                    child: Image(
-                      image: AssetImage('assets/logo.png'),
-                      width: double.infinity,
-                      fit: BoxFit.fitWidth,
+                    child: AspectRatio(
+                      aspectRatio: 5,
+                      child: SvgPicture.asset('assets/logo.svg', fit: BoxFit.fitWidth),
                     ),
                   ),
                   Expanded(
-                    child: this._wrap(loginButtons, _maxItemHeight),
+                    child: this._wrap(loginButtons),
                   ),
                 ],
               ),
@@ -127,10 +125,11 @@ class _LogInPageState extends State<LogInPage> {
               child: BlocBuilder(
                 bloc: this._bloc,
                 builder: (context, state) {
-                  Color emailColor = state.error == null ? theme.buttonColor: theme.errorColor;
+                  Color emailColor = state.error == null ? theme.buttonColor : theme.errorColor;
 
-                  Widget emailButton = TextField(
-                    autocorrect: true,
+                  Widget emailTextField = TextField(
+                    autocorrect: false,
+                    keyboardType: TextInputType.emailAddress,
                     controller: this._emailController,
                     decoration: InputDecoration(
                       labelText: S.of(context).login_email,
@@ -146,30 +145,34 @@ class _LogInPageState extends State<LogInPage> {
                       this._bloc.add(ChangeEmail(value));
                     },
                   );
-                  if(state.error == null) {
-                    emailButton = Stack(
+                  if (state.error == null) {
+                    emailTextField = Stack(
                       alignment: Alignment.centerRight,
-                      children: <Widget>[emailButton],
+                      children: <Widget>[emailTextField],
                     );
                   } else {
-                    emailButton = Stack(
+                    emailTextField = Stack(
                       alignment: Alignment.centerRight,
-                      children: <Widget>[emailButton,IconButton(
-                        icon: Icon(
-                          Icons.error_outline,
-                          color: theme.errorColor,
+                      children: <Widget>[
+                        emailTextField,
+                        IconButton(
+                          icon: Icon(
+                            Icons.error_outline,
+                            color: theme.errorColor,
+                          ),
+                          onPressed: () {
+                            this._showError(context, 'Login failed', state.error);
+                          },
                         ),
-                        onPressed: () {
-                          this._showError(context, 'Login failed', state.error);
-                        },
-                      ),],
+                      ],
                     );
                   }
 
-                  var passwordButton = Stack(
+                  var passwordTextField = Stack(
                     alignment: Alignment.centerRight,
                     children: <Widget>[
                       TextField(
+                        autocorrect: false,
                         controller: this._passwordController,
                         obscureText: !state.showPassword,
                         decoration: InputDecoration(
@@ -203,8 +206,10 @@ class _LogInPageState extends State<LogInPage> {
                     children: <Widget>[
                       Expanded(
                         child: this._wrap(
-                          [emailButton, passwordButton],
-                          _maxItemHeight,
+                          [
+                            emailTextField,
+                            passwordTextField,
+                          ],
                         ),
                       ),
                       TensorfitButton(
@@ -232,57 +237,28 @@ class _LogInPageState extends State<LogInPage> {
     );
   }
 
-  Widget _wrap(List<Widget> items, double maxItemHeight) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxHeight * (1 - 0.05 * (items.length - 1)) > maxItemHeight * items.length) {
-          var rows = List<Widget>();
+  Widget _wrap(List<Widget> items) {
+    var rows = List<Widget>();
 
-          for (var item in items) {
-            if (rows.length > 0) {
-              rows.add(
-                Container(
-                  height: constraints.maxHeight * 0.05,
-                ),
-              );
-            }
-            rows.add(
-              Container(
-                height: maxItemHeight,
-                child: item,
-              ),
-            );
-          }
+    for (var item in items) {
+      if (rows.length > 0) {
+        rows.add(
+          AspectRatio(
+            aspectRatio: 20,
+          ),
+        );
+      }
+      rows.add(
+        AspectRatio(
+          aspectRatio: 7,
+          child: item,
+        ),
+      );
+    }
 
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: rows,
-          );
-        } else {
-          var rows = List<Widget>();
-
-          for (var item in items) {
-            if (rows.length > 0) {
-              rows.add(
-                Container(
-                  height: constraints.maxHeight * 0.05,
-                ),
-              );
-            }
-            rows.add(
-              Expanded(
-                child: item,
-              ),
-            );
-          }
-
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: rows,
-          );
-        }
-      },
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: rows,
     );
   }
 

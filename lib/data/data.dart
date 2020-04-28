@@ -1,8 +1,10 @@
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tensorfit/data/api/entities/exercise_info.dart';
 import 'package:tensorfit/data/api/entities/goal.dart';
 import 'package:tensorfit/data/api/entities/journey.dart';
+import 'package:tensorfit/data/api/entities/level.dart';
 import 'package:tensorfit/data/api/responses/user_response.dart';
 import 'package:tensorfit/ui/pages/journey_bloc/user_gender_type.dart';
 
@@ -45,34 +47,64 @@ class Data {
   loginFacebook() async {
     final facebookSignIn = FacebookLogin();
 
-    final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
+    final FacebookLoginResult facebookUser = await facebookSignIn.logIn(['email']);
+
+    if (facebookUser.status == FacebookLoginStatus.loggedIn) {
+      var res = await Api.loginFacebook(facebookUser.accessToken.token);
+
+      if (res.token != null && res.response != null && res.response is UserResponse) {
+        await this._settings.setClient(res.response.client);
+        await this._settings.setToken(res.token);
+        await this._settings.setUser(res.response.user);
+        return null;
+      } else if (res.errors != null) {
+        return res.errors.first;
+      } else {
+        return 'DATA: invalid http response';
+      }
+    }
   }
 
   loginGoogle() async {
-    //final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    final googleSignIn = GoogleSignIn(
-      scopes: <String>[
-        'email',
-        'https://www.googleapis.com/auth/contacts.readonly',
-      ],
-    );
+    final googleSignIn = GoogleSignIn();
 
     final GoogleSignInAccount googleUser = await googleSignIn.signIn();
-    /*
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    final auth = await googleUser.authentication;
+    await googleSignIn.signOut();
+
+    var res = await Api.loginGoogle(auth.idToken);
+
+    if (res.token != null && res.response != null && res.response is UserResponse) {
+      await this._settings.setClient(res.response.client);
+      await this._settings.setToken(res.token);
+      await this._settings.setUser(res.response.user);
+      return null;
+    } else if (res.errors != null) {
+      return res.errors.first;
+    } else {
+      return 'DATA: invalid http response';
+    }
+/*
     final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
+      accessToken: auth.accessToken,
+      idToken: auth.idToken,
     );
-    await firebaseAuth.signInWithCredential(credential);
-    return firebaseAuth.currentUser();
-     */
+
+    try {
+      final AuthResult authResult = await FirebaseAuth.instance.signInWithCredential(credential);
+      print(authResult);
+    } catch (e) {
+      print(e);
+    }
+*/
   }
 
   loginApple() async {
     final result = await AppleSignIn.performRequests([
       AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
     ]);
+
+    print(result);
 /*
     switch (result.status) {
       case AuthorizationStatus.authorized:
@@ -140,7 +172,10 @@ class Data {
 
   Journey journey;
 
-  Future<Journey> getJourney() async {
+  Future<Journey> getJourney(bool forceUpdate) async {
+    if (!forceUpdate && this.journey != null) {
+      return this.journey;
+    }
     var res = await Api.getJourney(
       this._settings.user.email,
       this._settings.client,
@@ -205,6 +240,41 @@ class Data {
       return res.errors.first;
     } else {
       return 'DATA: invalid http response';
+    }
+  }
+
+  Future<List<Level>> getLevels() async {
+    var res = await Api.getLevels(
+      this._settings.user,
+      this._settings.client,
+      this._settings.token,
+    );
+
+    if (res.token != null && res.response != null && res.response is List<Level>) {
+      await this._settings.setToken(res.token);
+      return res.response;
+    } else if (res.errors != null) {
+      return null;
+    } else {
+      return null;
+    }
+  }
+
+  Future<List<ExerciseInfo>> getExercises(Level level) async {
+    var res = await Api.getExercises(
+      this._settings.user,
+      this._settings.client,
+      this._settings.token,
+      level.id,
+    );
+
+    if (res.token != null && res.response != null && res.response is List<ExerciseInfo>) {
+      await this._settings.setToken(res.token);
+      return res.response;
+    } else if (res.errors != null) {
+      return null;
+    } else {
+      return null;
     }
   }
 

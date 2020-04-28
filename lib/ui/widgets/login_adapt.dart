@@ -1,15 +1,18 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 final _maxWidth = 412.0;
 
-class AdaptLogin extends StatelessWidget {
+class LoginAdapt extends StatelessWidget {
   final Widget child;
   final double minAspectRatio;
+  final String bgSVGFileName;
 
-  AdaptLogin({
+  LoginAdapt({
     this.child,
     this.minAspectRatio,
+    this.bgSVGFileName,
   });
 
   @override
@@ -21,60 +24,57 @@ class AdaptLogin extends StatelessWidget {
           LayoutBuilder(
             builder: (context, constraints) {
               var info = MediaQuery.of(context);
+              double width;
+              double height;
               if (info.orientation == Orientation.portrait) {
                 if (constraints.maxWidth >= _maxWidth) {
                   // tablet
-                  return Center(
-                    child: Container(
-                      width: _maxWidth,
-                      height: _maxWidth / this.minAspectRatio,
-                      child: this.child,
-                    ),
-                  );
+                  width = _maxWidth;
+                  height = _maxWidth / this.minAspectRatio;
                 } else {
                   if (constraints.maxHeight >= constraints.maxWidth / this.minAspectRatio) {
                     // normal device
-                    return SingleChildScrollView(
-                      child: Container(
-                        width: constraints.maxWidth,
-                        height: constraints.maxHeight - 1,
-                        child: this.child,
-                      ),
-                    );
+                    width = constraints.maxWidth;
+                    height = constraints.maxHeight - 1;
                   } else {
                     // small device, need scrolling
-                    return SingleChildScrollView(
-                      child: Container(
-                        width: constraints.maxWidth,
-                        height: constraints.maxWidth / this.minAspectRatio,
-                        child: this.child,
-                      ),
-                    );
+                    width = constraints.maxWidth;
+                    height = constraints.maxWidth / this.minAspectRatio;
                   }
                 }
               } else {
                 if (constraints.maxWidth >= _maxWidth && constraints.maxHeight >= _maxWidth / this.minAspectRatio) {
                   // tablet
-                  return Center(
-                    child: Container(
-                      width: _maxWidth,
-                      height: _maxWidth / this.minAspectRatio,
-                      child: this.child,
-                    ),
-                  );
+                  width = _maxWidth;
+                  height = _maxWidth / this.minAspectRatio;
                 } else {
-                  var width = min(_maxWidth, constraints.maxWidth);
                   // horizontal phone, need scrolling
-                  return SingleChildScrollView(
-                    child: Center(
-                      child: Container(
-                        width: width,
-                        height: width / this.minAspectRatio,
-                        child: this.child,
-                      ),
-                    ),
-                  );
+                  width = min(_maxWidth, constraints.maxWidth);
+                  height = width / this.minAspectRatio;
                 }
+              }
+
+              var res = SingleChildScrollView(
+                child: Container(
+                  height: max(constraints.maxHeight, height),
+                  alignment: Alignment.center,
+                  child: Container(
+                    width: width,
+                    height: height,
+                    child: this.child,
+                  ),
+                ),
+              );
+
+              if(bgSVGFileName == null) {
+                return res;
+              } else {
+                return Stack(
+                  children: <Widget>[
+                    SvgPicture.asset(this.bgSVGFileName, fit: constraints.maxWidth > constraints.maxHeight ? BoxFit.fitWidth : BoxFit.fitHeight),
+                    res,
+                  ],
+                );
               }
             },
           ),
