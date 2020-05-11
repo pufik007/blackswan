@@ -32,6 +32,8 @@ dependencies:
 
   flutter_picker: ^1.1.0
 
+  flutter_slidable: ^0.5.3
+
   #cupertino_icons: ^0.1.2
 
 dev_dependencies:
@@ -79,3 +81,4 @@ flutter:
     - assets/map/stars_3.svg
     - assets/map/marker_left.svg
     - assets/map/marker_right.svg
+    - assets/test.png

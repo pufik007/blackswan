@@ -74,7 +74,7 @@ abstract class Api {
       Map<String, String> headers = {"Content-type": "application/json"};
       var body = jsonEncode({"id_token": tokenID});
 
-      var httpRes = await http.post('$_url/oauth/google_oauth2/callback', headers: headers, body: body);
+      var httpRes = await http.post('$_url/auth/google_oauth2/validate', headers: headers, body: body);
 
       if (httpRes.statusCode == 200) {
         var user = User.fromJson(json.decode(httpRes.body));
@@ -101,7 +101,7 @@ abstract class Api {
       Map<String, String> headers = {"Content-type": "application/json"};
       var body = jsonEncode({"id_token": tokenID});
 
-      var httpRes = await http.post('$_url/oauth/facebook_oauth2/callback', headers: headers, body: body);
+      var httpRes = await http.post('$_url/auth/facebook/validate', headers: headers, body: body);
 
       if (httpRes.statusCode == 200) {
         var user = User.fromJson(json.decode(httpRes.body));
@@ -303,7 +303,7 @@ abstract class Api {
     }
   }
 
-  static Future<PrivateResponse> getExercises(User user, String client, String token,int levelID) async {
+  static Future<PrivateResponse> getExercises(User user, String client, String token, int levelID) async {
     try {
       Map<String, String> headers = {
         "uid": user.email,
@@ -333,4 +333,34 @@ abstract class Api {
     }
   }
 
+  static Future<PrivateResponse> replaceExercise(User user, String client, String token, int exerciseID, int substituteID) async {
+    try {
+      Map<String, String> headers = {
+        "uid": user.email,
+        "client": client,
+        "access-token": token,
+        "Content-type": "application/json",
+      };
+
+      var body = jsonEncode({"substitute_id": substituteID, });
+
+      var httpRes = await http.post('$_url/exercise_variants/$exerciseID/replace', headers: headers, body: body);
+
+      print(httpRes.body);
+
+      if (httpRes.statusCode == 204) {
+        var newToken = httpRes.headers['access-token'];
+        if (newToken == null) {
+          return PrivateResponse.error(['API: token is absent in header']);
+        } else {
+          return PrivateResponse.ok(newToken, null);
+        }
+      } else {
+        var errors = Errors.fromJson(json.decode(httpRes.body));
+        return PrivateResponse.error(errors.errors);
+      }
+    } catch (e) {
+      return PrivateResponse.error(['${e.toString()}']);
+    }
+  }
 }

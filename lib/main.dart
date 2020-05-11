@@ -93,13 +93,15 @@ class _AppState extends State<App> {
                 localeResolutionCallback: S.delegate.resolution(fallback: Locale("en", "")),
                 navigatorKey: this._homeNavKey,
                 onGenerateRoute: (settings) {
-                  switch(settings.name) {
+                  switch (settings.name) {
                     case '/level':
-                      final Level level = settings.arguments;
+                      final List args = settings.arguments;
+                      final Level level = args[0];
+                      final ImageProvider image = args[1];
+                      final Alignment imageAlign = args[2];
                       return MaterialPageRoute(
                         builder: (context) {
-                          return LevelPage(level,
-                          );
+                          return LevelPage(level, image, imageAlign);
                         },
                       );
                     default:

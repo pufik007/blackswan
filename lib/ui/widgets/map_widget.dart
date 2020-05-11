@@ -310,7 +310,11 @@ class _HouseState extends State<House> with SingleTickerProviderStateMixin {
       onTapUp: (details) {
         this._pressed = false;
         this._animationController.reverse();
-        BlocProvider.of<HomeNavigatorBloc>(context).add(NavigateToLevel(widget.level));
+        BlocProvider.of<HomeNavigatorBloc>(context).add(NavigateToLevel(
+          widget.level,
+          widget.image,
+          widget.isRight ? Alignment.centerRight : Alignment.centerLeft,
+        ));
       },
       onTapCancel: () {
         this._pressed = false;

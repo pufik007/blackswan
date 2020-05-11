@@ -16,3 +16,14 @@ class Load extends LevelEvent {
   Load() : super([]);
 }
 
+class HarderExercise extends LevelEvent {
+  final int exerciseID;
+
+  HarderExercise(this.exerciseID) : super([exerciseID]);
+}
+
+class EasierExercise extends LevelEvent {
+  final int exerciseID;
+
+  EasierExercise(this.exerciseID) : super([exerciseID]);
+}

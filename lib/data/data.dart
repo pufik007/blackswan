@@ -278,6 +278,25 @@ class Data {
     }
   }
 
+  Future<String> replaceExercise(int exerciseID, int substituteID) async {
+    var res = await Api.replaceExercise(
+      this._settings.user,
+      this._settings.client,
+      this._settings.token,
+      exerciseID,
+      substituteID,
+    );
+
+    if (res.token != null) {
+      await this._settings.setToken(res.token);
+      return null;
+    } else if (res.errors != null) {
+      return res.errors.first;
+    } else {
+      return 'DATA: invalid http response';
+    }
+  }
+
   Future _loadGoals() async {
     var res = await Api.getGoals();
     if (res.response != null && res.response is List<Goal>) {

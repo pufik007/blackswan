@@ -45,7 +45,7 @@ class HomeNavigatorBloc extends NavigatorBloc {
     if (event is NavigateToCreateJourney) {
       navigatorKey.currentState.pushNamed('/create_journey');
     } else if (event is NavigateToLevel) {
-      navigatorKey.currentState.pushNamed('/level', arguments: event.level);
+      navigatorKey.currentState.pushNamed('/level', arguments: [event.level,event.image,event.imageAlign]);
     }
 
     yield* super.mapEventToState(event);
