@@ -6,7 +6,7 @@ import 'generated/i18n.dart';
 import 'data/navigator_bloc/navigator_bloc.dart';
 import 'data/app_bloc/bloc.dart';
 import 'data/api/entities/level.dart';
-import 'ui/pages/create_account_page.dart';
+//import 'ui/pages/create_account_page.dart';
 import 'ui/pages/first_page.dart';
 import 'ui/pages/home_page.dart';
 import 'ui/pages/log_in_page.dart';
@@ -14,7 +14,39 @@ import 'ui/pages/logo_page.dart';
 import 'ui/pages/journey_page.dart';
 import 'ui/pages/level_page.dart';
 
-void main() => runApp(App());
+import 'dart:async';
+import 'package:camera/camera.dart';
+import './camera/home.dart';
+
+
+List<CameraDescription> cameras;
+
+Future<Null> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    cameras = await availableCameras();
+  } on CameraException catch (e) {
+    print('Error: $e.code\nError Message: $e.message');
+  }
+  runApp( App());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'tflite real-time detection',
+      theme: ThemeData(
+        brightness: Brightness.dark,
+      ),
+      home: HomePages(cameras),
+    );
+  }
+}
+
+
+
+
 
 class App extends StatefulWidget {
   @override
@@ -55,7 +87,7 @@ class _AppState extends State<App> {
                 navigatorKey: this._loginNavKey,
                 routes: {
                   '/log_in': (context) => LogInPage(),
-                  '/create_account': (context) => CreateAccountPage(),
+                  '/create_account': (context) => MyApp(),
                 },
                 home: FirstPage(),
               ),
