@@ -41,8 +41,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  tflite: ^1.0.4
-
   camera: ^0.5.7+5
 
 flutter:
@@ -86,10 +84,3 @@ flutter:
     - assets/map/stars_3.svg
     - assets/map/marker_left.svg
     - assets/map/marker_right.svg
-    - assets/camera/yolov2_tiny.tflite
-    - assets/camera/yolov2_tiny.txt
-    - assets/camera/ssd_mobilenet.tflite
-    - assets/camera/ssd_mobilenet.txt
-    - assets/camera/mobilenet_v1_1.0_224.tflite
-    - assets/camera/mobilenet_v1_1.0_224.txt
-    - assets/camera/posenet_mv1_075_float_from_checkpoints.tflite
