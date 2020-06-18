@@ -6,14 +6,13 @@ import 'generated/i18n.dart';
 import 'data/navigator_bloc/navigator_bloc.dart';
 import 'data/app_bloc/bloc.dart';
 import 'data/api/entities/level.dart';
-//import 'ui/pages/create_account_page.dart';
+import 'ui/pages/create_account_page.dart';
 import 'ui/pages/first_page.dart';
 import 'ui/pages/home_page.dart';
 import 'ui/pages/log_in_page.dart';
 import 'ui/pages/logo_page.dart';
 import 'ui/pages/journey_page.dart';
 import 'ui/pages/level_page.dart';
-import 'ui/camera.dart';
 
 void main() => runApp(App());
 
@@ -56,7 +55,7 @@ class _AppState extends State<App> {
                 navigatorKey: this._loginNavKey,
                 routes: {
                   '/log_in': (context) => LogInPage(),
-                  '/create_account': (context) => Camera(),
+                  '/create_account': (context) => CreateAccountPage(),
                 },
                 home: FirstPage(),
               ),
