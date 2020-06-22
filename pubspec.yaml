@@ -62,24 +62,24 @@ flutter:
     - assets/map/levels/left/4.png
     - assets/map/levels/left/5.png
     - assets/map/levels/left/6.png
-    # - assets/map/levels/left_h/1.png
-    # - assets/map/levels/left_h/2.png
-    # - assets/map/levels/left_h/3.png
-    # - assets/map/levels/left_h/4.png
-    # - assets/map/levels/left_h/5.png
-    # - assets/map/levels/left_h/6.png
+    - assets/map/levels/left_h/1.png
+    - assets/map/levels/left_h/2.png
+    - assets/map/levels/left_h/3.png
+    - assets/map/levels/left_h/4.png
+    - assets/map/levels/left_h/5.png
+    - assets/map/levels/left_h/6.png
     - assets/map/levels/right/1.png
     - assets/map/levels/right/2.png
     - assets/map/levels/right/3.png
     - assets/map/levels/right/4.png
     - assets/map/levels/right/5.png
     - assets/map/levels/right/6.png
-    # - assets/map/levels/right_h/1.png
-    # - assets/map/levels/right_h/2.png
-    # - assets/map/levels/right_h/3.png
-    # - assets/map/levels/right_h/4.png
-    # - assets/map/levels/right_h/5.png
-    # - assets/map/levels/right_h/6.png
+    - assets/map/levels/right_h/1.png
+    - assets/map/levels/right_h/2.png
+    - assets/map/levels/right_h/3.png
+    - assets/map/levels/right_h/4.png
+    - assets/map/levels/right_h/5.png
+    - assets/map/levels/right_h/6.png
     - assets/map/stars_0.svg
     - assets/map/stars_1.svg
     - assets/map/stars_2.svg
