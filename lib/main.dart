@@ -13,6 +13,7 @@ import 'ui/pages/log_in_page.dart';
 import 'ui/pages/logo_page.dart';
 import 'ui/pages/journey_page.dart';
 import 'ui/pages/level_page.dart';
+import './ui/webSoct.dart';
 
 void main() => runApp(App());
 
@@ -55,7 +56,7 @@ class _AppState extends State<App> {
                 navigatorKey: this._loginNavKey,
                 routes: {
                   '/log_in': (context) => LogInPage(),
-                  '/create_account': (context) => CreateAccountPage(),
+                  '/create_account': (context) => MyApp(),
                 },
                 home: FirstPage(),
               ),
