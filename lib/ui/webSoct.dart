@@ -18,7 +18,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {});
   }
   onDone() {
-    debugPrint("Socket is closed1");
+    debugPrint("Socket is closed");
   }
 
   @override
