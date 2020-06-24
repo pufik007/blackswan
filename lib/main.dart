@@ -13,8 +13,20 @@ import 'ui/pages/log_in_page.dart';
 import 'ui/pages/logo_page.dart';
 import 'ui/pages/journey_page.dart';
 import 'ui/pages/level_page.dart';
+import 'package:camera/camera.dart';
+import 'ui/camera.dart';
 
-void main() => runApp(App());
+List<CameraDescription> cameras;
+
+Future<Null> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    cameras = await availableCameras();
+  } on CameraException catch (e) {
+    print('Error: $e.code\nError Message: $e.message');
+  }
+  runApp(new App());
+}
 
 class App extends StatefulWidget {
   @override
