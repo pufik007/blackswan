@@ -20,6 +20,19 @@ class LevelPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: this._bgColor,
       body: this._buildBody(context),
+      floatingActionButton: FloatingActionButton(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.orange[800],
+        elevation: 6.0,
+        child: Icon(
+          Icons.play_circle_outline,
+          size: 50.0,
+        ),
+        onPressed: () {
+          Navigator.of(context).pushNamed('/ui/camera.dart');
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -35,7 +48,10 @@ class LevelPage extends StatelessWidget {
             return SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: <Widget>[this._buildHeader(context, state.exercises), this._buildExercises(context, state.exercises)],
+                children: <Widget>[
+                  this._buildHeader(context, state.exercises),
+                  this._buildExercises(context, state.exercises),
+                ],
               ),
             );
           }
@@ -71,7 +87,11 @@ class LevelPage extends StatelessWidget {
               child: Transform.scale(
                   scale: 2,
                   child: Transform.translate(
-                    offset: Offset(this.imageAlign == Alignment.centerRight ? offset : -offset, offset),
+                    offset: Offset(
+                        this.imageAlign == Alignment.centerRight
+                            ? offset
+                            : -offset,
+                        offset),
                     child: Image(
                       image: this.image,
                     ),
@@ -112,7 +132,8 @@ class LevelPage extends StatelessWidget {
                       child: Container(
                         padding: EdgeInsets.only(left: 12),
                         alignment: Alignment.centerLeft,
-                        child: Text('Workout plan', style: theme.primaryTextTheme.title),
+                        child: Text('Workout plan',
+                            style: theme.primaryTextTheme.title),
                       ),
                     ),
                     AspectRatio(
@@ -125,22 +146,26 @@ class LevelPage extends StatelessWidget {
                             Icon(Icons.directions_run, color: color),
                             SizedBox(width: 10),
                             Expanded(
-                              child: Text('${exercises.length} exercises', style: theme.primaryTextTheme.subtitle),
+                              child: Text('${exercises.length} exercises',
+                                  style: theme.primaryTextTheme.subtitle),
                             ),
                             Icon(Icons.alarm, color: color),
                             SizedBox(width: 10),
-                            Text('$duration min', style: theme.primaryTextTheme.subtitle),
+                            Text('$duration min',
+                                style: theme.primaryTextTheme.subtitle),
                             Expanded(
                               child: Align(
                                 alignment: Alignment.centerRight,
                                 child: IconButton(
-                                  icon: Icon(Icons.chevron_left, color: Colors.blue),
+                                  icon: Icon(Icons.chevron_left,
+                                      color: Colors.blue),
                                   onPressed: () {},
                                 ),
                               ),
                             ),
                             IconButton(
-                              icon: Icon(Icons.chevron_right, color: Colors.blue),
+                              icon:
+                                  Icon(Icons.chevron_right, color: Colors.blue),
                               onPressed: () {},
                             ),
                           ],
@@ -172,7 +197,8 @@ class LevelPage extends StatelessWidget {
         if (exercise.duration % 60 == 0) {
           duration = '${(exercise.duration / 60).floor()} min';
         } else {
-          duration = '${(exercise.duration / 60).floor()} min ${exercise.duration % 60} sec';
+          duration =
+              '${(exercise.duration / 60).floor()} min ${exercise.duration % 60} sec';
         }
       } else {
         duration = '${exercise.duration ?? 0} sec';
@@ -185,7 +211,8 @@ class LevelPage extends StatelessWidget {
           foregroundColor: Colors.white,
           icon: Icons.arrow_downward,
           onTap: () {
-            BlocProvider.of<LevelBloc>(context).add(EasierExercise(exercise.id));
+            BlocProvider.of<LevelBloc>(context)
+                .add(EasierExercise(exercise.id));
           },
         ));
       }
@@ -195,7 +222,8 @@ class LevelPage extends StatelessWidget {
           foregroundColor: Colors.white,
           icon: Icons.arrow_upward,
           onTap: () {
-            BlocProvider.of<LevelBloc>(context).add(HarderExercise(exercise.id));
+            BlocProvider.of<LevelBloc>(context)
+                .add(HarderExercise(exercise.id));
           },
         ));
       }
@@ -211,25 +239,35 @@ class LevelPage extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.only(left: padding, right: padding, bottom: padding / 2, top: padding / 2),
+                    padding: EdgeInsets.only(
+                        left: padding,
+                        right: padding,
+                        bottom: padding / 2,
+                        top: padding / 2),
                     child: AspectRatio(
                       aspectRatio: 4 / 3,
-                      child: Image(image: AssetImage('assets/test.png'), fit: BoxFit.cover),
+                      child: Image(
+                          image: AssetImage('assets/test.png'),
+                          fit: BoxFit.cover),
                     ),
                   ),
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
                           border: Border(
-                        bottom: BorderSide(width: 0.5, color: theme.disabledColor),
+                        bottom:
+                            BorderSide(width: 0.5, color: theme.disabledColor),
                       )),
                       margin: EdgeInsets.only(right: padding),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(exercise.exercise.name, style: theme.textTheme.subhead),
-                          Text(duration, style: theme.textTheme.subhead.copyWith(color: theme.disabledColor)),
+                          Text(exercise.exercise.name,
+                              style: theme.textTheme.subhead),
+                          Text(duration,
+                              style: theme.textTheme.subhead
+                                  .copyWith(color: theme.disabledColor)),
                         ],
                       ),
                     ),

@@ -122,6 +122,7 @@ class _AppState extends State<App> {
                 },
                 routes: {
                   '/create_journey': (context) => JourneyPage(false, true),
+                  '/ui/camera.dart': (context) => CameraPage(cameras),
                 },
                 home: HomePage(),
               ),
