@@ -22,6 +22,7 @@ class _CameraPageState extends State<CameraPage> {
   final WebSocketChannel channel = WebSocketChannel.connect(Uri.parse(
       "ws://ec2-18-218-127-154.us-east-2.compute.amazonaws.com/frame"));
   CameraController controller;
+  bool isDetecting = true;
 
   @override
   void initState() {
@@ -36,6 +37,9 @@ class _CameraPageState extends State<CameraPage> {
       }
       setState(() {});
       controller.startImageStream((CameraImage image) {
+        if (!isDetecting){
+          isDetecting = true; 
+        }
         convertYUV420toImageColor(image);
       });
     });
@@ -97,6 +101,9 @@ class _CameraPageState extends State<CameraPage> {
 
   onData(event) {
     debugPrint(event);
+    if (!isDetecting){ 
+      isDetecting = false; 
+    }
   }
 
   @override
