@@ -38,7 +38,8 @@ class _CameraPageState extends State<CameraPage> {
       setState(() {});
       controller.startImageStream((CameraImage image) {
         if (!isDetecting) {
-            isDetecting = true;}
+            isDetecting = true;
+            }
         convertYUV420toImageColor(image);
       });
     });
@@ -100,6 +101,7 @@ class _CameraPageState extends State<CameraPage> {
 
   onData(event) {
     debugPrint(event);
+    
     if (!isDetecting){
       isDetecting = false;
       }
