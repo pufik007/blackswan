@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:tensorfit/ui/widgets/map_bloc/bloc.dart' as map;
 import 'package:flutter_svg/svg.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
+import '../../ui/pages/journey_bloc/LevelCardListWidget.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -39,6 +40,7 @@ class _HomePageState extends State<HomePage> {
         child: Scaffold(
           backgroundColor: Colors.indigo[800],
           body: Stack(children: <Widget>[
+            LevelCardListWidget(),
             Container(
                 child: ListView(
               padding: const EdgeInsets.all(0.0),
@@ -69,7 +71,6 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   padding: const EdgeInsets.all(5.0),
                   height: 400,
-                  child: ItemCard(level),
                 ),
               ],
             )),

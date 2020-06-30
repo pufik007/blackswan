@@ -1,77 +1,59 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tensorfit/data/api/entities/exercise_info.dart';
-import 'package:tensorfit/data/api/entities/level.dart';
-import 'package:tensorfit/ui/pages/level_bloc/bloc.dart';
-
-import '../../ui/pages/level_bloc/level_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tensorfit/data/api/entities/level.dart';
+import 'package:tensorfit/data/navigator_bloc/bloc.dart';
+import 'package:tensorfit/ui/pages/level_bloc/bloc.dart';
+import 'package:tensorfit/data/api/entities/exercise_info.dart';
 
-class ItemCard extends StatelessWidget {
-  final Level level;
+import '../../widgets/map_bloc/bloc.dart';
 
-  const ItemCard(this.level);
-
+class LevelCardListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: this._buildBody(context),
-      floatingActionButton: FloatingActionButton(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.orange[800],
-        elevation: 6.0,
-        child: Icon(
-          Icons.play_circle_outline,
-          size: 50.0,
-        ),
-        onPressed: () {
-          Navigator.of(context).pushNamed('/ui/camera.dart');
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    return BlocBuilder<MapBloc, MapState>(
+      bloc: BlocProvider.of<MapBloc>(context),
+      builder: (context, state) {
+        if (state is MapInit || state is MapLoading) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (state is MapLoaded) {
+          return this._getLevelCardList(state.levels, state.selectedLevelID);
+        }
+
+        return null;
+      },
     );
   }
 
-  Widget _buildBody(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LevelBloc(this.level)..add(Load()),
-      child: BlocBuilder<LevelBloc, LevelState>(
-        builder: (context, state) {
-          if (state is LevelLoading) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (state is LevelLoaded) {
-            return SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  this._buildHeader(context, state.exercises),
-                ],
+  Widget _getLevelCardList(List<Level> levels, int selectedLevelID) {
+    var size = 30.0;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          reverse: true,
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: size,
               ),
-            );
-          }
-
-          return null;
-        },
-      ),
+              this._getLevels(
+                  context, constraints.maxWidth, levels, selectedLevelID),
+              SizedBox(
+                height: size * 2 + 20,
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildHeader(BuildContext context, List<ExerciseInfo> exercises) {
-    var theme = Theme.of(context);
-    var color = Colors.white;
-
-    var info = MediaQuery.of(context);
-    var offset = info.size.width / 25;
-
-    var duration = 0;
-    for (final exercise in exercises) {
-      if (exercise.duration != null) {
-        duration += (exercise.duration / 60).floor();
-      }
-    }
-
+  Widget _getLevels(
+      context, double width, List<Level> levels, int selectedLevelID) {
     return Container(
       width: 220,
       padding: const EdgeInsets.all(0),
@@ -113,7 +95,7 @@ class ItemCard extends StatelessWidget {
             color: Colors.red,
             height: 60,
             child: Text(
-              'title',
+              'exercises',
               style: TextStyle(fontSize: 14, color: Colors.white),
             ),
           ),
