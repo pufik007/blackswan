@@ -1,22 +1,46 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import './Product.dart';
 import './item_card.dart';
+import './item_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tensorfit/ui/widgets/map_bloc/bloc.dart' as map;
+import 'package:flutter_svg/svg.dart';
+import 'package:tensorfit/data/api/entities/level.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key key}) : super(key: key);
+class HomePage extends StatefulWidget {
   @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  // ignore: close_sinks
+  final _mapBloc = map.MapBloc();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    this._mapBloc.add(map.Load());
+  }
+
   Widget build(BuildContext context) {
-    final productData = context.watch<ProductDataProvider>();
-    return Scaffold(
-      backgroundColor: Colors.deepPurple,
-      body: SafeArea(
-        child: Container(
-            height: MediaQuery.of(context).size.height - 80,
-            decoration: BoxDecoration(
-              color: Colors.deepPurple,
-            ),
-            child: ListView(
+    var theme = Theme.of(context);
+    var color = Color.fromARGB(255, 167, 165, 168);
+    var style = theme.textTheme.body2.copyWith(color: color);
+    var size = 30.0;
+
+    return BlocProvider(
+        create: (context) => this._mapBloc,
+        child: Scaffold(
+          backgroundColor: Colors.indigo[800],
+          body: Stack(children: <Widget>[
+            Container(
+                child: ListView(
               padding: const EdgeInsets.all(0.0),
               children: <Widget>[
                 Container(
@@ -45,18 +69,17 @@ class HomePage extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(5.0),
                   height: 400,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: productData.items.length,
-                      itemBuilder: (context, int index) =>
-                          ChangeNotifierProvider.value(
-                            value: productData.items[index],
-                            child: ItemCard(),
-                          )),
+                  child: ItemCard(level),
                 ),
               ],
             )),
-      ),
-    );
+          ]),
+        ));
+  }
+
+  @override
+  void dispose() {
+    this._mapBloc.close();
+    super.dispose();
   }
 }

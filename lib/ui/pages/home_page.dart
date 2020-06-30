@@ -6,7 +6,6 @@ import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 import 'package:tensorfit/ui/widgets/map_bloc/bloc.dart' as map;
 import 'package:tensorfit/ui/widgets/map_widget.dart';
 
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -89,7 +88,8 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                       onPressed: () {
-                        BlocProvider.of<HomeNavigatorBloc>(context).add(NavigateToCreateJourney());
+                        BlocProvider.of<HomeNavigatorBloc>(context)
+                            .add(NavigateToCreateJourney());
                       },
                     ),
                     IconButton(
@@ -142,7 +142,8 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-      ),);
+      ),
+    );
   }
 
   @override

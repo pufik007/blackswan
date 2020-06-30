@@ -25,7 +25,7 @@ class Product with ChangeNotifier {
   });
 }
 
-class ProductDataProvider with ChangeNotifier {
+class ProductData with ChangeNotifier {
   List<Product> _items = [
     Product(
         id: 'p1',

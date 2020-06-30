@@ -1,17 +1,77 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import './Product.dart';
-import './item_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tensorfit/data/api/entities/exercise_info.dart';
+import 'package:tensorfit/data/api/entities/level.dart';
+import 'package:tensorfit/ui/pages/level_bloc/bloc.dart';
+
+import '../../ui/pages/level_bloc/level_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ItemCard extends StatelessWidget {
-  const ItemCard({Key key}) : super(key: key);
+  final Level level;
+
+  const ItemCard(this.level);
 
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context, listen: false);
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: this._buildBody(context),
+      floatingActionButton: FloatingActionButton(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.orange[800],
+        elevation: 6.0,
+        child: Icon(
+          Icons.play_circle_outline,
+          size: 50.0,
+        ),
+        onPressed: () {
+          Navigator.of(context).pushNamed('/ui/camera.dart');
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
 
-    print('build ItemCard');
+  Widget _buildBody(BuildContext context) {
+    return BlocProvider(
+      create: (context) => LevelBloc(this.level)..add(Load()),
+      child: BlocBuilder<LevelBloc, LevelState>(
+        builder: (context, state) {
+          if (state is LevelLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (state is LevelLoaded) {
+            return SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  this._buildHeader(context, state.exercises),
+                ],
+              ),
+            );
+          }
+
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context, List<ExerciseInfo> exercises) {
+    var theme = Theme.of(context);
+    var color = Colors.white;
+
+    var info = MediaQuery.of(context);
+    var offset = info.size.width / 25;
+
+    var duration = 0;
+    for (final exercise in exercises) {
+      if (exercise.duration != null) {
+        duration += (exercise.duration / 60).floor();
+      }
+    }
 
     return Container(
       width: 220,
@@ -26,10 +86,10 @@ class ItemCard extends StatelessWidget {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (context) => ItemPage(productId: product.id)),
-              );
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //       builder: (context) => ItemPage(productId: product.id)),
+              // );
             },
             child: Row(
               children: <Widget>[
@@ -39,11 +99,11 @@ class ItemCard extends StatelessWidget {
                 Container(
                     padding: new EdgeInsets.symmetric(
                         vertical: 5.0, horizontal: 10.0),
-                    color: Color(int.parse(product.color)),
+                    color: Colors.red,
                     width: 220,
                     height: 50,
                     child: Text(
-                      '${product.title}',
+                      'title',
                       style: TextStyle(fontSize: 32, color: Colors.white),
                     )),
               ],
@@ -51,24 +111,24 @@ class ItemCard extends StatelessWidget {
           ),
           Container(
             padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-            color: Color(int.parse(product.color)),
+            color: Colors.red,
             height: 60,
             child: Text(
-              '${product.subTitle}',
+              'title',
               style: TextStyle(fontSize: 14, color: Colors.white),
             ),
           ),
           Container(
             padding: new EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
             child: Text(
-              '${product.level}',
+              'level',
               style: TextStyle(fontSize: 15, color: Colors.black),
             ),
           ),
           Container(
             padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
             child: Text(
-              '${product.description}',
+              'description',
               style: TextStyle(fontSize: 15, color: Colors.black),
             ),
           ),
@@ -80,7 +140,7 @@ class ItemCard extends StatelessWidget {
                   Icon(Icons.alarm, color: Colors.black),
                   SizedBox(width: 10),
                   Text(
-                    '${product.time}',
+                    'time',
                     style: TextStyle(fontSize: 15, color: Colors.black),
                   )
                 ])),
