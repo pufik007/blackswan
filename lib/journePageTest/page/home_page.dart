@@ -38,6 +38,8 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               LevelCardListWidget(),
               Container(
+                // color: Colors.red,
+                width: 10000,
                 padding:
                     new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                 child: ListTile(

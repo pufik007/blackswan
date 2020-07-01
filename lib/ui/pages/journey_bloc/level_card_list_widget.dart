@@ -71,8 +71,8 @@ class LevelCardListWidget extends StatelessWidget {
 
 Widget title() {
   return Container(
-    padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-    height: 50,
+    padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+    height: 40,
     width: 300,
     color: Colors.green[300],
     child: Align(
@@ -90,8 +90,8 @@ Widget title() {
 
 Widget subTitle() {
   return Container(
-    padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-    height: 50,
+    padding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+    height: 60,
     width: 320,
     color: Colors.green[300],
     child: Align(
@@ -107,14 +107,14 @@ Widget subTitle() {
   );
 }
 
-Widget firstLevel() {
+Widget firstLevel(level) {
   return Container(
     padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
     child: Align(
       alignment: Alignment.bottomLeft,
       child: RichText(
         text: TextSpan(
-          text: 'Level 1',
+          text: 'Level ${level.number}',
           style: TextStyle(color: Colors.black, fontSize: 13),
           children: <TextSpan>[],
         ),
@@ -178,7 +178,7 @@ class Maine extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-      height: 420,
+      height: 520,
       width: 220,
       color: Colors.white,
       child: Padding(
@@ -196,7 +196,7 @@ class Maine extends StatelessWidget {
                           children: <Widget>[
                             title(),
                             subTitle(),
-                            firstLevel(),
+                            firstLevel(level),
                             firstExercises(),
                             firstDuration(),
                             iconStars()
