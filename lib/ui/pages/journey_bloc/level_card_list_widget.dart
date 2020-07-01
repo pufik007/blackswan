@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
@@ -59,13 +60,113 @@ class LevelCardListWidget extends StatelessWidget {
 
   Widget _getLevel(Level level, bool isSelected) {
     return Container(
-      padding: new EdgeInsets.symmetric(vertical: 200.0, horizontal: 10.0),
+      padding: new EdgeInsets.symmetric(vertical: 160.0, horizontal: 10.0),
       child: Maine(
         level: level,
         isSelected: isSelected,
       ),
     );
   }
+}
+
+Widget title() {
+  return Container(
+    padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+    height: 50,
+    width: 300,
+    color: Colors.green[300],
+    child: Align(
+      alignment: Alignment.topLeft,
+      child: RichText(
+        text: TextSpan(
+          text: 'June 2',
+          style: TextStyle(color: Colors.white, fontSize: 25),
+          children: <TextSpan>[],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget subTitle() {
+  return Container(
+    padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+    height: 50,
+    width: 320,
+    color: Colors.green[300],
+    child: Align(
+      alignment: Alignment.bottomLeft,
+      child: RichText(
+        text: TextSpan(
+          text: 'Here will be some text to motivate users do exercise',
+          style: TextStyle(color: Colors.white, fontSize: 13),
+          children: <TextSpan>[],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget firstLevel() {
+  return Container(
+    padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+    child: Align(
+      alignment: Alignment.bottomLeft,
+      child: RichText(
+        text: TextSpan(
+          text: 'Level 1',
+          style: TextStyle(color: Colors.black, fontSize: 13),
+          children: <TextSpan>[],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget firstExercises() {
+  return Container(
+    padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+    child: Align(
+      alignment: Alignment.bottomLeft,
+      child: RichText(
+        text: TextSpan(
+          text: 'Exercise 5',
+          style: TextStyle(color: Colors.black, fontSize: 13),
+          children: <TextSpan>[],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget firstDuration() {
+  return Container(
+      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+      child: Row(children: <Widget>[
+        Icon(
+          Icons.alarm,
+          color: Colors.black,
+          size: 15,
+        ),
+        SizedBox(width: 10),
+        Text(
+          '20 min',
+          style: TextStyle(fontSize: 15, color: Colors.black),
+        )
+      ]));
+}
+
+Widget iconStars() {
+  return Container(
+    padding: EdgeInsets.symmetric(vertical: 55.0, horizontal: 20.0),
+    child: AspectRatio(
+      aspectRatio: 5,
+      child: SvgPicture.asset(
+        'assets/map/stars/stars_0.svg',
+        alignment: Alignment.topCenter,
+      ),
+    ),
+  );
 }
 
 class Maine extends StatelessWidget {
@@ -76,23 +177,40 @@ class Maine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+      height: 420,
+      width: 220,
       color: Colors.white,
-      height: 300,
-      width: 200,
-      child: Text(
-        'June 2',
-        style: TextStyle(fontSize: 22, color: Colors.black),
+      child: Padding(
+        padding: EdgeInsets.all(0),
+        child: Stack(children: <Widget>[
+          Align(
+            alignment: Alignment.centerRight,
+            child: Stack(
+              children: <Widget>[
+                Padding(
+                    padding: const EdgeInsets.only(left: 0, top: 0),
+                    child: Column(
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            title(),
+                            subTitle(),
+                            firstLevel(),
+                            firstExercises(),
+                            firstDuration(),
+                            iconStars()
+                          ],
+                        )
+                      ],
+                    ))
+              ],
+            ),
+          )
+        ]),
       ),
     );
 
-    Container(
-      padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 40.0),
-      child: Text(
-        'level',
-        style: TextStyle(fontSize: 15, color: Colors.black),
-      ),
-    );
     Container(
       padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
       child: Text(
