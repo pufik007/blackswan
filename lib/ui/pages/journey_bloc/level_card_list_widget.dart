@@ -5,10 +5,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
-import 'package:tensorfit/data/navigator_bloc/bloc.dart';
-import 'package:tensorfit/ui/pages/level_bloc/bloc.dart';
-import 'package:tensorfit/data/api/entities/exercise_info.dart';
-
 import '../../widgets/map_bloc/bloc.dart';
 
 class LevelCardListWidget extends StatelessWidget {
