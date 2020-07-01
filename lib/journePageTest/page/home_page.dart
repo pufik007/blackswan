@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:tensorfit/ui/widgets/map_bloc/bloc.dart' as map;
 import 'package:flutter_svg/svg.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
-import '../../ui/pages/journey_bloc/LevelCardListWidget.dart';
+import '../../ui/pages/journey_bloc/level_card_list_widget.dart';
 
 class HomePage extends StatefulWidget {
   @override

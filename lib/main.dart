@@ -8,7 +8,7 @@ import 'data/app_bloc/bloc.dart';
 import 'data/api/entities/level.dart';
 import 'ui/pages/create_account_page.dart';
 import 'ui/pages/first_page.dart';
-import 'ui/pages/home_page.dart';
+import './journePageTest/page/home_page.dart';
 import 'ui/pages/log_in_page.dart';
 import 'ui/pages/logo_page.dart';
 import 'ui/pages/journey_page.dart';
@@ -57,13 +57,15 @@ class _AppState extends State<App> {
           }
           if (state is LoggedOff) {
             return BlocProvider(
-              create: (context) => LoginNavigatorBloc(navigatorKey: this._loginNavKey),
+              create: (context) =>
+                  LoginNavigatorBloc(navigatorKey: this._loginNavKey),
               child: MaterialApp(
                 title: title,
                 theme: state.theme,
                 localizationsDelegates: [S.delegate],
                 supportedLocales: S.delegate.supportedLocales,
-                localeResolutionCallback: S.delegate.resolution(fallback: Locale("en", "")),
+                localeResolutionCallback:
+                    S.delegate.resolution(fallback: Locale("en", "")),
                 navigatorKey: this._loginNavKey,
                 routes: {
                   '/log_in': (context) => LogInPage(),
@@ -78,7 +80,8 @@ class _AppState extends State<App> {
               theme: state.theme,
               localizationsDelegates: [S.delegate],
               supportedLocales: S.delegate.supportedLocales,
-              localeResolutionCallback: S.delegate.resolution(fallback: Locale("en", "")),
+              localeResolutionCallback:
+                  S.delegate.resolution(fallback: Locale("en", "")),
               home: JourneyPage(state.fillUserData, false),
             );
           } else if (state is JourneyValidation) {
@@ -87,7 +90,8 @@ class _AppState extends State<App> {
               theme: state.theme,
               localizationsDelegates: [S.delegate],
               supportedLocales: S.delegate.supportedLocales,
-              localeResolutionCallback: S.delegate.resolution(fallback: Locale("en", "")),
+              localeResolutionCallback:
+                  S.delegate.resolution(fallback: Locale("en", "")),
               home: Scaffold(
                 body: Center(
                   child: Text('Preparing journey... It may take some time.'),
@@ -96,13 +100,15 @@ class _AppState extends State<App> {
             );
           } else if (state is LoggedIn) {
             return BlocProvider(
-              create: (context) => HomeNavigatorBloc(navigatorKey: this._homeNavKey),
+              create: (context) =>
+                  HomeNavigatorBloc(navigatorKey: this._homeNavKey),
               child: MaterialApp(
                 title: title,
                 theme: state.theme,
                 localizationsDelegates: [S.delegate],
                 supportedLocales: S.delegate.supportedLocales,
-                localeResolutionCallback: S.delegate.resolution(fallback: Locale("en", "")),
+                localeResolutionCallback:
+                    S.delegate.resolution(fallback: Locale("en", "")),
                 navigatorKey: this._homeNavKey,
                 onGenerateRoute: (settings) {
                   switch (settings.name) {
