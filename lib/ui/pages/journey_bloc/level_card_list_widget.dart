@@ -29,22 +29,14 @@ class LevelCardListWidget extends StatelessWidget {
   }
 
   Widget _getLevelCardList(List<Level> levels, int selectedLevelID) {
-    var size = 30.0;
-
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
-          reverse: true,
-          child: Column(
+          scrollDirection: Axis.horizontal,
+          child: Row(
             children: <Widget>[
-              SizedBox(
-                height: size,
-              ),
               this._getLevels(
                   context, constraints.maxWidth, levels, selectedLevelID),
-              SizedBox(
-                height: size * 0 + 0,
-              ),
             ],
           ),
         );
@@ -74,7 +66,7 @@ class LevelCardListWidget extends StatelessWidget {
 
   Widget _getLevel(Level level, bool isSelected) {
     return AspectRatio(
-      aspectRatio: 2,
+      aspectRatio: 1,
       child: Container(
         padding: new EdgeInsets.symmetric(vertical: 20.0, horizontal: 80.0),
         // alignment: isRight ? Alignment.centerRight : Alignment.centerLeft,
@@ -96,7 +88,7 @@ class Maine extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-      color: Colors.red,
+      color: Colors.green,
       height: 60,
       child: Text(
         'exercises',
