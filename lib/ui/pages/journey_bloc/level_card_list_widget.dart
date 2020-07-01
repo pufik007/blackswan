@@ -52,28 +52,17 @@ class LevelCardListWidget extends StatelessWidget {
       var level = levels[i];
       items.add(this._getLevel(level, level.id == selectedLevelID));
     }
-    return Stack(
-      children: <Widget>[
-        CustomPaint(
-          size: Size(width, width * levels.length / 2),
-        ),
-        Row(
-          children: items,
-        ),
-      ],
+    return Row(
+      children: items,
     );
   }
 
   Widget _getLevel(Level level, bool isSelected) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Container(
-        padding: new EdgeInsets.symmetric(vertical: 20.0, horizontal: 80.0),
-        // alignment: isRight ? Alignment.centerRight : Alignment.centerLeft,
-        child: Maine(
-          level: level,
-          isSelected: isSelected,
-        ),
+    return Container(
+      padding: new EdgeInsets.symmetric(vertical: 200.0, horizontal: 10.0),
+      child: Maine(
+        level: level,
+        isSelected: isSelected,
       ),
     );
   }
@@ -87,32 +76,34 @@ class Maine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-      color: Colors.green,
-      height: 60,
+      padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+      color: Colors.white,
+      height: 300,
+      width: 200,
       child: Text(
-        'exercises',
-        style: TextStyle(fontSize: 14, color: Colors.white),
+        'June 2',
+        style: TextStyle(fontSize: 22, color: Colors.black),
       ),
     );
+
     Container(
-      padding: new EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+      padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 40.0),
       child: Text(
         'level',
         style: TextStyle(fontSize: 15, color: Colors.black),
       ),
     );
     Container(
-      padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+      padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
       child: Text(
         'description',
         style: TextStyle(fontSize: 15, color: Colors.black),
       ),
     );
     AspectRatio(
-      aspectRatio: 8.5,
+      aspectRatio: 1,
       child: Container(
-          padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+          padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
           child: Row(children: <Widget>[
             Icon(Icons.alarm, color: Colors.black),
             SizedBox(width: 10),
@@ -123,7 +114,7 @@ class Maine extends StatelessWidget {
           ])),
     );
     Container(
-      padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
+      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
       child: AspectRatio(
         aspectRatio: 5.1,
         child: SvgPicture.asset(
