@@ -1,13 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import './Product.dart';
-import './item_card.dart';
-import './item_page.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:tensorfit/ui/widgets/map_bloc/bloc.dart' as map;
-import 'package:flutter_svg/svg.dart';
-import 'package:tensorfit/data/api/entities/level.dart';
-import '../../ui/pages/journey_bloc/level_card_list_widget.dart';
+
+import 'level_card_list_widget.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -36,10 +31,8 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.indigo[800],
           body: Stack(
             children: <Widget>[
-              LevelCardListWidget(),
               Container(
-                // color: Colors.red,
-                width: 10000,
+                height: double.infinity,
                 padding:
                     new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                 child: ListTile(
@@ -62,6 +55,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
+              LevelCardListWidget(),
             ],
           )),
     );

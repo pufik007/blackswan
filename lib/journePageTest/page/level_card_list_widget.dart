@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
-import '../../widgets/map_bloc/bloc.dart';
+import '../../ui/widgets/map_bloc/bloc.dart';
 
 class LevelCardListWidget extends StatelessWidget {
   @override
@@ -75,7 +75,7 @@ Widget title() {
       alignment: Alignment.topLeft,
       child: RichText(
         text: TextSpan(
-          text: 'June 2',
+          text: '', // don`t have a data
           style: TextStyle(color: Colors.white, fontSize: 25),
           children: <TextSpan>[],
         ),
@@ -94,7 +94,7 @@ Widget subTitle() {
       alignment: Alignment.bottomLeft,
       child: RichText(
         text: TextSpan(
-          text: 'Here will be some text to motivate users do exercise',
+          text: '', // don`t have a data
           style: TextStyle(color: Colors.white, fontSize: 13),
           children: <TextSpan>[],
         ),
@@ -126,7 +126,7 @@ Widget firstExercises() {
       alignment: Alignment.bottomLeft,
       child: RichText(
         text: TextSpan(
-          text: 'Exercise 5',
+          text: '', // don`t have a data
           style: TextStyle(color: Colors.black, fontSize: 13),
           children: <TextSpan>[],
         ),
@@ -146,7 +146,7 @@ Widget firstDuration() {
         ),
         SizedBox(width: 10),
         Text(
-          '20 min',
+          '', // don`t have a data
           style: TextStyle(fontSize: 15, color: Colors.black),
         )
       ]));
@@ -204,37 +204,6 @@ class Maine extends StatelessWidget {
             ),
           )
         ]),
-      ),
-    );
-
-    Container(
-      padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-      child: Text(
-        'description',
-        style: TextStyle(fontSize: 15, color: Colors.black),
-      ),
-    );
-    AspectRatio(
-      aspectRatio: 1,
-      child: Container(
-          padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-          child: Row(children: <Widget>[
-            Icon(Icons.alarm, color: Colors.black),
-            SizedBox(width: 10),
-            Text(
-              'time',
-              style: TextStyle(fontSize: 15, color: Colors.black),
-            )
-          ])),
-    );
-    Container(
-      padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-      child: AspectRatio(
-        aspectRatio: 5.1,
-        child: SvgPicture.asset(
-          'assets/map/stars/stars_0.svg',
-          alignment: Alignment.topCenter,
-        ),
       ),
     );
   }
