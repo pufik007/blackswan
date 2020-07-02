@@ -8,7 +8,7 @@ import 'data/app_bloc/bloc.dart';
 import 'data/api/entities/level.dart';
 import 'ui/pages/create_account_page.dart';
 import 'ui/pages/first_page.dart';
-import './journePageTest/page/home_page.dart';
+import './ui/pages/home_page.dart';
 import 'ui/pages/log_in_page.dart';
 import 'ui/pages/logo_page.dart';
 import 'ui/pages/journey_page.dart';
