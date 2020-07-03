@@ -57,7 +57,7 @@ class LevelCardListWidget extends StatelessWidget {
   Widget _getLevel(Level level, bool isSelected) {
     return Container(
       padding: new EdgeInsets.symmetric(vertical: 160.0, horizontal: 10.0),
-      child: Maine(
+      child: LevelCard(
         level: level,
         isSelected: isSelected,
       ),
@@ -165,10 +165,10 @@ Widget iconStars() {
   );
 }
 
-class Maine extends StatelessWidget {
+class LevelCard extends StatelessWidget {
   final Level level;
   final bool isSelected;
-  const Maine({Key key, this.level, this.isSelected}) : super(key: key);
+  const LevelCard({Key key, this.level, this.isSelected}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
