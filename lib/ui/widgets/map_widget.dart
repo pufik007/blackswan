@@ -69,7 +69,8 @@ class MapWidget extends StatelessWidget {
     for (int i = houseCount; i > 0; i--) {
       var num = i - 1;
       var level = levels[num % levels.length];
-      items.add(this._getLevel(level, num % 6, num % 2 == 1, level.id == selectedLevelID));
+      items.add(this._getLevel(
+          level, num % 6, num % 2 == 1, level.id == selectedLevelID));
     }
 
     return Stack(
@@ -92,8 +93,12 @@ class MapWidget extends StatelessWidget {
         alignment: isRight ? Alignment.centerRight : Alignment.centerLeft,
         child: House(
           level: level,
-          image: isRight ? this.rightImages[imageNum].image : this.leftImages[imageNum].image,
-          imageH: isRight ? this.rightImagesH[imageNum].image : this.leftImagesH[imageNum].image,
+          image: isRight
+              ? this.rightImages[imageNum].image
+              : this.leftImages[imageNum].image,
+          imageH: isRight
+              ? this.rightImagesH[imageNum].image
+              : this.leftImagesH[imageNum].image,
           isRight: isRight,
           isSelected: isSelected,
         ),
@@ -126,7 +131,8 @@ class _RoadPainter extends CustomPainter {
     var round = width / 70;
 
     // старт тропики у 1-ого лвла (нижний уровень)
-    var prevPoint = Offset(width / 2 + pathEnd * angle, width * count / 2 - pathEnd);
+    var prevPoint =
+        Offset(width / 2 + pathEnd * angle, width * count / 2 - pathEnd);
 
     // рисуем поворот от 1-ого домика на главную тропинку
     var from = Offset(prevPoint.dx + round * angle, prevPoint.dy - round);
@@ -144,10 +150,12 @@ class _RoadPainter extends CustomPainter {
       Offset nextPoint;
       if (i == count) {
         // если домик последний - точка будет на повороте к последнему дому
-        nextPoint = Offset(width / 2 + pathEnd * angle * sign, width * (count - i + 1) / 2 - pathEnd);
+        nextPoint = Offset(width / 2 + pathEnd * angle * sign,
+            width * (count - i + 1) / 2 - pathEnd);
       } else {
         // если домик не последний - точка будет на противоположной стороне экрана
-        nextPoint = Offset(width / 2 + maxDistance, width * (count - i + 0.5) / 2);
+        nextPoint =
+            Offset(width / 2 + maxDistance, width * (count - i + 0.5) / 2);
       }
 
       // обрезаем линию (сдвигаем начальную и конечную точки) на размер округления
@@ -163,14 +171,18 @@ class _RoadPainter extends CustomPainter {
 
       // находим точки тропинки от домика текущего лвла
       // стартовая точка всегда на одном месте - где заканчивается тропинка у ассета
-      var houseStartPoint = Offset(width / 2 + (pathEnd - pathStart) * angle * sign, width * (count - i + 1) / 2 - pathEnd - pathStart);
+      var houseStartPoint = Offset(
+          width / 2 + (pathEnd - pathStart) * angle * sign,
+          width * (count - i + 1) / 2 - pathEnd - pathStart);
       Offset houseEndPoint;
       if (i == 1 || i == count) {
         // если домик первый или последний - точку надо сдвинуть на размер скругления ближе к дому
-        houseEndPoint = Offset(width / 2 + (pathEnd - round) * angle * sign, width * (count - i + 1) / 2 - pathEnd - round);
+        houseEndPoint = Offset(width / 2 + (pathEnd - round) * angle * sign,
+            width * (count - i + 1) / 2 - pathEnd - round);
       } else {
         // если домик не первый и не последний - точка будет на главной тропинке
-        houseEndPoint = Offset(width / 2 + pathEnd * angle * sign, width * (count - i + 1) / 2 - pathEnd);
+        houseEndPoint = Offset(width / 2 + pathEnd * angle * sign,
+            width * (count - i + 1) / 2 - pathEnd);
       }
       canvas.drawLine(houseEndPoint, houseStartPoint, paint);
 
@@ -199,7 +211,14 @@ class House extends StatefulWidget {
   final bool isRight;
   final bool isSelected;
 
-  const House({Key key, this.level, this.image, this.imageH, this.isRight, this.isSelected}) : super(key: key);
+  const House(
+      {Key key,
+      this.level,
+      this.image,
+      this.imageH,
+      this.isRight,
+      this.isSelected})
+      : super(key: key);
 
   @override
   _HouseState createState() => _HouseState();
@@ -213,7 +232,8 @@ class _HouseState extends State<House> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    this._animationController = AnimationController(duration: Duration(milliseconds: 500), vsync: this);
+    this._animationController =
+        AnimationController(duration: Duration(milliseconds: 500), vsync: this);
     this._animation = Tween(begin: 0.0, end: 1.0).animate(_animationController)
       ..addListener(() {
         setState(() {});
