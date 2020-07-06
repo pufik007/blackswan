@@ -15,22 +15,22 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage> {
   CameraController controller;
-  bool isDetecting = false;
+  bool isPredictingRemotely = false;
   final WebSocketChannel channel = WebSocketChannel.connect(Uri.parse(
       "ws://ec2-18-218-127-154.us-east-2.compute.amazonaws.com/frame"));
   @override
   void initState() {
     super.initState();
     this.channel.stream.listen(onData, onError: onError, onDone: onDone);
-    controller = CameraController(widget.cameras[0], ResolutionPreset.high);
+    controller = CameraController(widget.cameras[0], ResolutionPreset.low);
     controller.initialize().then((_) {
       if (!mounted) {
         return;
       }
       setState(() {});
       controller.startImageStream((CameraImage image) {
-        if (!isDetecting) {
-          isDetecting = true;
+        if (!isPredictingRemotely) {
+          isPredictingRemotely = true;
           convertYUV420toImageColor(image);
         }
       });
@@ -92,7 +92,7 @@ class _CameraPageState extends State<CameraPage> {
 
   onData(event) {
     debugPrint(event);
-    isDetecting = false;
+    isPredictingRemotely = false;
   }
 
   @override
