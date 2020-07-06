@@ -6,44 +6,37 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'dart:convert';
 
-
-
 class CameraPage extends StatefulWidget {
-
-  final List<CameraDescription> cameras; 
-
+  final List<CameraDescription> cameras;
   CameraPage(this.cameras);
-
   @override
   _CameraPageState createState() => _CameraPageState();
 }
 
 class _CameraPageState extends State<CameraPage> {
+  CameraController controller;
+  bool isDetecting = false;
   final WebSocketChannel channel = WebSocketChannel.connect(Uri.parse(
       "ws://ec2-18-218-127-154.us-east-2.compute.amazonaws.com/frame"));
-  CameraController controller;
-  bool isDetecting = true;
-
   @override
   void initState() {
     super.initState();
-
     this.channel.stream.listen(onData, onError: onError, onDone: onDone);
-
-    controller = CameraController(widget.cameras[0], ResolutionPreset.medium);
+    controller = CameraController(widget.cameras[0], ResolutionPreset.high);
     controller.initialize().then((_) {
       if (!mounted) {
         return;
       }
       setState(() {});
       controller.startImageStream((CameraImage image) {
-        if (!isDetecting){
-          isDetecting = true; 
+        if (!isDetecting) {
+          isDetecting = true;
+          convertYUV420toImageColor(image);
         }
-        convertYUV420toImageColor(image);
       });
     });
   }
+
   Future<Image> convertYUV420toImageColor(CameraImage image) async {
     try {
       final int width = image.width;
@@ -86,6 +79,7 @@ class _CameraPageState extends State<CameraPage> {
     } catch (e) {
       print(">>>>>>>>>>>> ERROR:" + e.toString());
     }
+
     return null;
   }
 
@@ -101,9 +95,6 @@ class _CameraPageState extends State<CameraPage> {
 
   onData(event) {
     debugPrint(event);
-    if (!isDetecting){ 
-      isDetecting = false; 
-    }
   }
 
   @override
