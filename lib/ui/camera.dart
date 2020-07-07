@@ -5,6 +5,7 @@ import 'package:image/image.dart' as imglib;
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'dart:convert';
+import './camera_bloc/human_pose.dart';
 
 class CameraPage extends StatefulWidget {
   final List<CameraDescription> cameras;
