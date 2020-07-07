@@ -5,7 +5,8 @@ import 'package:image/image.dart' as imglib;
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'dart:convert';
-import './camera_bloc/human_pose.dart';
+import './camera_bloc/pose_joint.dart';
+import 'camera_bloc/human_pose.dart';
 import 'dart:ui' as ui;
 
 class CameraPage extends StatefulWidget {
@@ -18,6 +19,7 @@ class CameraPage extends StatefulWidget {
 class _CameraPageState extends State<CameraPage> {
   CameraController controller;
   bool isPredictingRemotely = false;
+
   final WebSocketChannel channel = WebSocketChannel.connect(Uri.parse(
       "ws://ec2-18-218-127-154.us-east-2.compute.amazonaws.com/frame"));
   @override
@@ -117,11 +119,15 @@ class _CameraPageState extends State<CameraPage> {
 }
 
 class GuidelinePainter extends CustomPainter {
+  var headed = HumanPose();
   @override
-  void paint(Canvas canvas, Size size) {
+  void paint(
+    Canvas canvas,
+    Size size,
+  ) {
     final pointMode = ui.PointMode.points;
     final points = [
-      Offset(50, 100),
+      Offset(120, 90),
       Offset(150, 75),
       Offset(250, 250),
       Offset(130, 200),
