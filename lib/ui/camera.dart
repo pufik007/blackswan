@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'dart:convert';
 import './camera_bloc/human_pose.dart';
+import 'dart:ui' as ui;
 
 class CameraPage extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -103,13 +104,36 @@ class _CameraPageState extends State<CameraPage> {
     super.dispose();
   }
 
-  @override
   Widget build(BuildContext context) {
-    if (controller == null || !controller.value.isInitialized) {
-      return Container();
-    }
-    return AspectRatio(
-        aspectRatio: controller.value.aspectRatio,
-        child: CameraPreview(controller));
+    return new Center(
+        child: Container(
+            child: new CustomPaint(
+      foregroundPainter: new GuidelinePainter(),
+      child: new AspectRatio(
+          aspectRatio: controller.value.aspectRatio,
+          child: new CameraPreview(controller)),
+    )));
   }
+}
+
+class GuidelinePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final pointMode = ui.PointMode.points;
+    final points = [
+      Offset(50, 100),
+      Offset(150, 75),
+      Offset(250, 250),
+      Offset(130, 200),
+      Offset(270, 100),
+    ];
+    final paint = Paint()
+      ..color = Colors.red
+      ..strokeWidth = 10
+      ..strokeCap = StrokeCap.round;
+    canvas.drawPoints(pointMode, points, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
