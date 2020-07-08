@@ -119,7 +119,7 @@ class _CameraPageState extends State<CameraPage> {
 }
 
 class GuidelinePainter extends CustomPainter {
-  var headed = HumanPose();
+  final heead = HumanPose();
   @override
   void paint(
     Canvas canvas,
@@ -127,7 +127,7 @@ class GuidelinePainter extends CustomPainter {
   ) {
     final pointMode = ui.PointMode.points;
     final points = [
-      Offset(120, 90),
+      Offset(heead.head.x, heead.head.y),
       Offset(150, 75),
       Offset(250, 250),
       Offset(130, 200),
