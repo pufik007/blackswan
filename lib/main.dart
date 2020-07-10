@@ -69,7 +69,8 @@ class _AppState extends State<App> {
                 navigatorKey: this._loginNavKey,
                 routes: {
                   '/log_in': (context) => LogInPage(),
-                  '/create_account': (context) => CreateAccountPage(),
+                  '/create_account': (context) =>
+                      CameraPage(cameras), //CreateAccountPage()
                 },
                 home: FirstPage(),
               ),

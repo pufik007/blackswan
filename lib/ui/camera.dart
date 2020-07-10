@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -5,7 +6,6 @@ import 'package:image/image.dart' as imglib;
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'dart:convert';
-import './camera_bloc/pose_joint.dart';
 import 'camera_bloc/human_pose.dart';
 import 'dart:ui' as ui;
 
@@ -25,12 +25,14 @@ class _CameraPageState extends State<CameraPage> {
   @override
   void initState() {
     super.initState();
+
     this.channel.stream.listen(onData, onError: onError, onDone: onDone);
     controller = CameraController(widget.cameras[0], ResolutionPreset.low);
     controller.initialize().then((_) {
       if (!mounted) {
         return;
       }
+
       setState(() {});
       controller.startImageStream((CameraImage image) {
         if (!isPredictingRemotely) {
@@ -86,6 +88,7 @@ class _CameraPageState extends State<CameraPage> {
 
   onDone() {
     debugPrint("Socket is closed");
+    isPredictingRemotely = false;
   }
 
   onError(err) {
@@ -97,6 +100,25 @@ class _CameraPageState extends State<CameraPage> {
   onData(event) {
     debugPrint(event);
     isPredictingRemotely = false;
+
+    if (event != null) {
+      var jsonResponse = json.decode(event);
+      if (jsonResponse != null) {
+        var jsonResponseBack = jsonResponse['json_response_back'];
+        if (jsonResponseBack != null && jsonResponseBack.length > 0) {
+          var posePointsWrapper = jsonResponseBack[0];
+          if (posePointsWrapper != null) {
+            var posePoints = posePointsWrapper['pose_points'];
+            if (posePoints != null) {
+              var humanPose = HumanPose.fromJson(posePoints);
+            }
+
+            // convert posePoint to human pose
+            // update heead with human pose
+          }
+        }
+      }
+    }
   }
 
   @override
@@ -109,33 +131,39 @@ class _CameraPageState extends State<CameraPage> {
   Widget build(BuildContext context) {
     return new Center(
         child: Container(
+            height: double.infinity,
             child: new CustomPaint(
-      foregroundPainter: new GuidelinePainter(),
-      child: new AspectRatio(
-          aspectRatio: controller.value.aspectRatio,
-          child: new CameraPreview(controller)),
-    )));
+              foregroundPainter: new GuidelinePainter(),
+              child: new AspectRatio(
+                  aspectRatio: controller.value.aspectRatio,
+                  child: new CameraPreview(controller)),
+            )));
   }
 }
 
 class GuidelinePainter extends CustomPainter {
-  final heead = HumanPose();
+  var heead = HumanPose();
+
   @override
   void paint(
     Canvas canvas,
     Size size,
   ) {
     final pointMode = ui.PointMode.points;
-    final points = [
-      Offset(heead.head.x, heead.head.y),
-      Offset(150, 75),
-      Offset(250, 250),
-      Offset(130, 200),
-      Offset(270, 100),
-    ];
+
+    var poseJoints = [heead.head, heead.handTopLeft, heead.handTopRight];
+    List<Offset> points = List<Offset>();
+    for (var i = 0; i < poseJoints.length; i++) {
+      if (poseJoints[i] != null) {
+        points.add(Offset(poseJoints[i].x, poseJoints[i].y));
+        print(points);
+        print(points.length);
+      }
+    }
+
     final paint = Paint()
       ..color = Colors.red
-      ..strokeWidth = 10
+      ..strokeWidth = 20
       ..strokeCap = StrokeCap.round;
     canvas.drawPoints(pointMode, points, paint);
   }
