@@ -19,6 +19,7 @@ class CameraPage extends StatefulWidget {
 class _CameraPageState extends State<CameraPage> {
   CameraController controller;
   bool isPredictingRemotely = false;
+  var currentHumanPose = HumanPose();
 
   final WebSocketChannel channel = WebSocketChannel.connect(Uri.parse(
       "ws://ec2-18-218-127-154.us-east-2.compute.amazonaws.com/frame"));
@@ -104,17 +105,22 @@ class _CameraPageState extends State<CameraPage> {
     if (event != null) {
       var jsonResponse = json.decode(event);
       if (jsonResponse != null) {
-        var jsonResponseBack = jsonResponse['json_response_back'];
-        if (jsonResponseBack != null && jsonResponseBack.length > 0) {
-          var posePointsWrapper = jsonResponseBack[0];
-          if (posePointsWrapper != null) {
-            var posePoints = posePointsWrapper['pose_points'];
-            if (posePoints != null) {
-              var humanPose = HumanPose.fromJson(posePoints);
+        var jsonResponseBackText = jsonResponse['json_response_back'];
+        if (jsonResponseBackText != null) {
+          var jsonResponseBack = json.decode(jsonResponseBackText);
+          if (jsonResponseBack != null && jsonResponseBack.length > 0) {
+            var posePointsWrapper = jsonResponseBack[0];
+            if (posePointsWrapper != null) {
+              var posePoints = posePointsWrapper['pose_points'];
+              if (posePoints != null) {
+                var humanPose = HumanPose.fromJson(posePoints);
+                setState(() {
+                  currentHumanPose = humanPose;
+                });
+              }
             }
-
             // convert posePoint to human pose
-            // update heead with human pose
+            // update currentHumanPose with human pose
           }
         }
       }
@@ -133,7 +139,7 @@ class _CameraPageState extends State<CameraPage> {
         child: Container(
             height: double.infinity,
             child: new CustomPaint(
-              foregroundPainter: new GuidelinePainter(),
+              foregroundPainter: new GuidelinePainter(currentHumanPose),
               child: new AspectRatio(
                   aspectRatio: controller.value.aspectRatio,
                   child: new CameraPreview(controller)),
@@ -142,7 +148,8 @@ class _CameraPageState extends State<CameraPage> {
 }
 
 class GuidelinePainter extends CustomPainter {
-  var heead = HumanPose();
+  var currentHumanPose;
+  GuidelinePainter(this.currentHumanPose);
 
   @override
   void paint(
@@ -151,7 +158,11 @@ class GuidelinePainter extends CustomPainter {
   ) {
     final pointMode = ui.PointMode.points;
 
-    var poseJoints = [heead.head, heead.handTopLeft, heead.handTopRight];
+    var poseJoints = [
+      this.currentHumanPose.head,
+      this.currentHumanPose.handTopLeft,
+      this.currentHumanPose.handTopRight
+    ];
     List<Offset> points = List<Offset>();
     for (var i = 0; i < poseJoints.length; i++) {
       if (poseJoints[i] != null) {

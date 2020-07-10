@@ -11,8 +11,8 @@ class HumanPose {
   factory HumanPose.fromJson(Map<String, dynamic> json) {
     return HumanPose(
       head: PoseJoint.fromJson(json['head']),
-      handTopRight: PoseJoint.fromJson(json['handTopRight']),
-      handTopLeft: PoseJoint.fromJson(json['handTopLeft']),
+      handTopRight: PoseJoint.fromJson(json['hand_top_right']),
+      handTopLeft: PoseJoint.fromJson(json['hand_top_left']),
     );
   }
 
