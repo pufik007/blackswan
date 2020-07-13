@@ -135,15 +135,13 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   Widget build(BuildContext context) {
-    return new Center(
-        child: Container(
-            height: double.infinity,
-            child: new CustomPaint(
-              foregroundPainter: new GuidelinePainter(currentHumanPose),
-              child: new AspectRatio(
-                  aspectRatio: controller.value.aspectRatio,
-                  child: new CameraPreview(controller)),
-            )));
+    return Container(
+        child: CustomPaint(
+      foregroundPainter: GuidelinePainter(currentHumanPose),
+      child: AspectRatio(
+          aspectRatio: controller.value.aspectRatio,
+          child: CameraPreview(controller)),
+    ));
   }
 }
 
@@ -163,10 +161,13 @@ class GuidelinePainter extends CustomPainter {
       this.currentHumanPose.handTopLeft,
       this.currentHumanPose.handTopRight
     ];
+
     List<Offset> points = List<Offset>();
+
     for (var i = 0; i < poseJoints.length; i++) {
       if (poseJoints[i] != null) {
-        points.add(Offset(poseJoints[i].x, poseJoints[i].y));
+        points.add(Offset(size.width * poseJoints[i].x.round(),
+            size.height * poseJoints[i].y.round()));
         print(points);
         print(points.length);
       }
