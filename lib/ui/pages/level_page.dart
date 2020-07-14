@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -15,6 +16,7 @@ class LevelPage extends StatelessWidget {
 
   const LevelPage(this.level, this.image, this.imageAlign);
 
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -205,32 +207,48 @@ class LevelPage extends StatelessWidget {
       }
 
       var actions = List<Widget>();
-      if (exercise.difficulty != 'easy') {
-        actions.add(IconSlideAction(
-          color: Colors.green[200],
-          foregroundColor: Colors.white,
-          icon: Icons.arrow_downward,
-          onTap: () {
-            BlocProvider.of<LevelBloc>(context)
-                .add(EasierExercise(exercise.id));
-          },
-        ));
-      }
-      if (exercise.difficulty != 'hard') {
-        actions.add(IconSlideAction(
-          color: Colors.deepOrange[300],
-          foregroundColor: Colors.white,
-          icon: Icons.arrow_upward,
-          onTap: () {
-            BlocProvider.of<LevelBloc>(context)
-                .add(HarderExercise(exercise.id));
-          },
-        ));
-      }
 
-      items.add(Slidable(
-        actionPane: SlidableDrawerActionPane(),
-        secondaryActions: actions,
+      // if (exercise.difficulty != 'easy') {
+      //   actions.add(Dismissible(
+      //     child: Container(),
+      //     key: UniqueKey(),
+      //     onDismissed: (direction) {
+      //       BlocProvider.of<LevelBloc>(context)
+      //           .add(EasierExercise(exercise.id));
+      //     },
+      //   ));
+      // }
+      // if (exercise.difficulty != 'hard') {
+      //   actions.add(IconSlideAction(
+      //     color: Colors.deepOrange[300],
+      //     foregroundColor: Colors.white,
+      //     icon: Icons.arrow_upward,
+      //     onTap: () {
+      //       BlocProvider.of<LevelBloc>(context)
+      //           .add(HarderExercise(exercise.id));
+      //     },
+      //   ));
+      // }
+
+      items.add(Dismissible(
+        background: Container(color: Colors.red),
+        secondaryBackground: Container(
+          color: Colors.blue,
+        ),
+        key: UniqueKey(),
+        onDismissed: (DismissDirection direction) {
+          if (direction == DismissDirection.startToEnd) {
+            if (exercise.difficulty != 'hard') {
+              BlocProvider.of<LevelBloc>(context)
+                  .add(EasierExercise(exercise.id));
+            }
+          } else {
+            if (exercise.difficulty != 'easy') {
+              BlocProvider.of<LevelBloc>(context)
+                  .add(EasierExercise(exercise.id));
+            }
+          }
+        },
         child: Material(
           color: Colors.white,
           child: RawMaterialButton(
@@ -246,9 +264,9 @@ class LevelPage extends StatelessWidget {
                         top: padding / 2),
                     child: AspectRatio(
                       aspectRatio: 4 / 3,
-                      child: Image(
-                          image: AssetImage('assets/test.png'),
-                          fit: BoxFit.cover),
+                      // child: Image(
+                      //     image: AssetImage('assets/test.png'),
+                      //     fit: BoxFit.cover),
                     ),
                   ),
                   Expanded(
