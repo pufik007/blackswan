@@ -136,12 +136,14 @@ class _CameraPageState extends State<CameraPage> {
 
   Widget build(BuildContext context) {
     return Container(
+        width: double.maxFinite,
+        height: double.maxFinite,
         child: CustomPaint(
-      foregroundPainter: GuidelinePainter(currentHumanPose),
-      child: AspectRatio(
-          aspectRatio: controller.value.aspectRatio,
-          child: CameraPreview(controller)),
-    ));
+          foregroundPainter: GuidelinePainter(currentHumanPose),
+          child: AspectRatio(
+              aspectRatio: controller.value.aspectRatio,
+              child: CameraPreview(controller)),
+        ));
   }
 }
 
@@ -159,15 +161,25 @@ class GuidelinePainter extends CustomPainter {
     var poseJoints = [
       this.currentHumanPose.head,
       this.currentHumanPose.handTopLeft,
-      this.currentHumanPose.handTopRight
+      this.currentHumanPose.handTopRight,
+      this.currentHumanPose.bodyTopRight,
+      this.currentHumanPose.bodyTopLeft,
+      this.currentHumanPose.bodyBottomLeft,
+      this.currentHumanPose.bodyBottomRight,
+      this.currentHumanPose.handBottomRight,
+      this.currentHumanPose.handBottomLeft,
+      this.currentHumanPose.footTopRight,
+      this.currentHumanPose.footTopLeft,
+      this.currentHumanPose.footBottomRight,
+      this.currentHumanPose.footBottomLeft,
     ];
 
     List<Offset> points = List<Offset>();
 
     for (var i = 0; i < poseJoints.length; i++) {
       if (poseJoints[i] != null) {
-        points.add(Offset(size.width * poseJoints[i].x.round(),
-            size.height * poseJoints[i].y.round()));
+        points.add(Offset(
+            size.width * poseJoints[i].x, size.height * poseJoints[i].y));
         print(points);
         print(points.length);
       }
@@ -175,7 +187,7 @@ class GuidelinePainter extends CustomPainter {
 
     final paint = Paint()
       ..color = Colors.red
-      ..strokeWidth = 20
+      ..strokeWidth = 10
       ..strokeCap = StrokeCap.round;
     canvas.drawPoints(pointMode, points, paint);
   }
