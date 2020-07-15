@@ -76,9 +76,10 @@ class _CameraPageState extends State<CameraPage> {
           img.data[index] = (0xFF << 24) | (b << 16) | (g << 8) | r;
         }
       }
+      imglib.Image fixedImage;
+      fixedImage = imglib.copyRotate(img, 90);
       imglib.PngEncoder pngEncoder = new imglib.PngEncoder(level: 0, filter: 0);
-      List<int> png = pngEncoder.encodeImage(img);
-
+      List<int> png = pngEncoder.encodeImage(fixedImage);
       String img64 = base64Encode(png);
       channel.sink.add(img64);
     } catch (e) {
