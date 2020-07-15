@@ -46,7 +46,7 @@ class _CameraPageState extends State<CameraPage> {
 
   Future<Image> convertYUV420toImageColor(CameraImage image) async {
     try {
-      final int width = image.width;
+      final int width = 250;
       final int height = image.height;
       final int uvRowStride = image.planes[1].bytesPerRow;
       final int uvPixelStride = image.planes[1].bytesPerPixel;
@@ -99,15 +99,17 @@ class _CameraPageState extends State<CameraPage> {
     debugPrint(ex.message);
   }
 
-  Future<void> onData(event) {
+  Future<void> onData(event) async {
     debugPrint(event);
     isPredictingRemotely = false;
 
     if (event != null) {
       var humanPose = await parseHumanPose(event);
-      setState(() {
-        currentHumanPose = humanPose;
-      });
+      if (humanPose != null) {
+        setState(() {
+          currentHumanPose = humanPose;
+        });
+      }
     }
     return null;
   }
