@@ -99,33 +99,38 @@ class _CameraPageState extends State<CameraPage> {
     debugPrint(ex.message);
   }
 
-  onData(event) {
+  Future<void> onData(event) {
     debugPrint(event);
     isPredictingRemotely = false;
 
     if (event != null) {
-      var jsonResponse = json.decode(event);
-      if (jsonResponse != null) {
-        var jsonResponseBackText = jsonResponse['json_response_back'];
-        if (jsonResponseBackText != null) {
-          var jsonResponseBack = json.decode(jsonResponseBackText);
-          if (jsonResponseBack != null && jsonResponseBack.length > 0) {
-            var posePointsWrapper = jsonResponseBack[0];
-            if (posePointsWrapper != null) {
-              var posePoints = posePointsWrapper['pose_points'];
-              if (posePoints != null) {
-                var humanPose = HumanPose.fromJson(posePoints);
-                setState(() {
-                  currentHumanPose = humanPose;
-                });
-              }
+      var humanPose = await parseHumanPose(event);
+      setState(() {
+        currentHumanPose = humanPose;
+      });
+    }
+    return null;
+  }
+
+  Future<HumanPose> parseHumanPose(String event) async {
+    var jsonResponse = json.decode(event);
+    if (jsonResponse != null) {
+      var jsonResponseBackText = jsonResponse['json_response_back'];
+      if (jsonResponseBackText != null) {
+        var jsonResponseBack = json.decode(jsonResponseBackText);
+        if (jsonResponseBack != null && jsonResponseBack.length > 0) {
+          var posePointsWrapper = jsonResponseBack[0];
+          if (posePointsWrapper != null) {
+            var posePoints = posePointsWrapper['pose_points'];
+            if (posePoints != null) {
+              var humanPose = HumanPose.fromJson(posePoints);
+              return humanPose;
             }
-            // convert posePoint to human pose
-            // update currentHumanPose with human pose
           }
         }
       }
     }
+    return null;
   }
 
   @override
