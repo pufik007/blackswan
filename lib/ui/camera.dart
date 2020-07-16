@@ -9,6 +9,71 @@ import 'dart:convert';
 import 'camera_bloc/human_pose.dart';
 import 'dart:ui' as ui;
 
+Future<String> convertYUV420toImageColor(CameraImage image) async {
+  try {
+    final int width = image.width;
+    final int height = image.height;
+    final int uvRowStride = image.planes[1].bytesPerRow;
+    final int uvPixelStride = image.planes[1].bytesPerPixel;
+    // print("uvRowStride: " + uvRowStride.toString());
+    // print("uvPixelStride: " + uvPixelStride.toString());
+
+    // imgLib -> Image package from https://pub.dartlang.org/packages/image
+    var img = imglib.Image(width, height); // Create Image buffer
+    // Fill image buffer with plane[0] from YUV420_888
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        final int uvIndex =
+            uvPixelStride * (x / 2).floor() + uvRowStride * (y / 2).floor();
+        final int index = y * width + x;
+
+        final yp = image.planes[0].bytes[index];
+        final up = image.planes[1].bytes[uvIndex];
+        final vp = image.planes[2].bytes[uvIndex];
+        // Calculate pixel color
+        int r = (yp + vp * 1436 / 1024 - 179).round().clamp(0, 255);
+        int g = (yp - up * 46549 / 131072 + 44 - vp * 93604 / 131072 + 91)
+            .round()
+            .clamp(0, 255);
+        int b = (yp + up * 1814 / 1024 - 227).round().clamp(0, 255);
+        // color: 0x FF  FF  FF  FF
+        //           A   B   G   R
+        img.data[index] = (0xFF << 24) | (b << 16) | (g << 8) | r;
+      }
+    }
+    var fixedImage = imglib.copyRotate(img, 90);
+    var resizedImage = imglib.copyResize(fixedImage,
+        width: 250, height: fixedImage.height * fixedImage.width ~/ 250);
+    imglib.PngEncoder pngEncoder = new imglib.PngEncoder(level: 0, filter: 0);
+    List<int> png = pngEncoder.encodeImage(resizedImage);
+    return base64Encode(png);
+  } catch (e) {
+    print(">>>>>>>>>>>> ERROR:" + e.toString());
+  }
+  return null;
+}
+
+Future<HumanPose> parseHumanPose(String event) async {
+  var jsonResponse = json.decode(event);
+  if (jsonResponse != null) {
+    var jsonResponseBackText = jsonResponse['json_response_back'];
+    if (jsonResponseBackText != null) {
+      var jsonResponseBack = json.decode(jsonResponseBackText);
+      if (jsonResponseBack != null && jsonResponseBack.length > 0) {
+        var posePointsWrapper = jsonResponseBack[0];
+        if (posePointsWrapper != null) {
+          var posePoints = posePointsWrapper['pose_points'];
+          if (posePoints != null) {
+            var humanPose = HumanPose.fromJson(posePoints);
+            return humanPose;
+          }
+        }
+      }
+    }
+  }
+  return null;
+}
+
 class CameraPage extends StatefulWidget {
   final List<CameraDescription> cameras;
   CameraPage(this.cameras);
@@ -38,54 +103,16 @@ class _CameraPageState extends State<CameraPage> {
       controller.startImageStream((CameraImage image) {
         if (!isPredictingRemotely) {
           isPredictingRemotely = true;
-          convertYUV420toImageColor(image);
+          sendCameraImageToWebSocket(image);
         }
       });
     });
   }
 
-  Future<Image> convertYUV420toImageColor(CameraImage image) async {
-    try {
-      final int width = 250;
-      final int height = image.height;
-      final int uvRowStride = image.planes[1].bytesPerRow;
-      final int uvPixelStride = image.planes[1].bytesPerPixel;
-      // print("uvRowStride: " + uvRowStride.toString());
-      // print("uvPixelStride: " + uvPixelStride.toString());
-
-      // imgLib -> Image package from https://pub.dartlang.org/packages/image
-      var img = imglib.Image(width, height); // Create Image buffer
-      // Fill image buffer with plane[0] from YUV420_888
-      for (int x = 0; x < width; x++) {
-        for (int y = 0; y < height; y++) {
-          final int uvIndex =
-              uvPixelStride * (x / 2).floor() + uvRowStride * (y / 2).floor();
-          final int index = y * width + x;
-
-          final yp = image.planes[0].bytes[index];
-          final up = image.planes[1].bytes[uvIndex];
-          final vp = image.planes[2].bytes[uvIndex];
-          // Calculate pixel color
-          int r = (yp + vp * 1436 / 1024 - 179).round().clamp(0, 255);
-          int g = (yp - up * 46549 / 131072 + 44 - vp * 93604 / 131072 + 91)
-              .round()
-              .clamp(0, 255);
-          int b = (yp + up * 1814 / 1024 - 227).round().clamp(0, 255);
-          // color: 0x FF  FF  FF  FF
-          //           A   B   G   R
-          img.data[index] = (0xFF << 24) | (b << 16) | (g << 8) | r;
-        }
-      }
-      imglib.Image fixedImage;
-      fixedImage = imglib.copyRotate(img, 90);
-      imglib.PngEncoder pngEncoder = new imglib.PngEncoder(level: 0, filter: 0);
-      List<int> png = pngEncoder.encodeImage(fixedImage);
-      String img64 = base64Encode(png);
-      channel.sink.add(img64);
-    } catch (e) {
-      print(">>>>>>>>>>>> ERROR:" + e.toString());
-    }
-    return null;
+  Future<void> sendCameraImageToWebSocket(CameraImage image) async {
+    var img64 = await compute(convertYUV420toImageColor, image);
+    debugPrint('1');
+    channel.sink.add(img64);
   }
 
   onDone() {
@@ -100,36 +127,17 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   Future<void> onData(event) async {
+    debugPrint('2');
     debugPrint(event);
     isPredictingRemotely = false;
 
     if (event != null) {
-      var humanPose = await parseHumanPose(event);
+      var humanPose = await compute(parseHumanPose, event.toString());
       if (humanPose != null) {
+        debugPrint('3');
         setState(() {
           currentHumanPose = humanPose;
         });
-      }
-    }
-    return null;
-  }
-
-  Future<HumanPose> parseHumanPose(String event) async {
-    var jsonResponse = json.decode(event);
-    if (jsonResponse != null) {
-      var jsonResponseBackText = jsonResponse['json_response_back'];
-      if (jsonResponseBackText != null) {
-        var jsonResponseBack = json.decode(jsonResponseBackText);
-        if (jsonResponseBack != null && jsonResponseBack.length > 0) {
-          var posePointsWrapper = jsonResponseBack[0];
-          if (posePointsWrapper != null) {
-            var posePoints = posePointsWrapper['pose_points'];
-            if (posePoints != null) {
-              var humanPose = HumanPose.fromJson(posePoints);
-              return humanPose;
-            }
-          }
-        }
       }
     }
     return null;
