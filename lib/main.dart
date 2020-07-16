@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'generated/i18n.dart';
-
 import 'data/navigator_bloc/navigator_bloc.dart';
 import 'data/app_bloc/bloc.dart';
 import 'data/api/entities/level.dart';
