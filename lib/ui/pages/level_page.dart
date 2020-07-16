@@ -236,18 +236,16 @@ class LevelPage extends StatelessWidget {
           color: Colors.blue,
         ),
         key: UniqueKey(),
-        onDismissed: (DismissDirection direction) {
+        confirmDismiss: (DismissDirection direction) async {
           if (direction == DismissDirection.startToEnd) {
-            if (exercise.difficulty != 'hard') {
-              BlocProvider.of<LevelBloc>(context)
-                  .add(EasierExercise(exercise.id));
-            }
-          } else {
-            if (exercise.difficulty != 'easy') {
-              BlocProvider.of<LevelBloc>(context)
-                  .add(EasierExercise(exercise.id));
-            }
+            return checkIfDifficultyBoundaryReached(
+                exercise.difficulty, "hard");
           }
+
+          return null;
+        },
+        onDismissed: (DismissDirection direction) {
+          BlocProvider.of<LevelBloc>(context).add(HarderExercise(exercise.id));
         },
         child: Material(
           color: Colors.white,
@@ -323,5 +321,10 @@ class LevelPage extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<bool> checkIfDifficultyBoundaryReached(
+      String difficulty, String boundary) {
+    return null;
   }
 }
