@@ -185,12 +185,13 @@ class LevelPage extends StatelessWidget {
   }
 
   Widget _buildExercises(BuildContext context, List<ExerciseInfo> exercises) {
+    exercises.sort((a, b) => a.position.compareTo(b.position));
     var theme = Theme.of(context);
-
     var info = MediaQuery.of(context);
     var padding = info.size.width / 25;
 
     var items = List<Widget>();
+
     for (final exercise in exercises) {
       var duration;
       if (exercise.duration == null) {
@@ -237,15 +238,24 @@ class LevelPage extends StatelessWidget {
         ),
         key: UniqueKey(),
         confirmDismiss: (DismissDirection direction) async {
+          Future<bool> isDifficultyChangeAllowed;
           if (direction == DismissDirection.startToEnd) {
-            return checkIfDifficultyBoundaryReached(
-                exercise.difficulty, "hard");
+            isDifficultyChangeAllowed =
+                checkIfDifficultyChangeAllowed(exercise.difficulty, "easy");
+          } else {
+            isDifficultyChangeAllowed =
+                checkIfDifficultyChangeAllowed(exercise.difficulty, "hard");
           }
-
-          return null;
+          return isDifficultyChangeAllowed;
         },
         onDismissed: (DismissDirection direction) {
-          BlocProvider.of<LevelBloc>(context).add(HarderExercise(exercise.id));
+          if (direction == DismissDirection.startToEnd) {
+            BlocProvider.of<LevelBloc>(context)
+                .add(EasierExercise(exercise.id));
+          } else {
+            BlocProvider.of<LevelBloc>(context)
+                .add(HarderExercise(exercise.id));
+          }
         },
         child: Material(
           color: Colors.white,
@@ -323,8 +333,8 @@ class LevelPage extends StatelessWidget {
     );
   }
 
-  Future<bool> checkIfDifficultyBoundaryReached(
-      String difficulty, String boundary) {
-    return null;
+  Future<bool> checkIfDifficultyChangeAllowed(
+      String difficulty, String boundary) async {
+    return difficulty != boundary;
   }
 }

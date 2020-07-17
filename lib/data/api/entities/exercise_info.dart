@@ -25,12 +25,14 @@ class ExerciseInfo {
 
   static fromJsonArray(List<dynamic> jsonArray) {
     List<ExerciseInfo> res;
+
     if (jsonArray == null) {
       return res;
     }
 
     res = [];
     for (var json in jsonArray) {
+      res.sort((a, b) => a.position.compareTo(b.position));
       res.add(ExerciseInfo.fromJson(json));
     }
 
