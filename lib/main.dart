@@ -14,6 +14,7 @@ import 'ui/pages/journey_page.dart';
 import 'ui/pages/level_page.dart';
 import 'package:camera/camera.dart';
 import 'ui/camera.dart';
+import 'ui/camera_alt/home.dart';
 
 List<CameraDescription> cameras;
 
@@ -68,7 +69,8 @@ class _AppState extends State<App> {
                 navigatorKey: this._loginNavKey,
                 routes: {
                   '/log_in': (context) => LogInPage(),
-                  '/create_account': (context) => CreateAccountPage(),
+                  '/create_account': (context) =>
+                      HomePagees(cameras), //CreateAccountPage()
                 },
                 home: FirstPage(),
               ),
