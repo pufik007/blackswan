@@ -29,7 +29,8 @@ class LevelPage extends StatelessWidget {
           size: 50.0,
         ),
         onPressed: () {
-          Navigator.of(context).pushNamed('/ui/camera.dart');
+          Navigator.of(context)
+              .pushNamed('/ui/camera_alt/camera_prediction_page.dart');
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

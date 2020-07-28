@@ -46,6 +46,8 @@ dev_dependencies:
     sdk: flutter
 
   camera: ^0.5.7+5
+  
+  tflite: 1.1.1
 
 flutter:
   uses-material-design: true
@@ -88,3 +90,4 @@ flutter:
     - assets/map/stars_3.svg
     - assets/map/marker_left.svg
     - assets/map/marker_right.svg
+    - assets/posenet_mv1_075_float_from_checkpoints.tflite
