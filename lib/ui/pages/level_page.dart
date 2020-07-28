@@ -30,7 +30,7 @@ class LevelPage extends StatelessWidget {
         ),
         onPressed: () {
           Navigator.of(context)
-              .pushNamed('/ui/camera_alt/collector_pages.dart');
+              .pushNamed('/ui/camera_alt/camera_prediction_page.dart');
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

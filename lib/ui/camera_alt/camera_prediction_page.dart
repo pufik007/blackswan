@@ -6,16 +6,16 @@ import 'dart:math' as math;
 import 'camera.dart';
 import 'bndbox.dart';
 
-class CollectorPages extends StatefulWidget {
+class CameraPredictionPage extends StatefulWidget {
   final List<CameraDescription> cameras;
 
-  CollectorPages(this.cameras);
+  CameraPredictionPage(this.cameras);
 
   @override
-  _CollectorPagesState createState() => new _CollectorPagesState();
+  _CameraPredictionPageState createState() => new _CameraPredictionPageState();
 }
 
-class _CollectorPagesState extends State<CollectorPages> {
+class _CameraPredictionPageState extends State<CameraPredictionPage> {
   List<dynamic> _recognitions;
   int _imageHeight = 0;
   int _imageWidth = 0;

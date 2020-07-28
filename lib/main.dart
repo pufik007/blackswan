@@ -13,7 +13,7 @@ import 'ui/pages/logo_page.dart';
 import 'ui/pages/journey_page.dart';
 import 'ui/pages/level_page.dart';
 import 'package:camera/camera.dart';
-import 'ui/camera_alt/collector_pages.dart';
+import 'ui/camera_alt/camera_prediction_page.dart';
 
 List<CameraDescription> cameras;
 
@@ -127,8 +127,8 @@ class _AppState extends State<App> {
                 },
                 routes: {
                   '/create_journey': (context) => JourneyPage(false, true),
-                  '/ui/camera_alt/collector_pages.dart': (context) =>
-                      CollectorPages(cameras),
+                  '/ui/camera_alt/camera_prediction_page.dart': (context) =>
+                      CameraPredictionPage(cameras),
                 },
                 home: HomePage(),
               ),
