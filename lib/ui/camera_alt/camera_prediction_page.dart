@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:tflite/tflite.dart';
 import 'dart:math' as math;
-
+import 'dart:async';
 import 'camera.dart';
 import 'bndbox.dart';
 
@@ -19,6 +19,21 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   List<dynamic> _recognitions;
   int _imageHeight = 0;
   int _imageWidth = 0;
+  int _counter = 10;
+  Timer _timer;
+
+  void _startTimer() {
+    _counter = 10;
+    _timer = Timer.periodic(Duration(seconds: 1), (_timer) {
+      setState(() {
+        if (_counter > 0) {
+          _counter--;
+        } else {
+          _timer.cancel();
+        }
+      });
+    });
+  }
 
   @override
   void initState() {
@@ -37,6 +52,11 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
       _recognitions = recognitions;
       _imageHeight = imageHeight;
       _imageWidth = imageWidth;
+      for (var i = 0; i < _recognitions.length; i++) {
+        if (_recognitions[i] != null) {
+          _startTimer();
+        }
+      }
     });
   }
 
@@ -45,7 +65,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     Size screen = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
-        children: [
+        children: <Widget>[
           Camera(
             widget.cameras,
             setRecognitions,
@@ -56,6 +76,28 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
             math.min(_imageHeight, _imageWidth),
             screen.height,
             screen.width,
+          ),
+          Center(
+            child: Text(
+              '$_counter',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.red,
+                fontSize: 70,
+              ),
+            ),
+          ),
+          Center(
+            child: (_counter > 0)
+                ? Text("")
+                : Text(
+                    "DONE!",
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 50,
+                    ),
+                  ),
           ),
         ],
       ),
