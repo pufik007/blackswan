@@ -22,9 +22,9 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   int _counter = 10;
   Timer _timer;
 
-  void _startTimer() {
+  _startTimer() {
     _counter = 10;
-    _timer = Timer.periodic(Duration(seconds: 1), (_timer) {
+    _timer = Timer.periodic(Duration(seconds: 10), (_timer) {
       setState(() {
         if (_counter > 0) {
           _counter--;
@@ -33,6 +33,10 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
         }
       });
     });
+  }
+
+  void handleTimeout() {
+    // callback function
   }
 
   @override
@@ -52,12 +56,57 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
       _recognitions = recognitions;
       _imageHeight = imageHeight;
       _imageWidth = imageWidth;
-      for (var i = 0; i < _recognitions.length; i++) {
-        if (_recognitions[i] != null) {
-          _startTimer();
-        }
-      }
     });
+
+    // var _createPoseMap = [
+    //   recognitions.keypoints.nose,
+    //   recognitions.keypoints.leftEye,
+    //   recognitions.keypoints.rightEye,
+    //   recognitions.keypoints.leftEar,
+    //   recognitions.keypoints.rightEar,
+    //   recognitions.keypoints.leftShoulder,
+    //   recognitions.keypoints.rightShoulder,
+    //   recognitions.keypoints.leftElbow,
+    //   recognitions.keypoints.rightElbow,
+    //   recognitions.keypoints.leftWrist,
+    //   recognitions.keypoints.rightWrist,
+    //   recognitions.keypoints.leftHip,
+    //   recognitions.keypoints.rightHip,
+    //   recognitions.keypoints.leftKnee,
+    //   recognitions.keypoints.rightKnee,
+    //   recognitions.keypoints.leftAnkle,
+    //   recognitions.keypoints.rightAnkle,
+    // ];
+
+    // var isHumanPoseValid = _validateRecognitions(_recognitions);
+
+    // Map<String, bool> _createPoseMap = {
+    //   'nose': false,
+    //   'leftEye': false,
+    //   'rightEye': false,
+    //   'leftEar': false,
+    //   'rightEar': false,
+    //   'leftShoulder': false,
+    //   'rightShoulder': false,
+    //   'leftElbow': false,
+    //   'rightElbow': false,
+    //   'leftWrist': false,
+    //   'rightWrist': false,
+    //   'leftHip': false,
+    //   'rightHip': false,
+    //   'leftKnee': false,
+    //   'rightKnee': false,
+    //   'leftAnkle': false,
+    //   'rightAnkle': false,
+    // };
+
+    for (var i = 0; i < recognitions["keypoints"].value.length; i++) {
+      if (recognitions[i] != null) {
+        _startTimer();
+      }
+    }
+    // var list = recognitions["keypoints"].value;
+    // print(list);
   }
 
   @override
