@@ -5,6 +5,14 @@ import 'dart:math' as math;
 import 'dart:async';
 import 'camera.dart';
 import 'bndbox.dart';
+import '../pages/level_bloc/level_state.dart';
+import '../../data/api/entities/exercise_info.dart';
+import '../../data/api/entities/level.dart';
+import '../pages/level_bloc/level_bloc.dart';
+import '../pages/level_bloc/level_event.dart';
+import 'package:tensorfit/data/api/entities/exercise_info.dart';
+import 'package:tensorfit/data/api/entities/level.dart';
+import 'package:tensorfit/data/data.dart';
 
 class CameraPredictionPage extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -19,12 +27,16 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   List<dynamic> _recognitions;
   int _imageHeight = 0;
   int _imageWidth = 0;
-  int _counter = 10;
+  int _counter = 3;
+  int _counterExer = 10;
   Timer _timer;
+  int _duration = 0;
+  LevelState state;
+  Level level;
 
   _startTimer() {
-    _counter = 10;
-    _timer = Timer.periodic(Duration(seconds: 10), (_timer) {
+    _counter = 3;
+    _timer = Timer.periodic(Duration(seconds: 1), (_timer) {
       setState(() {
         if (_counter > 0) {
           _counter--;
@@ -35,8 +47,89 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     });
   }
 
-  void handleTimeout() {
-    // callback function
+  _startTimerExercises() {
+    _counterExer = 10;
+    _timer = Timer.periodic(Duration(seconds: 1), (_timer) {
+      setState(() {
+        if (_counterExer > 0) {
+          _counterExer--;
+        } else {
+          _timer.cancel();
+        }
+      });
+    });
+  }
+
+  bool _validateRecognitions(List<dynamic> recognitions) {
+    var isValid = false;
+    var poseMap = _createPoseMap();
+    if (recognitions.length > 0) {
+      var keypoints = recognitions[0]["keypoints"];
+      if (keypoints != null) {
+        keypoints.values.toList().forEach((keypoint) {
+          if ((keypoint["x"] > 0) &&
+              keypoint["x"] < _imageWidth &&
+              keypoint["y"] > 0 &&
+              keypoint["y"] < _imageHeight) {
+            poseMap[keypoint["part"]] = true;
+          }
+        });
+        var poseMapValues = poseMap.values.toList();
+        isValid = true;
+        for (var i = 0; i < poseMapValues.length; i++) {
+          if (!poseMapValues[i]) {
+            isValid = false;
+            break;
+          }
+        }
+      }
+    }
+    return isValid;
+  }
+
+  void _stopTimer() {
+    if (_timer != null) {
+      _timer.cancel();
+      _timer = null;
+      _counter = 3;
+    }
+  }
+
+  Map<String, bool> _createPoseMap() {
+    return {
+      'nose': false,
+      'leftEye': false,
+      'rightEye': false,
+      'leftEar': false,
+      'rightEar': false,
+      'leftShoulder': false,
+      'rightShoulder': false,
+      'leftElbow': false,
+      'rightElbow': false,
+      'leftWrist': false,
+      'rightWrist': false,
+      'leftHip': false,
+      'rightHip': false,
+      'leftKnee': false,
+      'rightKnee': false,
+      'leftAnkle': false,
+      'rightAnkle': false,
+    };
+  }
+
+  dynamic _buildBody(level, state) {
+    LevelBloc(level)..add(Load());
+    _buildHeader(state.exercises);
+  }
+
+  dynamic _buildHeader(List<ExerciseInfo> exercises) {
+    var duration = 0;
+    for (final exercise in exercises) {
+      if (exercise.duration != null) {
+        duration += (exercise.duration / 60).floor();
+      }
+    }
+    return _duration = duration;
   }
 
   @override
@@ -58,55 +151,14 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
       _imageWidth = imageWidth;
     });
 
-    // var _createPoseMap = [
-    //   recognitions.keypoints.nose,
-    //   recognitions.keypoints.leftEye,
-    //   recognitions.keypoints.rightEye,
-    //   recognitions.keypoints.leftEar,
-    //   recognitions.keypoints.rightEar,
-    //   recognitions.keypoints.leftShoulder,
-    //   recognitions.keypoints.rightShoulder,
-    //   recognitions.keypoints.leftElbow,
-    //   recognitions.keypoints.rightElbow,
-    //   recognitions.keypoints.leftWrist,
-    //   recognitions.keypoints.rightWrist,
-    //   recognitions.keypoints.leftHip,
-    //   recognitions.keypoints.rightHip,
-    //   recognitions.keypoints.leftKnee,
-    //   recognitions.keypoints.rightKnee,
-    //   recognitions.keypoints.leftAnkle,
-    //   recognitions.keypoints.rightAnkle,
-    // ];
-
-    // var isHumanPoseValid = _validateRecognitions(_recognitions);
-
-    // Map<String, bool> _createPoseMap = {
-    //   'nose': false,
-    //   'leftEye': false,
-    //   'rightEye': false,
-    //   'leftEar': false,
-    //   'rightEar': false,
-    //   'leftShoulder': false,
-    //   'rightShoulder': false,
-    //   'leftElbow': false,
-    //   'rightElbow': false,
-    //   'leftWrist': false,
-    //   'rightWrist': false,
-    //   'leftHip': false,
-    //   'rightHip': false,
-    //   'leftKnee': false,
-    //   'rightKnee': false,
-    //   'leftAnkle': false,
-    //   'rightAnkle': false,
-    // };
-
-    for (var i = 0; i < recognitions["keypoints"].value.length; i++) {
-      if (recognitions[i] != null) {
+    var isHumanPoseValid = _validateRecognitions(recognitions);
+    if (isHumanPoseValid) {
+      if (_timer == null) {
         _startTimer();
       }
+    } else {
+      _stopTimer(); // _buildBody(level, state);
     }
-    // var list = recognitions["keypoints"].value;
-    // print(list);
   }
 
   @override
@@ -127,26 +179,35 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
             screen.width,
           ),
           Center(
-            child: Text(
-              '$_counter',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.red,
-                fontSize: 70,
-              ),
-            ),
-          ),
+              child: (_counter > 0)
+                  ? Text(
+                      '$_counter',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                        fontSize: 70,
+                      ),
+                    )
+                  : Text("",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                        fontSize: 70,
+                      ))),
           Center(
-            child: (_counter > 0)
-                ? Text("")
-                : Text(
-                    "DONE!",
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 50,
+            child: Container(
+              padding: EdgeInsets.only(bottom: 550.0),
+              child: (_counter > 0)
+                  ? Text("")
+                  : Text(
+                      "$_duration min",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 50,
+                      ),
                     ),
-                  ),
+            ),
           ),
         ],
       ),
