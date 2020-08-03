@@ -334,11 +334,11 @@ class _HouseState extends State<House> with SingleTickerProviderStateMixin {
             .add(NavigateToCameraPredictionPage(
           widget.level,
         ));
-        BlocProvider.of<HomeNavigatorBloc>(context).add(NavigateToLevel(
-          widget.level,
-          widget.image,
-          widget.isRight ? Alignment.centerRight : Alignment.centerLeft,
-        ));
+        // BlocProvider.of<HomeNavigatorBloc>(context).add(NavigateToLevel(
+        //   widget.level,
+        //   widget.image,
+        //   widget.isRight ? Alignment.centerRight : Alignment.centerLeft,
+        // ));
       },
       onTapCancel: () {
         this._pressed = false;
