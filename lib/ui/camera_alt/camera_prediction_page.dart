@@ -13,16 +13,15 @@ import '../pages/level_bloc/level_event.dart';
 import 'package:tensorfit/data/api/entities/exercise_info.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
 import 'package:tensorfit/data/data.dart';
-import 'package:tensorfit/ui/widgets/map_bloc/bloc.dart' as level;
+import 'package:tensorfit/ui/widgets/map_bloc/bloc.dart' as levele;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import './exercise_widget.dart';
 
 class CameraPredictionPage extends StatefulWidget {
   final List<CameraDescription> cameras;
+  final Level level;
+  const CameraPredictionPage(this.cameras, this.level);
 
-  CameraPredictionPage(this.cameras);
-
-  @override
   _CameraPredictionPageState createState() => new _CameraPredictionPageState();
 }
 
@@ -33,9 +32,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   int _counter = 3;
   int _counterExer = 10;
   Timer _timer;
-  int _duration = 0;
-
-  final _levelBlock = level.MapBloc();
+  Level level;
 
   _startTimer() {
     _counter = 3;
@@ -120,16 +117,6 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     };
   }
 
-  dynamic _buildHeader(List<ExerciseInfo> exercises) {
-    var duration = 0;
-    for (final exercise in exercises) {
-      if (exercise.duration != null) {
-        duration += (exercise.duration / 60).floor();
-      }
-    }
-    return _duration = duration;
-  }
-
   @override
   void initState() {
     super.initState();
@@ -159,56 +146,106 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     }
   }
 
-  @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
-    this._levelBlock.add(level.Load());
+  _building(BuildContext context) {
+    return BlocProvider(
+      create: (context) => LevelBloc(widget.level)..add(Load()),
+      child: BlocBuilder<LevelBloc, LevelState>(
+        builder: (context, state) {
+          if (state is LevelLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (state is LevelLoaded) {
+            return SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  _getLevels(context, state.exercises),
+                ],
+              ),
+            );
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _getLevels(BuildContext context, List<ExerciseInfo> exercises) {
+    var duration = 0;
+    for (final exercise in exercises) {
+      if (exercise.duration != null) {
+        duration += (exercise.duration / 60).floor();
+      }
+    }
+    return Center(
+      child: Container(
+        padding: EdgeInsets.only(bottom: 550.0),
+        child: (_counter > 0)
+            ? Text("")
+            : Text(
+                "$duration min",
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 50,
+                ),
+              ),
+      ),
+    );
   }
 
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
-
     return BlocProvider(
-        create: (context) => this._levelBlock,
-        child: Scaffold(
-          body: Stack(
-            children: <Widget>[
-              Camera(
-                widget.cameras,
-                setRecognitions,
+        create: (context) => LevelBloc(widget.level)..add(Load()),
+        child: BlocBuilder<LevelBloc, LevelState>(builder: (context, state) {
+          if (state is LevelLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (state is LevelLoaded) {
+            return SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  _getLevels(context, state.exercises),
+                ],
               ),
-              BndBox(
-                _recognitions == null ? [] : _recognitions,
-                math.max(_imageHeight, _imageWidth),
-                math.min(_imageHeight, _imageWidth),
-                screen.height,
-                screen.width,
-              ),
-              Center(
-                  child: (_counter > 0)
-                      ? Text(
-                          '$_counter',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                            fontSize: 70,
-                          ),
-                        )
-                      : Text("",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                            fontSize: 70,
-                          ))),
-              Center(child: ExerciseLevelCameraPage())
-            ],
-          ),
-        ));
-  }
-
-  @override
-  void dispose() {
-    this._levelBlock.close();
-    super.dispose();
+            );
+          }
+          return Scaffold(
+            body: Stack(
+              children: <Widget>[
+                Camera(
+                  widget.cameras,
+                  setRecognitions,
+                ),
+                BndBox(
+                  _recognitions == null ? [] : _recognitions,
+                  math.max(_imageHeight, _imageWidth),
+                  math.min(_imageHeight, _imageWidth),
+                  screen.height,
+                  screen.width,
+                ),
+                Center(
+                    child: (_counter > 0)
+                        ? Text(
+                            '$_counter',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                              fontSize: 70,
+                            ),
+                          )
+                        : Text("",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                              fontSize: 70,
+                            ))),
+                _building(context)
+              ],
+            ),
+          );
+        }));
   }
 }

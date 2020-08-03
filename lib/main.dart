@@ -14,6 +14,7 @@ import 'ui/pages/journey_page.dart';
 import 'ui/pages/level_page.dart';
 import 'package:camera/camera.dart';
 import 'ui/camera_alt/camera_prediction_page.dart';
+import './ui/camera_alt/exercise_widget.dart';
 
 List<CameraDescription> cameras;
 
@@ -121,14 +122,23 @@ class _AppState extends State<App> {
                           return LevelPage(level, image, imageAlign);
                         },
                       );
+                    case '/CameraPredictionPage':
+                      final List args = settings.arguments;
+                      final Level level = args[0];
+
+                      return MaterialPageRoute(
+                        builder: (context) {
+                          return CameraPredictionPage(cameras, level);
+                        },
+                      );
                     default:
                       return null;
                   }
                 },
                 routes: {
                   '/create_journey': (context) => JourneyPage(false, true),
-                  '/ui/camera_alt/camera_prediction_page.dart': (context) =>
-                      CameraPredictionPage(cameras),
+                  // '/ui/camera_alt/camera_prediction_page.dart': (context) =>
+                  //     CameraPredictionPage(cameras),
                 },
                 home: HomePage(),
               ),
