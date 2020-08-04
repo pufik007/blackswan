@@ -12,10 +12,7 @@ import '../pages/level_bloc/level_bloc.dart';
 import '../pages/level_bloc/level_event.dart';
 import 'package:tensorfit/data/api/entities/exercise_info.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
-import 'package:tensorfit/data/data.dart';
-import 'package:tensorfit/ui/widgets/map_bloc/bloc.dart' as levele;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import './exercise_widget.dart';
 
 class CameraPredictionPage extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -48,7 +45,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   }
 
   _startTimerExercises() {
-    _counterExer = 10;
+    _counterExer = 0;
     _timer = Timer.periodic(Duration(seconds: 1), (_timer) {
       setState(() {
         if (_counterExer > 0) {
@@ -144,59 +141,38 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     } else {
       _stopTimer();
     }
+    if (_counter == 0) {
+      _startTimerExercises();
+    }
   }
 
-  _building(BuildContext context) {
-    Size screen = MediaQuery.of(context).size;
-    Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Camera(
-            widget.cameras,
-            setRecognitions,
-          ),
-          BndBox(
-            _recognitions == null ? [] : _recognitions,
-            math.max(_imageHeight, _imageWidth),
-            math.min(_imageHeight, _imageWidth),
-            screen.height,
-            screen.width,
-          ),
-          Center(
-              child: (_counter > 0)
-                  ? Text(
-                      '$_counter',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red,
-                        fontSize: 70,
-                      ),
-                    )
-                  : Text("",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red,
-                        fontSize: 70,
-                      ))),
-        ],
-      ),
-    );
+  _currentExrcise(List<ExerciseInfo> exercises) {
+    var items = List<Widget>();
+    for (int i = 0; i < exercises.length; i++) {
+      if (exercises[i].duration != null) {
+        int duration = exercises[i].duration;
+        _counterExer = duration;
+      }
+    }
   }
 
   Widget _getLevels(BuildContext context, List<ExerciseInfo> exercises) {
-    var duration = 0;
-    for (final exercise in exercises) {
-      if (exercise.duration != null) {
-        duration += (exercise.duration / 60).floor();
-      }
-    }
+    _currentExrcise(exercises);
+
     return Center(
       child: Container(
-        padding: EdgeInsets.only(bottom: 550.0),
-        child: (_counter > 0)
-            ? Text("")
+        padding: EdgeInsets.only(bottom: 420.0),
+        child: (_counterExer > 0)
+            ? Text(
+                "$_counterExer sec",
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 40,
+                ),
+              )
             : Text(
-                "$duration min",
+                "",
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
