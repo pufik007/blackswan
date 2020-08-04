@@ -208,6 +208,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   }
 
   Widget build(BuildContext context) {
+    Size screen = MediaQuery.of(context).size;
     return BlocProvider(
         create: (context) => LevelBloc(widget.level)..add(Load()),
         child: BlocBuilder<LevelBloc, LevelState>(builder: (context, state) {
@@ -215,12 +216,42 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
             return Center(child: CircularProgressIndicator());
           }
           if (state is LevelLoaded) {
-            return SingleChildScrollView(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+            return Scaffold(
+              body: Stack(
                 children: <Widget>[
-                  _getLevels(context, state.exercises),
-                  _building(context),
+                  Camera(
+                    widget.cameras,
+                    setRecognitions,
+                  ),
+                  BndBox(
+                    _recognitions == null ? [] : _recognitions,
+                    math.max(_imageHeight, _imageWidth),
+                    math.min(_imageHeight, _imageWidth),
+                    screen.height,
+                    screen.width,
+                  ),
+                  Center(
+                      child: (_counter > 0)
+                          ? Text(
+                              '$_counter',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                                fontSize: 70,
+                              ),
+                            )
+                          : Text("",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                                fontSize: 70,
+                              ))),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      _getLevels(context, state.exercises),
+                    ],
+                  ),
                 ],
               ),
             );
