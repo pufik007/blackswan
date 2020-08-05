@@ -27,9 +27,12 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   int _imageHeight = 0;
   int _imageWidth = 0;
   int _counter = 3;
-  int _counterExer = 10;
+  int _counterExer;
   Timer _timer;
+  Timer _exerciseTimer;
   Level level;
+  int curentExercuseNo = 0;
+  var namesExercise;
 
   _startTimer() {
     _counter = 3;
@@ -44,14 +47,14 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     });
   }
 
-  _startTimerExercises() {
-    _counterExer = 0;
-    _timer = Timer.periodic(Duration(seconds: 1), (_timer) {
+  _startTimerExercises(exerciseInfo) {
+    _counterExer = exerciseInfo.duration;
+    _exerciseTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         if (_counterExer > 0) {
           _counterExer--;
         } else {
-          _timer.cancel();
+          _stopTimerExer();
         }
       });
     });
@@ -84,11 +87,21 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     return isValid;
   }
 
+  void _stopTimerExer() {
+    if (_exerciseTimer != null) {
+      _exerciseTimer.cancel();
+      _exerciseTimer = null;
+    }
+    // if (_exerciseTimer == null) {
+    //   _currentExrcise(exercises); // Navigator.pop(context);
+    // }
+  }
+
   void _stopTimer() {
     if (_timer != null) {
       _timer.cancel();
       _timer = null;
-      _counter = 3;
+      _counterExer = 3;
     }
   }
 
@@ -141,30 +154,40 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     } else {
       _stopTimer();
     }
-    if (_counter == 0) {
-      _startTimerExercises();
-    }
   }
 
-  _currentExrcise(List<ExerciseInfo> exercises) {
-    var items = List<Widget>();
+  ExerciseInfo _currentExrcise(List<ExerciseInfo> exercises) {
+    ExerciseInfo exerciseInfo;
     for (int i = 0; i < exercises.length; i++) {
-      if (exercises[i].duration != null) {
-        int duration = exercises[i].duration;
-        _counterExer = duration;
+      if (exercises[i].duration != null &&
+          exercises[i].duration != 0 &&
+          i > curentExercuseNo) {
+        exerciseInfo = exercises[i];
+        curentExercuseNo++;
       }
     }
+    return exerciseInfo;
   }
 
   Widget _getLevels(BuildContext context, List<ExerciseInfo> exercises) {
-    _currentExrcise(exercises);
+    if (_exerciseTimer == null && _counter == 0) {
+      var exerciseInfo = _currentExrcise(exercises);
+      namesExercise = exerciseInfo.exercise.name;
+      if (exerciseInfo != null) {
+        if (_exerciseTimer == null) {
+          _startTimerExercises(exerciseInfo);
+        } else {
+          Navigator.pop(context);
+        }
+      }
+    }
 
     return Center(
       child: Container(
         padding: EdgeInsets.only(bottom: 420.0),
-        child: (_counterExer > 0)
+        child: (_counter > 0)
             ? Text(
-                "$_counterExer sec",
+                "",
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
@@ -172,11 +195,12 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                 ),
               )
             : Text(
-                "",
+                "$namesExercise - "
+                "$_counterExer sec",
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
-                  fontSize: 50,
+                  fontSize: 45,
                 ),
               ),
       ),

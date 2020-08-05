@@ -125,7 +125,6 @@ class _AppState extends State<App> {
                     case '/CameraPredictionPage':
                       final List args = settings.arguments;
                       final Level level = args[0];
-
                       return MaterialPageRoute(
                         builder: (context) {
                           return CameraPredictionPage(cameras, level);
@@ -137,8 +136,6 @@ class _AppState extends State<App> {
                 },
                 routes: {
                   '/create_journey': (context) => JourneyPage(false, true),
-                  // '/ui/camera_alt/camera_prediction_page.dart': (context) =>
-                  //     CameraPredictionPage(cameras),
                 },
                 home: HomePage(),
               ),
