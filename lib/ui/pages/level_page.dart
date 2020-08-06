@@ -249,9 +249,9 @@ class LevelPage extends StatelessWidget {
                         top: padding / 2),
                     child: AspectRatio(
                       aspectRatio: 4 / 3,
-                      // child: Image(
-                      //     image: AssetImage('assets/test.png'),
-                      //     fit: BoxFit.cover),
+                      child: Image(
+                          image: AssetImage('assets/test.png'),
+                          fit: BoxFit.cover),
                     ),
                   ),
                   Expanded(

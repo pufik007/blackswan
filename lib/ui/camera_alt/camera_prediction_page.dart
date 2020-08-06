@@ -31,7 +31,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   Timer _timer;
   Timer _exerciseTimer;
   Level level;
-  int curentExercusesNo = 0;
+  int _currentExerciseNo = 0;
   var namesExercise;
 
   _startTimerCountdown() {
@@ -161,25 +161,25 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     }
   }
 
-  ExerciseInfo _currentExercises(List<ExerciseInfo> exercises) {
+  ExerciseInfo extractCurrentExercise(List<ExerciseInfo> exercises) {
     ExerciseInfo exerciseInfo;
     for (int i = 0; i < exercises.length; i++) {
       if (exercises[i].duration != null &&
           exercises[i].duration != 0 &&
-          i > curentExercusesNo) {
+          i > _currentExerciseNo) {
         exerciseInfo = exercises[i];
-        curentExercusesNo = i;
+        _currentExerciseNo = i;
         break;
       }
     }
     return exerciseInfo;
   }
 
-  Widget _exerciseTimerStartup(
+  Widget createExerciseTimerOrEndLevel(
       BuildContext context, List<ExerciseInfo> exercises) {
     ExerciseInfo exerciseInfo;
     if (_exerciseTimer == null && _counter == 0) {
-      exerciseInfo = _currentExercises(exercises);
+      exerciseInfo = extractCurrentExercise(exercises);
       if (exerciseInfo != null) {
         namesExercise = exerciseInfo.exercise.name;
         _startTimerExercises(exerciseInfo);
@@ -262,7 +262,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      _exerciseTimerStartup(context, state.exercises),
+                      createExerciseTimerOrEndLevel(context, state.exercises),
                     ],
                   ),
                 ],

@@ -51,7 +51,7 @@ class HomeNavigatorBloc extends NavigatorBloc {
           arguments: [event.level, event.image, event.imageAlign]);
     } else if (event is NavigateToCameraPredictionPage) {
       navigatorKey.currentState
-          .pushNamed('/CameraPredictionPage', arguments: [event.level]);
+          .pushNamed('/camera_prediction_page', arguments: [event.level]);
     }
 
     yield* super.mapEventToState(event);

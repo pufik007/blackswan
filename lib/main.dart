@@ -122,7 +122,7 @@ class _AppState extends State<App> {
                           return LevelPage(level, image, imageAlign);
                         },
                       );
-                    case '/CameraPredictionPage':
+                    case '/camera_prediction_page':
                       final List args = settings.arguments;
                       final Level level = args[0];
                       return MaterialPageRoute(
