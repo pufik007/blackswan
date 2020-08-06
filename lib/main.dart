@@ -14,7 +14,6 @@ import 'ui/pages/journey_page.dart';
 import 'ui/pages/level_page.dart';
 import 'package:camera/camera.dart';
 import 'ui/camera_alt/camera_prediction_page.dart';
-import './ui/camera_alt/exercise_widget.dart';
 
 List<CameraDescription> cameras;
 
