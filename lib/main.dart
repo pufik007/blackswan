@@ -121,14 +121,20 @@ class _AppState extends State<App> {
                           return LevelPage(level, image, imageAlign);
                         },
                       );
+                    case '/camera_prediction_page':
+                      final List args = settings.arguments;
+                      final Level level = args[0];
+                      return MaterialPageRoute(
+                        builder: (context) {
+                          return CameraPredictionPage(cameras, level);
+                        },
+                      );
                     default:
                       return null;
                   }
                 },
                 routes: {
                   '/create_journey': (context) => JourneyPage(false, true),
-                  '/ui/camera_alt/camera_prediction_page.dart': (context) =>
-                      CameraPredictionPage(cameras),
                 },
                 home: HomePage(),
               ),

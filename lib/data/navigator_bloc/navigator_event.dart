@@ -32,7 +32,13 @@ class NavigateToLevel extends NavigatorEvent {
   final ImageProvider image;
   final Alignment imageAlign;
 
-  NavigateToLevel(this.level,this.image,this.imageAlign) : super([level,image]);
+  NavigateToLevel(this.level, this.image, this.imageAlign)
+      : super([level, image]);
+}
+
+class NavigateToCameraPredictionPage extends NavigatorEvent {
+  final Level level;
+  NavigateToCameraPredictionPage(this.level) : super([level]);
 }
 
 class NavigateBack extends NavigatorEvent {

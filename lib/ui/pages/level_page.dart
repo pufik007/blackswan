@@ -4,7 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:tensorfit/data/api/entities/exercise_info.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
 import 'package:tensorfit/ui/pages/level_bloc/bloc.dart';
-
+import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 import 'level_bloc/level_bloc.dart';
 
 class LevelPage extends StatelessWidget {
@@ -29,8 +29,10 @@ class LevelPage extends StatelessWidget {
           size: 50.0,
         ),
         onPressed: () {
-          Navigator.of(context)
-              .pushNamed('/ui/camera_alt/camera_prediction_page.dart');
+          BlocProvider.of<HomeNavigatorBloc>(context)
+              .add(NavigateToCameraPredictionPage(
+            level,
+          ));
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

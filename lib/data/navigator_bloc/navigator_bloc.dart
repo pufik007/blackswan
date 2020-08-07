@@ -23,7 +23,8 @@ abstract class NavigatorBloc extends Bloc<NavigatorEvent, dynamic> {
 }
 
 class LoginNavigatorBloc extends NavigatorBloc {
-  LoginNavigatorBloc({GlobalKey<NavigatorState> navigatorKey}) : super(navigatorKey: navigatorKey);
+  LoginNavigatorBloc({GlobalKey<NavigatorState> navigatorKey})
+      : super(navigatorKey: navigatorKey);
 
   @override
   Stream<dynamic> mapEventToState(NavigatorEvent event) async* {
@@ -38,14 +39,19 @@ class LoginNavigatorBloc extends NavigatorBloc {
 }
 
 class HomeNavigatorBloc extends NavigatorBloc {
-  HomeNavigatorBloc({GlobalKey<NavigatorState> navigatorKey}) : super(navigatorKey: navigatorKey);
+  HomeNavigatorBloc({GlobalKey<NavigatorState> navigatorKey})
+      : super(navigatorKey: navigatorKey);
 
   @override
   Stream<dynamic> mapEventToState(NavigatorEvent event) async* {
     if (event is NavigateToCreateJourney) {
       navigatorKey.currentState.pushNamed('/create_journey');
     } else if (event is NavigateToLevel) {
-      navigatorKey.currentState.pushNamed('/level', arguments: [event.level,event.image,event.imageAlign]);
+      navigatorKey.currentState.pushNamed('/level',
+          arguments: [event.level, event.image, event.imageAlign]);
+    } else if (event is NavigateToCameraPredictionPage) {
+      navigatorKey.currentState
+          .pushNamed('/camera_prediction_page', arguments: [event.level]);
     }
 
     yield* super.mapEventToState(event);
