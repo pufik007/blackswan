@@ -1,8 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:tensorfit/ui/widgets/map_bloc/bloc.dart' as map;
-
 import 'level_card_list_widget.dart';
+
+import 'package:tensorfit/ui/pages/level_bloc/bloc.dart';
+import 'package:tensorfit/ui/pages/level_bloc/level_bloc.dart';
+import 'package:tensorfit/data/api/entities/level.dart';
+import 'package:tensorfit/data/api/entities/exercise_info.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,6 +16,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // ignore: close_sinks
   final _mapBloc = map.MapBloc();
+  Level level;
 
   @override
   void initState() {
@@ -55,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              LevelCardListWidget(),
+              LevelCardListWidget(level),
             ],
           )),
     );

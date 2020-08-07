@@ -1,13 +1,18 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
 import '../../ui/widgets/map_bloc/bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class LevelCardListWidget extends StatelessWidget {
+  final Level level;
+
+  const LevelCardListWidget(this.level);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MapBloc, MapState>(
@@ -56,7 +61,7 @@ class LevelCardListWidget extends StatelessWidget {
 
   Widget _getLevel(Level level, bool isSelected) {
     return Container(
-      padding: new EdgeInsets.symmetric(vertical: 160.0, horizontal: 10.0),
+      padding: EdgeInsets.symmetric(vertical: 160.0, horizontal: 10.0),
       child: LevelCard(
         level: level,
         isSelected: isSelected,
@@ -66,8 +71,12 @@ class LevelCardListWidget extends StatelessWidget {
 }
 
 Widget title() {
+  var now = DateTime.now(); //.add(new Duration(days: 1))
+  var formatter = DateFormat.MMMd();
+  String formatted = formatter.format(now);
+
   return Container(
-    padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+    padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
     height: 40,
     width: 300,
     color: Colors.green[300],
@@ -75,7 +84,7 @@ Widget title() {
       alignment: Alignment.topLeft,
       child: RichText(
         text: TextSpan(
-          text: '', // don`t have a data
+          text: '$formatted',
           style: TextStyle(color: Colors.white, fontSize: 25),
           children: <TextSpan>[],
         ),
@@ -84,9 +93,9 @@ Widget title() {
   );
 }
 
-Widget subTitle() {
+Widget subTitle(motivationText) {
   return Container(
-    padding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+    padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
     height: 60,
     width: 320,
     color: Colors.green[300],
@@ -94,7 +103,7 @@ Widget subTitle() {
       alignment: Alignment.bottomLeft,
       child: RichText(
         text: TextSpan(
-          text: '', // don`t have a data
+          text: '$motivationText',
           style: TextStyle(color: Colors.white, fontSize: 13),
           children: <TextSpan>[],
         ),
@@ -105,7 +114,7 @@ Widget subTitle() {
 
 Widget firstLevel(level) {
   return Container(
-    padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+    padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
     child: Align(
       alignment: Alignment.bottomLeft,
       child: RichText(
@@ -119,14 +128,14 @@ Widget firstLevel(level) {
   );
 }
 
-Widget firstExercises() {
+Widget firstExercises(exerciseVariantsCount) {
   return Container(
-    padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+    padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
     child: Align(
       alignment: Alignment.bottomLeft,
       child: RichText(
         text: TextSpan(
-          text: '', // don`t have a data
+          text: "Exercises - $exerciseVariantsCount",
           style: TextStyle(color: Colors.black, fontSize: 13),
           children: <TextSpan>[],
         ),
@@ -135,18 +144,19 @@ Widget firstExercises() {
   );
 }
 
-Widget firstDuration() {
+Widget firstDuration(totalDuration) {
+  var duration = totalDuration / 60;
   return Container(
       padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
       child: Row(children: <Widget>[
         Icon(
-          Icons.alarm,
+          Icons.access_time,
           color: Colors.black,
           size: 15,
         ),
         SizedBox(width: 10),
         Text(
-          '', // don`t have a data
+          '${duration.round()} min',
           style: TextStyle(fontSize: 15, color: Colors.black),
         )
       ]));
@@ -168,7 +178,10 @@ Widget iconStars() {
 class LevelCard extends StatelessWidget {
   final Level level;
   final bool isSelected;
-  const LevelCard({Key key, this.level, this.isSelected}) : super(key: key);
+  final String motivationText;
+
+  const LevelCard({Key key, this.level, this.isSelected, this.motivationText})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -191,10 +204,10 @@ class LevelCard extends StatelessWidget {
                         Column(
                           children: <Widget>[
                             title(),
-                            subTitle(),
+                            subTitle(level.motivationText),
                             firstLevel(level),
-                            firstExercises(),
-                            firstDuration(),
+                            firstExercises(level.exerciseVariantsCount),
+                            firstDuration(level.totalDuration),
                             iconStars()
                           ],
                         )
