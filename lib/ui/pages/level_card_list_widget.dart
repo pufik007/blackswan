@@ -55,8 +55,8 @@ class LevelCardListWidget extends StatelessWidget {
     var houseCount = levels.length;
     for (int i = 0; i < houseCount; i++) {
       var level = levels[i];
-      date = date.add(Duration(days: 1));
       items.add(this._getLevel(level, level.id == selectedLevelID, date));
+      date = date.add(Duration(days: 1));
     }
     return Row(
       children: items,
@@ -67,7 +67,7 @@ class LevelCardListWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 160.0, horizontal: 10.0),
       child: LevelCard(
-        date: date.add(Duration(days: -1)),
+        date: date,
         level: level,
         isSelected: isSelected,
       ),
