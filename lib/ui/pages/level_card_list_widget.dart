@@ -1,13 +1,18 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
 import '../../ui/widgets/map_bloc/bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class LevelCardListWidget extends StatelessWidget {
+  final Level level;
+  final DateTime date;
+  const LevelCardListWidget(this.level, this.date);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MapBloc, MapState>(
@@ -17,7 +22,8 @@ class LevelCardListWidget extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         }
         if (state is MapLoaded) {
-          return this._getLevelCardList(state.levels, state.selectedLevelID);
+          return this
+              ._getLevelCardList(state.levels, state.selectedLevelID, date);
         }
 
         return null;
@@ -25,7 +31,8 @@ class LevelCardListWidget extends StatelessWidget {
     );
   }
 
-  Widget _getLevelCardList(List<Level> levels, int selectedLevelID) {
+  Widget _getLevelCardList(
+      List<Level> levels, int selectedLevelID, DateTime date) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
@@ -33,7 +40,7 @@ class LevelCardListWidget extends StatelessWidget {
           child: Row(
             children: <Widget>[
               this._getLevels(
-                  context, constraints.maxWidth, levels, selectedLevelID),
+                  context, constraints.maxWidth, levels, selectedLevelID, date),
             ],
           ),
         );
@@ -41,23 +48,26 @@ class LevelCardListWidget extends StatelessWidget {
     );
   }
 
-  Widget _getLevels(
-      context, double width, List<Level> levels, int selectedLevelID) {
+  Widget _getLevels(context, double width, List<Level> levels,
+      int selectedLevelID, DateTime date) {
+    date = DateTime.now();
     var items = List<Widget>();
     var houseCount = levels.length;
     for (int i = 0; i < houseCount; i++) {
       var level = levels[i];
-      items.add(this._getLevel(level, level.id == selectedLevelID));
+      items.add(this._getLevel(level, level.id == selectedLevelID, date));
+      date = date.add(Duration(days: 1));
     }
     return Row(
       children: items,
     );
   }
 
-  Widget _getLevel(Level level, bool isSelected) {
+  Widget _getLevel(Level level, bool isSelected, DateTime date) {
     return Container(
-      padding: new EdgeInsets.symmetric(vertical: 160.0, horizontal: 10.0),
+      padding: EdgeInsets.symmetric(vertical: 160.0, horizontal: 10.0),
       child: LevelCard(
+        date: date,
         level: level,
         isSelected: isSelected,
       ),
@@ -65,9 +75,12 @@ class LevelCardListWidget extends StatelessWidget {
   }
 }
 
-Widget title() {
+Widget title(date) {
+  var formatter = DateFormat.MMMd();
+  String formatted = formatter.format(date);
+
   return Container(
-    padding: new EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+    padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
     height: 40,
     width: 300,
     color: Colors.green[300],
@@ -75,7 +88,7 @@ Widget title() {
       alignment: Alignment.topLeft,
       child: RichText(
         text: TextSpan(
-          text: '', // don`t have a data
+          text: '$formatted',
           style: TextStyle(color: Colors.white, fontSize: 25),
           children: <TextSpan>[],
         ),
@@ -84,9 +97,9 @@ Widget title() {
   );
 }
 
-Widget subTitle() {
+Widget subTitle(motivationText) {
   return Container(
-    padding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+    padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
     height: 60,
     width: 320,
     color: Colors.green[300],
@@ -94,7 +107,7 @@ Widget subTitle() {
       alignment: Alignment.bottomLeft,
       child: RichText(
         text: TextSpan(
-          text: '', // don`t have a data
+          text: '$motivationText',
           style: TextStyle(color: Colors.white, fontSize: 13),
           children: <TextSpan>[],
         ),
@@ -105,7 +118,7 @@ Widget subTitle() {
 
 Widget firstLevel(level) {
   return Container(
-    padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+    padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
     child: Align(
       alignment: Alignment.bottomLeft,
       child: RichText(
@@ -119,14 +132,14 @@ Widget firstLevel(level) {
   );
 }
 
-Widget firstExercises() {
+Widget firstExercises(exerciseVariantsCount) {
   return Container(
-    padding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+    padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
     child: Align(
       alignment: Alignment.bottomLeft,
       child: RichText(
         text: TextSpan(
-          text: '', // don`t have a data
+          text: "Exercises - $exerciseVariantsCount",
           style: TextStyle(color: Colors.black, fontSize: 13),
           children: <TextSpan>[],
         ),
@@ -135,18 +148,19 @@ Widget firstExercises() {
   );
 }
 
-Widget firstDuration() {
+Widget firstDuration(totalDuration) {
+  var duration = totalDuration / 60;
   return Container(
       padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
       child: Row(children: <Widget>[
         Icon(
-          Icons.alarm,
+          Icons.access_time,
           color: Colors.black,
           size: 15,
         ),
         SizedBox(width: 10),
         Text(
-          '', // don`t have a data
+          '${duration.round()} min',
           style: TextStyle(fontSize: 15, color: Colors.black),
         )
       ]));
@@ -168,7 +182,12 @@ Widget iconStars() {
 class LevelCard extends StatelessWidget {
   final Level level;
   final bool isSelected;
-  const LevelCard({Key key, this.level, this.isSelected}) : super(key: key);
+  final String motivationText;
+  final DateTime date;
+
+  const LevelCard(
+      {Key key, this.level, this.isSelected, this.motivationText, this.date})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -190,11 +209,11 @@ class LevelCard extends StatelessWidget {
                       children: <Widget>[
                         Column(
                           children: <Widget>[
-                            title(),
-                            subTitle(),
+                            title(date),
+                            subTitle(level.motivationText),
                             firstLevel(level),
-                            firstExercises(),
-                            firstDuration(),
+                            firstExercises(level.exerciseVariantsCount),
+                            firstDuration(level.totalDuration),
                             iconStars()
                           ],
                         )
