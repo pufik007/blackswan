@@ -10,8 +10,8 @@ import 'package:intl/date_symbol_data_local.dart';
 
 class LevelCardListWidget extends StatelessWidget {
   final Level level;
-
-  const LevelCardListWidget(this.level);
+  final DateTime date;
+  const LevelCardListWidget(this.level, this.date);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,8 @@ class LevelCardListWidget extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         }
         if (state is MapLoaded) {
-          return this._getLevelCardList(state.levels, state.selectedLevelID);
+          return this
+              ._getLevelCardList(state.levels, state.selectedLevelID, date);
         }
 
         return null;
@@ -30,7 +31,8 @@ class LevelCardListWidget extends StatelessWidget {
     );
   }
 
-  Widget _getLevelCardList(List<Level> levels, int selectedLevelID) {
+  Widget _getLevelCardList(
+      List<Level> levels, int selectedLevelID, DateTime date) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
@@ -38,7 +40,7 @@ class LevelCardListWidget extends StatelessWidget {
           child: Row(
             children: <Widget>[
               this._getLevels(
-                  context, constraints.maxWidth, levels, selectedLevelID),
+                  context, constraints.maxWidth, levels, selectedLevelID, date),
             ],
           ),
         );
@@ -46,23 +48,26 @@ class LevelCardListWidget extends StatelessWidget {
     );
   }
 
-  Widget _getLevels(
-      context, double width, List<Level> levels, int selectedLevelID) {
+  Widget _getLevels(context, double width, List<Level> levels,
+      int selectedLevelID, DateTime date) {
+    date = DateTime.now();
     var items = List<Widget>();
     var houseCount = levels.length;
     for (int i = 0; i < houseCount; i++) {
       var level = levels[i];
-      items.add(this._getLevel(level, level.id == selectedLevelID));
+      date = date.add(Duration(days: 1));
+      items.add(this._getLevel(level, level.id == selectedLevelID, date));
     }
     return Row(
       children: items,
     );
   }
 
-  Widget _getLevel(Level level, bool isSelected) {
+  Widget _getLevel(Level level, bool isSelected, DateTime date) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 160.0, horizontal: 10.0),
       child: LevelCard(
+        date: date.add(Duration(days: -1)),
         level: level,
         isSelected: isSelected,
       ),
@@ -70,10 +75,9 @@ class LevelCardListWidget extends StatelessWidget {
   }
 }
 
-Widget title() {
-  var now = DateTime.now(); //.add(new Duration(days: 1))
+Widget title(date) {
   var formatter = DateFormat.MMMd();
-  String formatted = formatter.format(now);
+  String formatted = formatter.format(date);
 
   return Container(
     padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
@@ -179,8 +183,10 @@ class LevelCard extends StatelessWidget {
   final Level level;
   final bool isSelected;
   final String motivationText;
+  final DateTime date;
 
-  const LevelCard({Key key, this.level, this.isSelected, this.motivationText})
+  const LevelCard(
+      {Key key, this.level, this.isSelected, this.motivationText, this.date})
       : super(key: key);
 
   @override
@@ -203,7 +209,7 @@ class LevelCard extends StatelessWidget {
                       children: <Widget>[
                         Column(
                           children: <Widget>[
-                            title(),
+                            title(date),
                             subTitle(level.motivationText),
                             firstLevel(level),
                             firstExercises(level.exerciseVariantsCount),

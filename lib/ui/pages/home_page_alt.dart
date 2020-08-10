@@ -18,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   final _mapBloc = map.MapBloc();
   Level level;
 
+  DateTime date;
   @override
   void initState() {
     super.initState();
@@ -60,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              LevelCardListWidget(level),
+              LevelCardListWidget(level, date),
             ],
           )),
     );
