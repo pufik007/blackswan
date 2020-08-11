@@ -204,8 +204,10 @@ class LevelCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          BlocProvider.of<HomeNavigatorBloc>(context)
-              .add(NavigateToLevel(level, image, imageAlign));
+          BlocProvider.of<HomeNavigatorBloc>(context).add(NavigateToLevel(
+              level,
+              Image.asset('assets/map/levels/left/1.png').image,
+              Alignment.centerLeft));
         },
         child: Container(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
