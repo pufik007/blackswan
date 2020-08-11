@@ -6,12 +6,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
 import '../../ui/widgets/map_bloc/bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import '../../data/navigator_bloc/navigator_event.dart';
+import '../../data/navigator_bloc/navigator_bloc.dart';
 
 class LevelCardListWidget extends StatelessWidget {
   final Level level;
   final DateTime date;
-  const LevelCardListWidget(this.level, this.date);
+  final ImageProvider image;
+  final Alignment imageAlign;
+  const LevelCardListWidget(this.level, this.date, this.image, this.imageAlign);
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +25,8 @@ class LevelCardListWidget extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         }
         if (state is MapLoaded) {
-          return this
-              ._getLevelCardList(state.levels, state.selectedLevelID, date);
+          return this._getLevelCardList(
+              state.levels, state.selectedLevelID, date, level);
         }
 
         return null;
@@ -32,7 +35,7 @@ class LevelCardListWidget extends StatelessWidget {
   }
 
   Widget _getLevelCardList(
-      List<Level> levels, int selectedLevelID, DateTime date) {
+      List<Level> levels, int selectedLevelID, DateTime date, Level level) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
@@ -80,7 +83,7 @@ Widget title(date) {
   String formatted = formatter.format(date);
 
   return Container(
-    padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+    padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
     height: 40,
     width: 300,
     color: Colors.green[300],
@@ -184,46 +187,61 @@ class LevelCard extends StatelessWidget {
   final bool isSelected;
   final String motivationText;
   final DateTime date;
+  final ImageProvider image;
+  final Alignment imageAlign;
 
   const LevelCard(
-      {Key key, this.level, this.isSelected, this.motivationText, this.date})
+      {Key key,
+      this.level,
+      this.isSelected,
+      this.motivationText,
+      this.date,
+      this.image,
+      this.imageAlign})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-      height: 520,
-      width: 220,
-      color: Colors.white,
-      child: Padding(
-        padding: EdgeInsets.all(0),
-        child: Stack(children: <Widget>[
-          Align(
-            alignment: Alignment.centerRight,
-            child: Stack(
-              children: <Widget>[
-                Padding(
-                    padding: const EdgeInsets.only(left: 0, top: 0),
-                    child: Column(
-                      children: <Widget>[
-                        Column(
+    return GestureDetector(
+        onTap: () {
+          BlocProvider.of<HomeNavigatorBloc>(context).add(NavigateToLevel(
+              level,
+              Image.asset('assets/map/levels/left/1.png').image,
+              Alignment.centerLeft));
+        },
+        child: Container(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          height: 520,
+          width: 220,
+          color: Colors.white,
+          child: Padding(
+            padding: EdgeInsets.all(0),
+            child: Stack(children: <Widget>[
+              Align(
+                alignment: Alignment.centerRight,
+                child: Stack(
+                  children: <Widget>[
+                    Padding(
+                        padding: const EdgeInsets.only(left: 0, top: 0),
+                        child: Column(
                           children: <Widget>[
-                            title(date),
-                            subTitle(level.motivationText),
-                            firstLevel(level),
-                            firstExercises(level.exerciseVariantsCount),
-                            firstDuration(level.totalDuration),
-                            iconStars()
+                            Column(
+                              children: <Widget>[
+                                title(date),
+                                subTitle(level.motivationText),
+                                firstLevel(level),
+                                firstExercises(level.exerciseVariantsCount),
+                                firstDuration(level.totalDuration),
+                                iconStars()
+                              ],
+                            )
                           ],
-                        )
-                      ],
-                    ))
-              ],
-            ),
-          )
-        ]),
-      ),
-    );
+                        ))
+                  ],
+                ),
+              )
+            ]),
+          ),
+        ));
   }
 }
