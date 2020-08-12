@@ -12,7 +12,7 @@ import 'entities/level.dart';
 import 'entities/user.dart';
 import 'package:http/http.dart' as http;
 
-const String _url = "https://blackbird-staging-api.herokuapp.com";
+const String _url = "https://api.tensorfit.com";
 
 abstract class Api {
   static Future<PrivateResponse> register(String login, String password) async {
@@ -31,7 +31,8 @@ abstract class Api {
         } else if (client == null) {
           return PrivateResponse.error(['API: client is absent in header']);
         } else {
-          return PrivateResponse.ok(token, UserResponse(client: client, user: user));
+          return PrivateResponse.ok(
+              token, UserResponse(client: client, user: user));
         }
       } else {
         var errors = Errors.fromJson(json.decode(httpRes.body));
@@ -47,7 +48,8 @@ abstract class Api {
       Map<String, String> headers = {"Content-type": "application/json"};
       var body = jsonEncode({"email": login, "password": password});
 
-      var httpRes = await http.post('$_url/auth/sign_in', headers: headers, body: body);
+      var httpRes =
+          await http.post('$_url/auth/sign_in', headers: headers, body: body);
 
       if (httpRes.statusCode == 200) {
         var user = User.fromJson(json.decode(httpRes.body));
@@ -58,7 +60,8 @@ abstract class Api {
         } else if (client == null) {
           return PrivateResponse.error(['API: client is absent in header']);
         } else {
-          return PrivateResponse.ok(token, UserResponse(client: client, user: user));
+          return PrivateResponse.ok(
+              token, UserResponse(client: client, user: user));
         }
       } else {
         var errors = Errors.fromJson(json.decode(httpRes.body));
@@ -74,7 +77,8 @@ abstract class Api {
       Map<String, String> headers = {"Content-type": "application/json"};
       var body = jsonEncode({"id_token": tokenID});
 
-      var httpRes = await http.post('$_url/auth/google_oauth2/validate', headers: headers, body: body);
+      var httpRes = await http.post('$_url/auth/google_oauth2/validate',
+          headers: headers, body: body);
 
       if (httpRes.statusCode == 200) {
         var user = User.fromJson(json.decode(httpRes.body));
@@ -85,7 +89,8 @@ abstract class Api {
         } else if (client == null) {
           return PrivateResponse.error(['API: client is absent in header']);
         } else {
-          return PrivateResponse.ok(token, UserResponse(client: client, user: user));
+          return PrivateResponse.ok(
+              token, UserResponse(client: client, user: user));
         }
       } else {
         var errors = Errors.fromJson(json.decode(httpRes.body));
@@ -101,7 +106,8 @@ abstract class Api {
       Map<String, String> headers = {"Content-type": "application/json"};
       var body = jsonEncode({"id_token": tokenID});
 
-      var httpRes = await http.post('$_url/auth/facebook/validate', headers: headers, body: body);
+      var httpRes = await http.post('$_url/auth/facebook/validate',
+          headers: headers, body: body);
 
       if (httpRes.statusCode == 200) {
         var user = User.fromJson(json.decode(httpRes.body));
@@ -112,7 +118,8 @@ abstract class Api {
         } else if (client == null) {
           return PrivateResponse.error(['API: client is absent in header']);
         } else {
-          return PrivateResponse.ok(token, UserResponse(client: client, user: user));
+          return PrivateResponse.ok(
+              token, UserResponse(client: client, user: user));
         }
       } else {
         var errors = Errors.fromJson(json.decode(httpRes.body));
@@ -155,7 +162,8 @@ abstract class Api {
     }
   }
 
-  static Future<PrivateResponse> getJourney(String uid, String client, String token) async {
+  static Future<PrivateResponse> getJourney(
+      String uid, String client, String token) async {
     try {
       Map<String, String> headers = {
         "uid": uid,
@@ -184,7 +192,8 @@ abstract class Api {
     }
   }
 
-  static Future<PrivateResponse> createJourney(String uid, String client, String token) async {
+  static Future<PrivateResponse> createJourney(
+      String uid, String client, String token) async {
     try {
       Map<String, String> headers = {
         "uid": uid,
@@ -195,7 +204,8 @@ abstract class Api {
 
       var body = jsonEncode(Journey(difficulty: 'normal').toJson());
 
-      var httpRes = await http.post('$_url/journey', headers: headers, body: body);
+      var httpRes =
+          await http.post('$_url/journey', headers: headers, body: body);
 
       if (httpRes.statusCode == 200) {
         var journey = Journey.fromJson(json.decode(httpRes.body));
@@ -214,7 +224,8 @@ abstract class Api {
     }
   }
 
-  static Future<PrivateResponse> updateUser(User user, String client, String token) async {
+  static Future<PrivateResponse> updateUser(
+      User user, String client, String token) async {
     try {
       Map<String, String> headers = {
         "uid": user.email,
@@ -225,7 +236,8 @@ abstract class Api {
 
       var body = jsonEncode(user.toJson());
 
-      var httpRes = await http.patch('$_url/auth', headers: headers, body: body);
+      var httpRes =
+          await http.patch('$_url/auth', headers: headers, body: body);
 
       if (httpRes.statusCode == 200) {
         var newUser = User.fromJson(json.decode(httpRes.body));
@@ -244,7 +256,8 @@ abstract class Api {
     }
   }
 
-  static Future<PrivateResponse> updateGoals(String uid, String client, String token, List<Goal> goals) async {
+  static Future<PrivateResponse> updateGoals(
+      String uid, String client, String token, List<Goal> goals) async {
     try {
       Map<String, String> headers = {
         "uid": uid,
@@ -255,7 +268,8 @@ abstract class Api {
 
       var body = jsonEncode({"goals": goals});
 
-      var httpRes = await http.patch('$_url/dreams', headers: headers, body: body);
+      var httpRes =
+          await http.patch('$_url/dreams', headers: headers, body: body);
 
       if (httpRes.statusCode == 200) {
         var newToken = httpRes.headers['access-token'];
@@ -273,7 +287,8 @@ abstract class Api {
     }
   }
 
-  static Future<PrivateResponse> getLevels(User user, String client, String token) async {
+  static Future<PrivateResponse> getLevels(
+      User user, String client, String token) async {
     try {
       Map<String, String> headers = {
         "uid": user.email,
@@ -303,7 +318,8 @@ abstract class Api {
     }
   }
 
-  static Future<PrivateResponse> getExercises(User user, String client, String token, int levelID) async {
+  static Future<PrivateResponse> getExercises(
+      User user, String client, String token, int levelID) async {
     try {
       Map<String, String> headers = {
         "uid": user.email,
@@ -312,7 +328,8 @@ abstract class Api {
         "Content-type": "application/json",
       };
 
-      var httpRes = await http.get('$_url/levels/$levelID/exercise_variants', headers: headers);
+      var httpRes = await http.get('$_url/levels/$levelID/exercise_variants',
+          headers: headers);
 
       print(httpRes.body);
 
@@ -333,7 +350,8 @@ abstract class Api {
     }
   }
 
-  static Future<PrivateResponse> replaceExercise(User user, String client, String token, int exerciseID, int substituteID) async {
+  static Future<PrivateResponse> replaceExercise(User user, String client,
+      String token, int exerciseID, int substituteID) async {
     try {
       Map<String, String> headers = {
         "uid": user.email,
@@ -342,9 +360,14 @@ abstract class Api {
         "Content-type": "application/json",
       };
 
-      var body = jsonEncode({"substitute_id": substituteID, });
+      var body = jsonEncode({
+        "substitute_id": substituteID,
+      });
 
-      var httpRes = await http.post('$_url/exercise_variants/$exerciseID/replace', headers: headers, body: body);
+      var httpRes = await http.post(
+          '$_url/exercise_variants/$exerciseID/replace',
+          headers: headers,
+          body: body);
 
       print(httpRes.body);
 
