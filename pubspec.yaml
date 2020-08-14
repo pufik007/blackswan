@@ -49,7 +49,7 @@ dev_dependencies:
   
   tflite: 1.1.1
 
-  test:
+  test: 1.10.0
 
 flutter:
   uses-material-design: true

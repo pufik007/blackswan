@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import './exercises_counter.dart';
+import '../../../../lib/ui/camera_alt/exercises_counter.dart';
 
 void main() {
   test('Exercises counter should be incremented', () {
@@ -11,6 +11,8 @@ void main() {
 
     counter.init(config, exercise);
   });
+
+  expect(ExercisesCounter, '');
 }
 
-//flutter test lib\ui\camera_alt\exercises_counter_test.dart
+//flutter test test\lib\ui\camera_alt\exercises_counter_test.dart
