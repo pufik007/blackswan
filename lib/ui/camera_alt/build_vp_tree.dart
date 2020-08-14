@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 
 class BuildVpTree {
-  
-  var config = config['exercises'][exercise];
-  var debug = config['debug'];
-  Map images;
-  Map joints;
-  Map trees;
-  var annotator = null;
- 
-  restore() {}
+//   var config = config['exercises'][exercise];
+//   var debug = config['debug'];
+//   Map images;
+//   Map joints;
+//   Map trees;
+//   var annotator = null;
 
-   getNearest(point){
-      var result = Map();
-       for (var key in trees) {
-        result.putIfAbsent(key, () => trees.get_nearest_neighbor(point));
-      }
+//   restore() {}
 
-      if (debug){
-      print([[key, round(item[0], 4)] for key, item in result.items()]);
-      }
+//    getNearest(point){
+//       var result = Map();
+//        for (var key in trees) {
+//         result.putIfAbsent(key, () => trees.get_nearest_neighbor(point));
+//       }
 
-      return min(result.items(), key=operator.itemgetter(1));
-}
+//       if (debug){
+//       print([[key, round(item[0], 4)] for key, item in result.items()]);
+//       }
+
+//       return min(result.items(), key=operator.itemgetter(1));
+// }
 }
 
 // import glob
