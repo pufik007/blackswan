@@ -63,10 +63,10 @@ class ExercisesCounter {
   //   }
   // }
 
-  // repsCounter(pose, confidence, bbox) {
-  //   var match = fintMostSimilarMatch(pose, confidence, bbox);
-  //   incrementPoseCount(match);
-  //   var reps = countTotalReps();
-  //   return reps();
-  // }
+  repsCounter(List<dynamic> pose, List<dynamic> confidence, bbox) {
+    // var match = fintMostSimilarMatch(pose, confidence, bbox);
+    // incrementPoseCount(match);
+    // var reps = countTotalReps();
+    // return reps();
+  }
 }
