@@ -1,6 +1,5 @@
 import 'package:test/test.dart';
 import '../../../lib/ui/camera_alt/exercises_counter.dart';
-import 'package:flutter/material.dart';
 import '../../../lib/ui/camera_alt/bbox.dart';
 
 void main() {
@@ -46,7 +45,10 @@ void main() {
     // var exercise = '';
 
     // counter.init(config, exercise);
-    expect(counter, ExercisesCounter);
+    var bbox = Bbox();
+    var repsCount = counter.repsCounter(pose, confidence, bbox);
+
+    expect(repsCount, 1);
   });
 }
 

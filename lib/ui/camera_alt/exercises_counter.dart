@@ -1,6 +1,9 @@
-import './build_vp_tree.dart';
+import 'vp_tree_manager.dart';
+import 'bbox.dart';
 
 class ExercisesCounter {
+  VpTreeManager vpTreeManager;
+
   init(config, exercise) {
     //   var config;
     //   var debug = config['debug'];
@@ -13,11 +16,12 @@ class ExercisesCounter {
     //   vp_tree.restore(); // вызов метода из класса BuildVpTree
   }
 
-  // fintMostSimilarMatch(pose, confidence, bbox, vp_tree) {
-  //   var nearestImage = vp_tree.getNearest(
-  //       [pose, confidence, bbox]); //вызов метода из класса BuildVpTree
-  //   return {'category': nearestImage[0], 'score': nearestImage[1][0]};
-  // }
+  findMostSimilarMatch(List<dynamic> pose, List<dynamic> confidence, Bbox bbox,
+      VpTreeManager vpTreeManager) {
+    //   var nearestImage = vp_tree.getNearest(
+    //       [pose, confidence, bbox]); //вызов метода из класса BuildVpTree
+    //   return {'category': nearestImage[0], 'score': nearestImage[1][0]};
+  }
 
   // incrementPoseCounter(match, conter, counter, threshold_distance) {
   //   if (match['score'] < threshold_distance) {
@@ -63,10 +67,12 @@ class ExercisesCounter {
   //   }
   // }
 
-  repsCounter(List<dynamic> pose, List<dynamic> confidence, bbox) {
-    // var match = fintMostSimilarMatch(pose, confidence, bbox);
+  repsCounter(List<dynamic> pose, List<dynamic> confidence, Bbox bbox) {
+    var match = findMostSimilarMatch(pose, confidence, bbox, vpTreeManager);
+
     // incrementPoseCount(match);
     // var reps = countTotalReps();
     // return reps();
+    return 0;
   }
 }

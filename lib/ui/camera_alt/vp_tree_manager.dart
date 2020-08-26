@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class BuildVpTree {
+class VpTreeManager {
 //   var config = config['exercises'][exercise];
 //   var debug = config['debug'];
 //   Map images;
@@ -34,7 +34,7 @@ class BuildVpTree {
 // from src.utils.drawer import Drawer
 // from src.system.interface import AnnotatorInterface
 
-// class BuildVpTree(object):
+// class VpTree(object):
 //     def __init__(self, config, exercise):
 
 //         self.config = config['exercises'][exercise]
