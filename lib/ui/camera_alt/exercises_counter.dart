@@ -16,8 +16,8 @@ class ExercisesCounter {
     //   vp_tree.restore(); // вызов метода из класса BuildVpTree
   }
 
-  findMostSimilarMatch(List<dynamic> pose, List<dynamic> confidence, Bbox bbox,
-      VpTreeManager vpTreeManager) {
+  findMostSimilarMatch(
+      List<dynamic> pose, List<dynamic> confidence, Bbox bbox) {
     //   var nearestImage = vp_tree.getNearest(
     //       [pose, confidence, bbox]); //вызов метода из класса BuildVpTree
     //   return {'category': nearestImage[0], 'score': nearestImage[1][0]};
@@ -68,7 +68,7 @@ class ExercisesCounter {
   // }
 
   repsCounter(List<dynamic> pose, List<dynamic> confidence, Bbox bbox) {
-    var match = findMostSimilarMatch(pose, confidence, bbox, vpTreeManager);
+    var match = findMostSimilarMatch(pose, confidence, bbox);
 
     // incrementPoseCount(match);
     // var reps = countTotalReps();

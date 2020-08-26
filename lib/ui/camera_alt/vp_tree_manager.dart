@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './bbox.dart';
 
 class VpTreeManager {
 //   var config = config['exercises'][exercise];
@@ -10,7 +11,7 @@ class VpTreeManager {
 
 //   restore() {}
 
-//    getNearest(point){
+  getNearest(List<dynamic> pose, List<dynamic> confidence, Bbox bbox) {
 //       var result = Map();
 //        for (var key in trees) {
 //         result.putIfAbsent(key, () => trees.get_nearest_neighbor(point));
@@ -21,7 +22,7 @@ class VpTreeManager {
 //       }
 
 //       return min(result.items(), key=operator.itemgetter(1));
-// }
+  }
 }
 
 // import glob
