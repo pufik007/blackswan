@@ -26,11 +26,10 @@ class VpTreeManager {
 
   List<VpTree> trees;
 
-  getNearest(
-      List<dynamic> pose, List<dynamic> confidence, Bbox bbox, String key) {
+  getNearest(List<dynamic> pose, List<dynamic> confidence, Bbox bbox) {
     var result = Map<dynamic, dynamic>();
     trees.forEach((tree) {
-      result[tree.key] = tree.getNearestNeighbour(pose, confidence, bbox, key);
+      result[tree.key] = tree.getNearestNeighbour(pose, confidence, bbox);
     });
 //        for (var key in trees) {
 //         result.putIfAbsent(key, () => trees.get_nearest_neighbor(point));
@@ -40,7 +39,7 @@ class VpTreeManager {
 //       print([[key, round(item[0], 4)] for key, item in result.items()]);
 //       }
 
-    return minItemInMap();
+    return minItemInMap(result);
   }
 }
 
