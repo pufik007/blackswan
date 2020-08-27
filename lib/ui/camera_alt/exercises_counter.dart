@@ -18,8 +18,7 @@ class ExercisesCounter {
 
   findMostSimilarMatch(
       List<dynamic> pose, List<dynamic> confidence, Bbox bbox) {
-    //   var nearestImage = vp_tree.getNearest(
-    //       [pose, confidence, bbox]); //вызов метода из класса BuildVpTree
+    var nearestImage = vpTreeManager.getNearest(pose, confidence, bbox);
     //   return {'category': nearestImage[0], 'score': nearestImage[1][0]};
   }
 

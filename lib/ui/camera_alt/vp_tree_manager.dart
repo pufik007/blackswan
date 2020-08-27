@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import './bbox.dart';
+import './vp_tree.dart';
 
 class VpTreeManager {
 //   var config = config['exercises'][exercise];
@@ -11,8 +11,27 @@ class VpTreeManager {
 
 //   restore() {}
 
-  getNearest(List<dynamic> pose, List<dynamic> confidence, Bbox bbox) {
-//       var result = Map();
+  minItemInMap(Map<String, dynamic> map) {
+    var minValue = double.infinity;
+    var minKey = null;
+
+    map.forEach((key, value) {
+      if (value < minValue) {
+        minKey = key;
+        minValue = value;
+      }
+      return map[minKey];
+    });
+  }
+
+  List<VpTree> trees;
+
+  getNearest(
+      List<dynamic> pose, List<dynamic> confidence, Bbox bbox, String key) {
+    var result = Map<dynamic, dynamic>();
+    trees.forEach((tree) {
+      result[tree.key] = tree.getNearestNeighbour(pose, confidence, bbox, key);
+    });
 //        for (var key in trees) {
 //         result.putIfAbsent(key, () => trees.get_nearest_neighbor(point));
 //       }
@@ -21,16 +40,9 @@ class VpTreeManager {
 //       print([[key, round(item[0], 4)] for key, item in result.items()]);
 //       }
 
-//       return min(result.items(), key=operator.itemgetter(1));
+    return minItemInMap();
   }
 }
-
-// import glob
-// import operator
-// import vptree
-// import cv2
-// import pickle
-// import numpy as np
 
 // from src.utils.drawer import Drawer
 // from src.system.interface import AnnotatorInterface
