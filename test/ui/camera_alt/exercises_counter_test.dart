@@ -47,7 +47,7 @@ void main() {
 
     // counter.init(config, exercise);
     var bbox = Bbox();
-    var repsCount = counter.repsCounter(pose, confidence, bbox, poseMatch);
+    var repsCount = counter.repsCounter(pose, confidence, bbox);
 
     expect(repsCount, 1);
   });
