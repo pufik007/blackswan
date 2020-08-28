@@ -28,8 +28,10 @@ class ExercisesCounter {
     return PoseMatch();
   }
 
-  incrementPoseCounter(PoseMatch) {
-    if (PoseMatch.score < thresholdDistance) {
+  incrementPoseCounter(PoseMatch poseMatch) {
+    if (poseMatch.score < thresholdDistance) {
+      if (counter.entries != null) {
+      } else if (counter.entries.last.key == poseMatch.category) {}
     } else {}
 
     //   if (match['score'] < threshold_distance) {
