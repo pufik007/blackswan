@@ -1,3 +1,4 @@
+import 'package:tensorfit/ui/camera_alt/pose_match.dart';
 import 'package:test/test.dart';
 import '../../../lib/ui/camera_alt/exercises_counter.dart';
 import '../../../lib/ui/camera_alt/bbox.dart';
@@ -46,7 +47,7 @@ void main() {
 
     // counter.init(config, exercise);
     var bbox = Bbox();
-    var repsCount = counter.repsCounter(pose, confidence, bbox);
+    var repsCount = counter.repsCounter(pose, confidence, bbox, poseMatch);
 
     expect(repsCount, 1);
   });

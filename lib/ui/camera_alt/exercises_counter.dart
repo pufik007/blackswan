@@ -7,6 +7,8 @@ class ExercisesCounter {
   VpTreeManager vpTreeManager;
   double thresholdDistance;
   LinkedHashMap<String, int> counter;
+  int thresholdCount;
+  List<String> pattern;
 
   init(config, exercise) {
     //   var config;
@@ -30,9 +32,23 @@ class ExercisesCounter {
 
   incrementPoseCounter(PoseMatch poseMatch) {
     if (poseMatch.score < thresholdDistance) {
+        
       if (counter.entries != null) {
-      } else if (counter.entries.last.key == poseMatch.category) {}
-    } else {}
+        counter[poseMatch.category] = 1;
+      } else if (counter.entries.last.key == poseMatch.category) {
+          counter[counter.entries.last.key] += 1;
+      } else {
+        counter[poseMatch.category] = 1;
+      } 
+    }else{
+      if(counter.entries.last.key == "unknown"){
+        counter["unknown"] = 1;
+      } else if(){
+        counter[counter.entries.last.key] += 1;
+      }else{
+        counter["unknown"] = 1;
+      }
+    }
 
     //   if (match['score'] < threshold_distance) {
     //     if (conter.length == 0) {
@@ -54,10 +70,27 @@ class ExercisesCounter {
     //   }
   }
 
-  countTotalReps(pose, counter, patern) {
-    //   var currentPatternIndex = 0;
-    //   var countSquat = 0;
+  countTotalReps() {
+      var currentPatternIndex = 0;
+      var countReps = 0;
 
+      counter.forEach((pose, count) {
+        var shouldSkip = false; 
+        if(count < thresholdCount){
+          if(pose == pattern[currentPatternIndex]){
+            shouldSkip = true;
+          }else if(currentPatternIndex +1 < pattern.length && pose == pattern[currentPatternIndex + 1]){
+            currentPatternIndex += 1;
+            }else{
+            currentPatternIndex = 0;
+            }
+          }
+          if(!shouldSkip && currentPatternIndex == pattern.length - 1){
+            countReps += 1;
+            currentPatternIndex = 0;
+          }
+        
+    });
     //   for (var i = 0; i < counter; i++) {
     //     if (counter[i] >= threshold_count) {
     //       if (pose == patern[currentPatternIndex]) {
@@ -77,12 +110,12 @@ class ExercisesCounter {
     //   }
   }
 
-  repsCounter(List<dynamic> pose, List<dynamic> confidence, Bbox bbox) {
+  repsCounter(List<dynamic> pose, List<dynamic> confidence, Bbox bbox, PoseMatch poseMatch) {
     var match = findMostSimilarMatch(pose, confidence, bbox);
-    incrementPoseCounter(PoseMatch);
+    incrementPoseCounter(match);
     // incrementPoseCount(match);
     // var reps = countTotalReps();
     // return reps();
-    return 0;
+     return countTotalReps();
   }
 }
