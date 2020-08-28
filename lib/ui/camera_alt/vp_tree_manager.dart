@@ -10,6 +10,7 @@ class VpTreeManager {
 //   var annotator = null;
 
 //   restore() {}
+  List<VpTree> trees;
 
   minItemInMap(Map<String, dynamic> map) {
     var minValue = double.infinity;
@@ -23,8 +24,6 @@ class VpTreeManager {
       return map[minKey];
     });
   }
-
-  List<VpTree> trees;
 
   getNearest(List<dynamic> pose, List<dynamic> confidence, Bbox bbox) {
     var result = Map<dynamic, dynamic>();
