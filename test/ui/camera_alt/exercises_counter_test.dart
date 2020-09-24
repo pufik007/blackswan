@@ -1,11 +1,11 @@
-import 'package:tensorfit/ui/camera_alt/pose_match.dart';
 import 'package:test/test.dart';
 import '../../../lib/ui/camera_alt/exercises_counter.dart';
 import '../../../lib/ui/camera_alt/bbox.dart';
+import '../../../lib/ui/camera_alt/vp_tree_manager.dart';
 
 void main() {
   test('Exercises counter should be incremented', () {
-    var counter = ExercisesCounter();
+    var counter = ExercisesCounter(VpTreeManager());
 
     List<dynamic> pose = [
       [0.48171628, 0.21103942],
