@@ -4,6 +4,10 @@ import './vp_tree.dart';
 class VpTreeManager {
   List<VpTree> trees;
 
+  VpTreeManager() {
+    this.trees = trees;
+  }
+
   minItemInMap(Map<String, dynamic> map) {
     var minValue = double.infinity;
     var minKey = null;
