@@ -10,6 +10,10 @@ class ExercisesCounter {
   int thresholdCount;
   List<String> pattern;
 
+  ExercisesCounter(VpTreeManager vpTreeManager) {
+    this.vpTreeManager = vpTreeManager;
+  }
+
   init(config, exercise) {}
 
   findMostSimilarMatch(
