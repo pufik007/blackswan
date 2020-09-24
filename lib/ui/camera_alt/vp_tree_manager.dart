@@ -4,7 +4,7 @@ import './vp_tree.dart';
 class VpTreeManager {
   List<VpTree> trees;
 
-  VpTreeManager() {
+  VpTreeManager(List<VpTree> trees) {
     this.trees = trees;
   }
 
