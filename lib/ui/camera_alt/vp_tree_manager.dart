@@ -1,4 +1,5 @@
 import './bbox.dart';
+import './pose_space_point.dart';
 
 class VpTreeManager {
   minItemInMap(Map<String, dynamic> map) {
@@ -23,7 +24,7 @@ class VpTreeManager {
     return minItemInMap(result);
   }
 
-  distance(List<dynamic> a, List<dynamic> b) {
+  distance(PoseSpacePoint a, PoseSpacePoint b) {
     List<dynamic> confidence;
     var dist;
     var pointA = (a[0] - a[0].min()) / (a[0].max() - a[0].min());
