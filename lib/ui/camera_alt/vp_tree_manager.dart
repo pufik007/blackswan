@@ -40,7 +40,7 @@ class VpTreeManager {
       point[0] = (point[0] - aMinValues[0]) / (aMaxValues[0] - aMinValues[0]);
       point[1] = (point[1] - aMinValues[1]) / (aMaxValues[1] - aMinValues[1]);
       return point;
-    });
+    }).toList();
 
     var bMinValues = List<double>.from([double.maxFinite, double.maxFinite]);
     var bMaxValues = List<double>.from([-double.maxFinite, -double.maxFinite]);
@@ -55,7 +55,7 @@ class VpTreeManager {
       point[0] = (point[0] - bMinValues[0]) / (bMaxValues[0] - bMinValues[0]);
       point[1] = (point[1] - bMinValues[1]) / (bMaxValues[1] - bMinValues[1]);
       return point;
-    });
+    }).toList();
 
     var confidence = List<double>();
     var confidenceSum = .0;
