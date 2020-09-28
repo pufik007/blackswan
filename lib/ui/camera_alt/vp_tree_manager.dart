@@ -1,5 +1,6 @@
 import './bbox.dart';
 import './pose_space_point.dart';
+import 'dart:math';
 
 class VpTreeManager {
   minItemInMap(Map<String, dynamic> map) {
