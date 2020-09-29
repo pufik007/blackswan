@@ -1,9 +1,15 @@
-import './bbox.dart';
-import './pose_space_point.dart';
 import 'dart:math';
 import 'package:ml_linalg/vector.dart';
+import './pose_space_point.dart';
+import '../../vptree/vptree.dart';
 
 class VpTreeManager {
+  var exerciseVpTreePoolsMap = Map<String, Map<String, VpTree>>();
+
+  put(String exerciseKey, Map<String, VpTree> vpTreesPool) {
+    exerciseVpTreePoolsMap[exerciseKey] = vpTreesPool;
+  }
+
   minItemInMap(Map<String, dynamic> map) {
     var minValue = double.infinity;
     var minKey = null;
@@ -17,16 +23,17 @@ class VpTreeManager {
     });
   }
 
-  getNearest(List<dynamic> pose, List<dynamic> confidence, Bbox bbox) {
+  getNearest(String exerciseKey, PoseSpacePoint poseSpacePoint) {
     var result = Map<dynamic, dynamic>();
-    trees.forEach((tree) {
-      result[tree.key] = tree.getNearestNeighbour(pose, confidence, bbox);
+    exerciseVpTreePoolsMap[exerciseKey].entries.forEach((exerciseVpTreePool) {
+      result[exerciseVpTreePool.key] =
+          exerciseVpTreePool.value.search(poseSpacePoint, 1, double.maxFinite);
     });
 
     return minItemInMap(result);
   }
 
-  distance(PoseSpacePoint a, PoseSpacePoint b) {
+  static distance(PoseSpacePoint a, PoseSpacePoint b) {
     var aMinValues = List<double>.from([double.maxFinite, double.maxFinite]);
     var aMaxValues = List<double>.from([-double.maxFinite, -double.maxFinite]);
     a.pose.forEach((joint) {
