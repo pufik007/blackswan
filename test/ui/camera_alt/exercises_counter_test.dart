@@ -9,40 +9,6 @@ import '../../../lib/vptree/vptree.dart';
 
 void main() {
   test('Exercises counter should be incremented', () {
-    List<List<double>> pose = [
-      [0.48171628, 0.21103942],
-      [0.53320309, 0.28876346],
-      [0.44125796, 0.2916088],
-      [0.55812778, 0.41638895],
-      [0.41844541, 0.41206645],
-      [0.5105514, 0.44128013],
-      [0.44240713, 0.43728491],
-      [0.52221238, 0.51763942],
-      [0.45909978, 0.52392779],
-      [0.55264277, 0.66091287],
-      [0.42189935, 0.6672397],
-      [0.5499118, 0.85397048],
-      [0.42549771, 0.86753154]
-    ];
-
-    List<double> confidence = [
-      0.9806515,
-      0.97254556,
-      0.9624879,
-      0.9721693,
-      0.9917129,
-      0.8090379,
-      0.68297017,
-      0.74535465,
-      0.5589173,
-      0.89043903,
-      0.700753,
-      0.96876717,
-      0.97490084
-    ];
-
-    var bbox = Bbox();
-
     List<List<double>> poseFrame11 = [
       [0.48276987, 0.24532699],
       [0.5352102, 0.32444803],
@@ -463,28 +429,26 @@ void main() {
     //   // double A = 0.1079
     // };
 
-    var poseSpacePointA1 = PoseSpacePoint(pose, confidence, bbox);
-    var poseSpacePointA2 =
+    var poseSpacePointA1 =
         PoseSpacePoint(poseFrame11, confidenceFrame11, bboxFrame11);
-    var poseSpacePointA3 =
+    var poseSpacePointA2 =
         PoseSpacePoint(poseFrame95, confidenceFrame95, bboxFrame95);
-    var poseSpacePointA4 =
+    var poseSpacePointA3 =
         PoseSpacePoint(poseFrame170, confidenceFrame170, bboxFrame170);
-    var poseSpacePointA5 =
+    var poseSpacePointA4 =
         PoseSpacePoint(poseFrame229, confidenceFrame229, bboxFrame229);
-    var poseSpacePointA6 =
+    var poseSpacePointA5 =
         PoseSpacePoint(poseFrame315, confidenceFrame315, bboxFrame315);
 
-    var poseSpacePointB1 = PoseSpacePoint(pose, confidence, bbox);
-    var poseSpacePointB2 =
+    var poseSpacePointB1 =
         PoseSpacePoint(poseFrame60, confidenceFrame60, bboxFrame60);
-    var poseSpacePointB3 =
+    var poseSpacePointB2 =
         PoseSpacePoint(poseFrame141, confidenceFrame141, bboxFrame141);
-    var poseSpacePointB4 =
+    var poseSpacePointB3 =
         PoseSpacePoint(poseFrame203, confidenceFrame203, bboxFrame203);
-    var poseSpacePointB5 =
+    var poseSpacePointB4 =
         PoseSpacePoint(poseFrame275, confidenceFrame275, bboxFrame275);
-    var poseSpacePointB6 =
+    var poseSpacePointB5 =
         PoseSpacePoint(poseFrame345, confidenceFrame345, bboxFrame345);
 
     var vpTreeA = new VpTreeFactory().build([
@@ -492,8 +456,7 @@ void main() {
       poseSpacePointA2 as SpacePoint,
       poseSpacePointA3 as SpacePoint,
       poseSpacePointA4 as SpacePoint,
-      poseSpacePointA5 as SpacePoint,
-      poseSpacePointA6 as SpacePoint
+      poseSpacePointA5 as SpacePoint
     ], 6, (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
@@ -504,8 +467,7 @@ void main() {
       poseSpacePointB2 as SpacePoint,
       poseSpacePointB3 as SpacePoint,
       poseSpacePointB4 as SpacePoint,
-      poseSpacePointB5 as SpacePoint,
-      poseSpacePointB6 as SpacePoint
+      poseSpacePointB5 as SpacePoint
     ], 6, (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
