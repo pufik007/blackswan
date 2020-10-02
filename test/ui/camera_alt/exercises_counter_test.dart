@@ -1,4 +1,3 @@
-import 'package:tensorfit/vptree/space_point.dart';
 import 'package:test/test.dart';
 import '../../../lib/ui/camera_alt/exercises_counter.dart';
 import '../../../lib/ui/camera_alt/bbox.dart';
@@ -44,30 +43,6 @@ void main() {
 
     var bbox = Bbox();
 
-    var poseSpacePointA1 = PoseSpacePoint(pose, confidence, bbox);
-    var vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
-        (spacePointA, spacePointB) {
-      return VpTreeManager.distance(
-          spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
-    });
-
-    var poseSpacePointB1 = PoseSpacePoint(pose, confidence, bbox);
-    var vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
-        (spacePointA, spacePointB) {
-      return VpTreeManager.distance(
-          spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
-    });
-
-    var vpTreesPool = Map<String, Vptree>();
-    vpTreesPool['A'] = vpTreeA;
-    vpTreesPool['B'] = vpTreeB;
-
-    var vpTreeManager = VpTreeManager();
-    vpTreeManager.put("squats", vpTreesPool);
-    var counter = ExercisesCounter(vpTreeManager);
-
-    var repsCount = counter.repsCounter(pose, confidence, bbox);
-
     List<List<double>> poseFrame11 = [
       [0.48276987, 0.24532699],
       [0.5352102, 0.32444803],
@@ -100,38 +75,14 @@ void main() {
       0.9729593
     ];
 
-    // Bbox bboxFrame11 = {
-    //   double minX = 0.4140942689298404,
-    //   double maxX = 0.5580624861345514,
-    //   double minY = 0.24532699099220184,
-    //   double maxY = 0.8641534921542162,
-    //   double B = 0.0841,
-    //   double A = 0.094
-    // };
-
-    poseSpacePointA1 = PoseSpacePoint(poseFrame11, confidenceFrame11, bbox);
-    vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
-        (spacePointA, spacePointB) {
-      return VpTreeManager.distance(
-          spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
-    });
-
-    poseSpacePointB1 = PoseSpacePoint(poseFrame11, confidenceFrame11, bbox);
-    vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
-        (spacePointA, spacePointB) {
-      return VpTreeManager.distance(
-          spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
-    });
-
-    vpTreesPool = Map<String, Vptree>();
-    vpTreesPool['A'] = vpTreeA;
-    vpTreesPool['B'] = vpTreeB;
-
-    vpTreeManager = VpTreeManager();
-    vpTreeManager.put("squats", vpTreesPool);
-    counter = ExercisesCounter(vpTreeManager);
-
-    repsCount = counter.repsCounter(poseFrame11, confidenceFrame11, bbox);
+    Bbox bboxFrame11 = {
+      // double minX = 0.4140942689298404,
+      // double maxX = 0.5580624861345514,
+      // double minY = 0.24532699099220184,
+      // double maxY = 0.8641534921542162,
+      // double B = 0.0841,
+      // double A = 0.094
+    };
 
     List<List<double>> poseFrame95 = [
       [0.47735545, 0.21991342],
@@ -165,38 +116,14 @@ void main() {
       0.9658314
     ];
 
-    // Bbox bboxFrame95 = {
-    // double minX = 0.41224952244922364,
-    // double maxX = 0.5547129704306427,
-    // double minY = 0.21991342419249593,
-    // double maxY = 0.8590682357117567
-    // double B = 0.0869,
-    // double A = 0.0897
-    // };
-
-    poseSpacePointA1 = PoseSpacePoint(poseFrame95, confidenceFrame95, bbox);
-    vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
-        (spacePointA, spacePointB) {
-      return VpTreeManager.distance(
-          spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
-    });
-
-    poseSpacePointB1 = PoseSpacePoint(poseFrame95, confidenceFrame95, bbox);
-    vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
-        (spacePointA, spacePointB) {
-      return VpTreeManager.distance(
-          spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
-    });
-
-    vpTreesPool = Map<String, Vptree>();
-    vpTreesPool['A'] = vpTreeA;
-    vpTreesPool['B'] = vpTreeB;
-
-    vpTreeManager = VpTreeManager();
-    vpTreeManager.put("squats", vpTreesPool);
-    counter = ExercisesCounter(vpTreeManager);
-
-    repsCount = counter.repsCounter(poseFrame95, confidenceFrame95, bbox);
+    Bbox bboxFrame95 = {
+      // double minX = 0.41224952244922364,
+      // double maxX = 0.5547129704306427,
+      // double minY = 0.21991342419249593,
+      // double maxY = 0.8590682357117567
+      // double B = 0.0869,
+      // double A = 0.0897
+    };
 
     List<List<double>> poseFrame170 = [
       [0.48525681, 0.13891301],
@@ -230,38 +157,14 @@ void main() {
       0.9789567
     ];
 
-    // Bbox bboxFrame170 = {
-    //   double minX = 0.41302757569239157,
-    //   double maxX = 0.56006985084616,
-    //   double minY = 0.1389130114641969,
-    //   double maxY = 0.8530150114176054,
-    //   double B =  0.1043,
-    //   double A = 0.013
-    // };
-
-    poseSpacePointA1 = PoseSpacePoint(poseFrame170, confidenceFrame170, bbox);
-    vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
-        (spacePointA, spacePointB) {
-      return VpTreeManager.distance(
-          spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
-    });
-
-    poseSpacePointB1 = PoseSpacePoint(poseFrame170, confidenceFrame170, bbox);
-    vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
-        (spacePointA, spacePointB) {
-      return VpTreeManager.distance(
-          spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
-    });
-
-    vpTreesPool = Map<String, Vptree>();
-    vpTreesPool['A'] = vpTreeA;
-    vpTreesPool['B'] = vpTreeB;
-
-    vpTreeManager = VpTreeManager();
-    vpTreeManager.put("squats", vpTreesPool);
-    counter = ExercisesCounter(vpTreeManager);
-
-    repsCount = counter.repsCounter(poseFrame170, confidenceFrame170, bbox);
+    Bbox bboxFrame170 = {
+      // double minX = 0.41302757569239157,
+      // double maxX = 0.56006985084616,
+      // double minY = 0.1389130114641969,
+      // double maxY = 0.8530150114176054,
+      // double B =  0.1043,
+      // double A = 0.013
+    };
 
     List<List<double>> poseFrame229 = [
       [0.4849827, 0.13518944],
@@ -295,38 +198,14 @@ void main() {
       0.9803678
     ];
 
-    // Bbox bboxFrame229 = {
-    //   double minX = 0.4161887450086017,
-    //   double maxX = 0.553659208829746,
-    //   double minY = 0.1351894437733983,
-    //   double maxY = 0.8523295817498892,
-    //   double B =  0.1153,
-    //   double A = 0.0186
-    // };
-
-    poseSpacePointA1 = PoseSpacePoint(poseFrame229, confidenceFrame229, bbox);
-    vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
-        (spacePointA, spacePointB) {
-      return VpTreeManager.distance(
-          spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
-    });
-
-    poseSpacePointB1 = PoseSpacePoint(poseFrame229, confidenceFrame229, bbox);
-    vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
-        (spacePointA, spacePointB) {
-      return VpTreeManager.distance(
-          spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
-    });
-
-    vpTreesPool = Map<String, Vptree>();
-    vpTreesPool['A'] = vpTreeA;
-    vpTreesPool['B'] = vpTreeB;
-
-    vpTreeManager = VpTreeManager();
-    vpTreeManager.put("squats", vpTreesPool);
-    counter = ExercisesCounter(vpTreeManager);
-
-    repsCount = counter.repsCounter(poseFrame229, confidenceFrame229, bbox);
+    Bbox bboxFrame229 = {
+      // double minX = 0.4161887450086017,
+      // double maxX = 0.553659208829746,
+      // double minY = 0.1351894437733983,
+      // double maxY = 0.8523295817498892,
+      // double B =  0.1153,
+      // double A = 0.0186
+    };
 
     List<List<double>> poseFrame315 = [
       [0.48331421, 0.13828378],
@@ -360,38 +239,72 @@ void main() {
       0.9740045
     ];
 
-    // Bbox bboxFrame315 = {
-    //   double minX = 0.4136966750474474,
-    //   double maxX = 0.5527982402144186,
-    //   double minY = 0.1382837775738056,
-    //   double maxY = 0.8536017378131122,
-    //   double B =  0.1139,
-    //   double A = 0.0155
-    // };
+    Bbox bboxFrame315 = {
+      // double minX = 0.4136966750474474,
+      // double maxX = 0.5527982402144186,
+      // double minY = 0.1382837775738056,
+      // double maxY = 0.8536017378131122,
+      // double B =  0.1139,
+      // double A = 0.0155
+    };
 
-    poseSpacePointA1 = PoseSpacePoint(poseFrame315, confidenceFrame315, bbox);
-    vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
-        (spacePointA, spacePointB) {
+    var poseSpacePointA1 = PoseSpacePoint(pose, confidence, bbox);
+    var poseSpacePointA2 =
+        PoseSpacePoint(poseFrame11, confidenceFrame11, bboxFrame11);
+    var poseSpacePointA4 =
+        PoseSpacePoint(poseFrame95, confidenceFrame95, bboxFrame95);
+    var poseSpacePointA3 =
+        PoseSpacePoint(poseFrame170, confidenceFrame170, bboxFrame170);
+    var poseSpacePointA5 =
+        PoseSpacePoint(poseFrame229, confidenceFrame229, bboxFrame229);
+    var poseSpacePointA6 =
+        PoseSpacePoint(poseFrame315, confidenceFrame315, bboxFrame315);
+
+    var poseSpacePointB1 = PoseSpacePoint(pose, confidence, bbox);
+    var poseSpacePointB2 =
+        PoseSpacePoint(poseFrame11, confidenceFrame11, bboxFrame11);
+    var poseSpacePointB5 =
+        PoseSpacePoint(poseFrame95, confidenceFrame95, bboxFrame95);
+    var poseSpacePointB3 =
+        PoseSpacePoint(poseFrame170, confidenceFrame170, bboxFrame170);
+    var poseSpacePointB4 =
+        PoseSpacePoint(poseFrame229, confidenceFrame229, bboxFrame229);
+    var poseSpacePointB6 =
+        PoseSpacePoint(poseFrame315, confidenceFrame315, bboxFrame315);
+
+    var vpTreeA = new VpTreeFactory().build([
+      poseSpacePointA1 as SpacePoint,
+      poseSpacePointA2 as SpacePoint,
+      poseSpacePointA3 as SpacePoint,
+      poseSpacePointA4 as SpacePoint,
+      poseSpacePointA5 as SpacePoint,
+      poseSpacePointA6 as SpacePoint
+    ], 6, (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
     });
 
-    poseSpacePointB1 = PoseSpacePoint(poseFrame315, confidenceFrame315, bbox);
-    vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
-        (spacePointA, spacePointB) {
+    var vpTreeB = new VpTreeFactory().build([
+      poseSpacePointB1 as SpacePoint,
+      poseSpacePointB2 as SpacePoint,
+      poseSpacePointB3 as SpacePoint,
+      poseSpacePointB4 as SpacePoint,
+      poseSpacePointB5 as SpacePoint,
+      poseSpacePointB6 as SpacePoint
+    ], 6, (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
     });
 
-    vpTreesPool = Map<String, Vptree>();
+    var vpTreesPool = Map<String, VpTree>();
     vpTreesPool['A'] = vpTreeA;
     vpTreesPool['B'] = vpTreeB;
 
-    vpTreeManager = VpTreeManager();
+    var vpTreeManager = VpTreeManager();
     vpTreeManager.put("squats", vpTreesPool);
-    counter = ExercisesCounter(vpTreeManager);
+    var counter = ExercisesCounter(vpTreeManager);
 
-    repsCount = counter.repsCounter(poseFrame315, confidenceFrame315, bbox);
+    var repsCount = counter.repsCounter(pose, confidence, bbox);
 
     expect(repsCount, 1);
   });
