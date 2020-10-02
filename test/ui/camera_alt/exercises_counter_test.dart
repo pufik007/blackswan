@@ -481,7 +481,10 @@ void main() {
     vpTreeManager.put("squats", vpTreesPool);
     var counter = ExercisesCounter(vpTreeManager);
 
-    var repsCount = counter.repsCounter(pose, confidence, bbox);
+    counter.repsCounter(poseFrame11, confidenceFrame11, bboxFrame11);
+    counter.repsCounter(poseFrame60, confidenceFrame60, bboxFrame60);
+    var repsCount =
+        counter.repsCounter(poseFrame11, confidenceFrame11, bboxFrame11);
 
     expect(repsCount, 1);
   });
