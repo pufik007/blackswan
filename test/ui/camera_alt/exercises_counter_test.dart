@@ -68,12 +68,6 @@ void main() {
 
     var repsCount = counter.repsCounter(pose, confidence, bbox);
 
-    expect(repsCount, 1);
-  });
-
-  test('Exercise - squat frame 11', () {
-    var bbox = Bbox();
-
     List<List<double>> poseFrame11 = [
       [0.48276987, 0.24532699],
       [0.5352102, 0.32444803],
@@ -115,34 +109,29 @@ void main() {
     //   double A = 0.094
     // };
 
-    var poseSpacePointA1 = PoseSpacePoint(poseFrame11, confidenceFrame11, bbox);
-    var vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
+    poseSpacePointA1 = PoseSpacePoint(poseFrame11, confidenceFrame11, bbox);
+    vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
         (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
     });
 
-    var poseSpacePointB1 = PoseSpacePoint(poseFrame11, confidenceFrame11, bbox);
-    var vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
+    poseSpacePointB1 = PoseSpacePoint(poseFrame11, confidenceFrame11, bbox);
+    vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
         (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
     });
 
-    var vpTreesPool = Map<String, Vptree>();
+    vpTreesPool = Map<String, Vptree>();
     vpTreesPool['A'] = vpTreeA;
     vpTreesPool['B'] = vpTreeB;
 
-    var vpTreeManager = VpTreeManager();
+    vpTreeManager = VpTreeManager();
     vpTreeManager.put("squats", vpTreesPool);
-    var counter = ExercisesCounter(vpTreeManager);
+    counter = ExercisesCounter(vpTreeManager);
 
-    var repsCount = counter.repsCounter(poseFrame11, confidenceFrame11, bbox);
-
-    expect(repsCount, 1);
-  });
-  test('Exercise - squat frame 95', () {
-    var bbox = Bbox();
+    repsCount = counter.repsCounter(poseFrame11, confidenceFrame11, bbox);
 
     List<List<double>> poseFrame95 = [
       [0.47735545, 0.21991342],
@@ -185,34 +174,29 @@ void main() {
     // double A = 0.0897
     // };
 
-    var poseSpacePointA1 = PoseSpacePoint(poseFrame95, confidenceFrame95, bbox);
-    var vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
+    poseSpacePointA1 = PoseSpacePoint(poseFrame95, confidenceFrame95, bbox);
+    vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
         (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
     });
 
-    var poseSpacePointB1 = PoseSpacePoint(poseFrame95, confidenceFrame95, bbox);
-    var vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
+    poseSpacePointB1 = PoseSpacePoint(poseFrame95, confidenceFrame95, bbox);
+    vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
         (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
     });
 
-    var vpTreesPool = Map<String, Vptree>();
+    vpTreesPool = Map<String, Vptree>();
     vpTreesPool['A'] = vpTreeA;
     vpTreesPool['B'] = vpTreeB;
 
-    var vpTreeManager = VpTreeManager();
+    vpTreeManager = VpTreeManager();
     vpTreeManager.put("squats", vpTreesPool);
-    var counter = ExercisesCounter(vpTreeManager);
+    counter = ExercisesCounter(vpTreeManager);
 
-    var repsCount = counter.repsCounter(poseFrame95, confidenceFrame95, bbox);
-
-    expect(repsCount, 1);
-  });
-  test('Exercise - squat frame 170', () {
-    var bbox = Bbox();
+    repsCount = counter.repsCounter(poseFrame95, confidenceFrame95, bbox);
 
     List<List<double>> poseFrame170 = [
       [0.48525681, 0.13891301],
@@ -255,36 +239,29 @@ void main() {
     //   double A = 0.013
     // };
 
-    var poseSpacePointA1 =
-        PoseSpacePoint(poseFrame170, confidenceFrame170, bbox);
-    var vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
+    poseSpacePointA1 = PoseSpacePoint(poseFrame170, confidenceFrame170, bbox);
+    vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
         (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
     });
 
-    var poseSpacePointB1 =
-        PoseSpacePoint(poseFrame170, confidenceFrame170, bbox);
-    var vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
+    poseSpacePointB1 = PoseSpacePoint(poseFrame170, confidenceFrame170, bbox);
+    vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
         (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
     });
 
-    var vpTreesPool = Map<String, Vptree>();
+    vpTreesPool = Map<String, Vptree>();
     vpTreesPool['A'] = vpTreeA;
     vpTreesPool['B'] = vpTreeB;
 
-    var vpTreeManager = VpTreeManager();
+    vpTreeManager = VpTreeManager();
     vpTreeManager.put("squats", vpTreesPool);
-    var counter = ExercisesCounter(vpTreeManager);
+    counter = ExercisesCounter(vpTreeManager);
 
-    var repsCount = counter.repsCounter(poseFrame170, confidenceFrame170, bbox);
-
-    expect(repsCount, 1);
-  });
-  test('Exercise - squat frame 229', () {
-    var bbox = Bbox();
+    repsCount = counter.repsCounter(poseFrame170, confidenceFrame170, bbox);
 
     List<List<double>> poseFrame229 = [
       [0.4849827, 0.13518944],
@@ -327,37 +304,29 @@ void main() {
     //   double A = 0.0186
     // };
 
-    var poseSpacePointA1 =
-        PoseSpacePoint(poseFrame229, confidenceFrame229, bbox);
-    var vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
+    poseSpacePointA1 = PoseSpacePoint(poseFrame229, confidenceFrame229, bbox);
+    vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
         (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
     });
 
-    var poseSpacePointB1 =
-        PoseSpacePoint(poseFrame229, confidenceFrame229, bbox);
-    var vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
+    poseSpacePointB1 = PoseSpacePoint(poseFrame229, confidenceFrame229, bbox);
+    vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
         (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
     });
 
-    var vpTreesPool = Map<String, Vptree>();
+    vpTreesPool = Map<String, Vptree>();
     vpTreesPool['A'] = vpTreeA;
     vpTreesPool['B'] = vpTreeB;
 
-    var vpTreeManager = VpTreeManager();
+    vpTreeManager = VpTreeManager();
     vpTreeManager.put("squats", vpTreesPool);
-    var counter = ExercisesCounter(vpTreeManager);
+    counter = ExercisesCounter(vpTreeManager);
 
-    var repsCount = counter.repsCounter(poseFrame229, confidenceFrame229, bbox);
-
-    expect(repsCount, 1);
-  });
-
-  test('Exercise - squat frame 315', () {
-    var bbox = Bbox();
+    repsCount = counter.repsCounter(poseFrame229, confidenceFrame229, bbox);
 
     List<List<double>> poseFrame315 = [
       [0.48331421, 0.13828378],
@@ -400,31 +369,29 @@ void main() {
     //   double A = 0.0155
     // };
 
-    var poseSpacePointA1 =
-        PoseSpacePoint(poseFrame315, confidenceFrame315, bbox);
-    var vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
+    poseSpacePointA1 = PoseSpacePoint(poseFrame315, confidenceFrame315, bbox);
+    vpTreeA = new VpTreeFactory().build([poseSpacePointA1 as SpacePoint], 1,
         (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
     });
 
-    var poseSpacePointB1 =
-        PoseSpacePoint(poseFrame315, confidenceFrame315, bbox);
-    var vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
+    poseSpacePointB1 = PoseSpacePoint(poseFrame315, confidenceFrame315, bbox);
+    vpTreeB = new VpTreeFactory().build([poseSpacePointB1 as SpacePoint], 1,
         (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
     });
 
-    var vpTreesPool = Map<String, Vptree>();
+    vpTreesPool = Map<String, Vptree>();
     vpTreesPool['A'] = vpTreeA;
     vpTreesPool['B'] = vpTreeB;
 
-    var vpTreeManager = VpTreeManager();
+    vpTreeManager = VpTreeManager();
     vpTreeManager.put("squats", vpTreesPool);
-    var counter = ExercisesCounter(vpTreeManager);
+    counter = ExercisesCounter(vpTreeManager);
 
-    var repsCount = counter.repsCounter(poseFrame315, confidenceFrame315, bbox);
+    repsCount = counter.repsCounter(poseFrame315, confidenceFrame315, bbox);
 
     expect(repsCount, 1);
   });
