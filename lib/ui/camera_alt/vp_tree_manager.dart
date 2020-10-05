@@ -3,6 +3,7 @@ import 'package:ml_linalg/vector.dart';
 import './pose_space_point.dart';
 import '../../vptree/vptree.dart';
 import '../../vptree/priority_queue_item.dart';
+import 'pose_match.dart';
 
 class VpTreeManager {
   var exerciseVpTreePoolsMap = Map<String, Map<String, VpTree>>();
@@ -11,17 +12,17 @@ class VpTreeManager {
     exerciseVpTreePoolsMap[exerciseKey] = vpTreesPool;
   }
 
-  minItemInMap(Map<String, dynamic> map) {
-    var minValue = double.infinity;
-    var minKey = null;
-
+  PoseMatch minItemInMap(
+      PoseSpacePoint poseSpacePoint, Map<String, List<PriorityQueueItem>> map) {
+    double minDistance = double.maxFinite;
+    String minKey = null;
     map.forEach((key, value) {
-      if (value < minValue) {
+      if (value[0].priority < minDistance) {
         minKey = key;
-        minValue = value;
+        minDistance = value[0].priority;
       }
-      return map[minKey];
     });
+    return minKey != null ? PoseMatch(minKey, map[minKey][0].priority) : null;
   }
 
   getNearest(String exerciseKey, PoseSpacePoint poseSpacePoint) {
