@@ -1,7 +1,8 @@
 import 'dart:collection';
-import 'package:tensorfit/ui/camera_alt/pose_match.dart';
+import 'pose_match.dart';
 import 'vp_tree_manager.dart';
 import 'bbox.dart';
+import 'pose_space_point.dart';
 
 class ExercisesCounter {
   VpTreeManager vpTreeManager;
@@ -16,9 +17,9 @@ class ExercisesCounter {
 
   init(config, exercise) {}
 
-  findMostSimilarMatch(
-      List<dynamic> pose, List<dynamic> confidence, Bbox bbox) {
-    var PoseSpacePoint = vpTreeManager.getNearest(pose, confidence, bbox);
+  findMostSimilarMatch(String exerciseKey, List<List<double>> pose,
+      List<double> confidence, Bbox bbox) {
+    var poseSpacePoint = PoseSpacePoint(pose, confidence, bbox);
     var nearestImage = vpTreeManager.getNearest(exerciseKey, poseSpacePoint);
     return PoseMatch();
   }
