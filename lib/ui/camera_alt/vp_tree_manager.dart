@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:ml_linalg/vector.dart';
 import './pose_space_point.dart';
 import '../../vptree/vptree.dart';
+import '../../vptree/priority_queue_item.dart';
 
 class VpTreeManager {
   var exerciseVpTreePoolsMap = Map<String, Map<String, VpTree>>();
@@ -24,7 +25,7 @@ class VpTreeManager {
   }
 
   getNearest(String exerciseKey, PoseSpacePoint poseSpacePoint) {
-    var result = Map<dynamic, dynamic>();
+    var result = Map<String, List<PriorityQueueItem>>();
     exerciseVpTreePoolsMap[exerciseKey].entries.forEach((exerciseVpTreePool) {
       result[exerciseVpTreePool.key] =
           exerciseVpTreePool.value.search(poseSpacePoint, 1, double.maxFinite);
