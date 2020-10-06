@@ -12,7 +12,10 @@ class ExercisesCounter {
   List<String> pattern;
   String exerciseKey;
 
-  ExercisesCounter(VpTreeManager vpTreeManager, String exerciseKey,  double thresholdDistance, int thresholdCount) {
+  ExercisesCounter(VpTreeManager vpTreeManager, 
+                   String exerciseKey,  
+                   double thresholdDistance, 
+                   int thresholdCount) {
     this.vpTreeManager = vpTreeManager;
     this.exerciseKey = exerciseKey;
     this.thresholdDistance = thresholdDistance;
@@ -72,8 +75,8 @@ class ExercisesCounter {
     });
   }
 
-  repsCounter(List<dynamic> pose, List<dynamic> confidence, Bbox bbox, String exerciseKey) {
-    var match = findMostSimilarMatch(exerciseKey, pose, confidence, bbox);
+  repsCounter(List<List<dynamic>> pose, List<double> confidence, Bbox bbox) {
+    var match = findMostSimilarMatch(this.exerciseKey, pose, confidence, bbox);
     incrementPoseCounter(match);
     return countTotalReps();
   }
