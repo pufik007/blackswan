@@ -12,8 +12,7 @@ class VpTreeManager {
     exerciseVpTreePoolsMap[exerciseKey] = vpTreesPool;
   }
 
-  PoseMatch minItemInMap(
-      PoseSpacePoint poseSpacePoint, Map<String, List<PriorityQueueItem>> map) {
+  PoseMatch minItemInMap(Map<String, List<PriorityQueueItem>> map) {
     double minDistance = double.maxFinite;
     String minKey = null;
     map.forEach((key, value) {

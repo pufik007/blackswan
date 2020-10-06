@@ -17,8 +17,10 @@ class ExercisesCounter {
 
   init(config, exercise) {}
 
-  PoseMatch findMostSimilarMatch(String exerciseKey, List<List<double>> pose,
-      List<double> confidence, Bbox bbox) {
+  PoseMatch findMostSimilarMatch(String exerciseKey, 
+                                 List<List<double>> pose,
+                                 List<double> confidence, 
+                                 Bbox bbox) {
     var poseSpacePoint = PoseSpacePoint(pose, confidence, bbox);
     return vpTreeManager.getNearest(exerciseKey, poseSpacePoint);
   }
