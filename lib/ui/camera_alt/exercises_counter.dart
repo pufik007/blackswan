@@ -10,9 +10,13 @@ class ExercisesCounter {
   LinkedHashMap<String, int> counter;
   int thresholdCount;
   List<String> pattern;
+  String exerciseKey;
 
-  ExercisesCounter(VpTreeManager vpTreeManager) {
+  ExercisesCounter(VpTreeManager vpTreeManager, String exerciseKey,  double thresholdDistance, int thresholdCount) {
     this.vpTreeManager = vpTreeManager;
+    this.exerciseKey = exerciseKey;
+    this.thresholdDistance = thresholdDistance;
+    this.thresholdCount = thresholdCount;
   }
 
   init(config, exercise) {}
@@ -68,8 +72,8 @@ class ExercisesCounter {
     });
   }
 
-  repsCounter(List<dynamic> pose, List<dynamic> confidence, Bbox bbox) {
-    var match = findMostSimilarMatch(pose, confidence, bbox);
+  repsCounter(List<dynamic> pose, List<dynamic> confidence, Bbox bbox, String exerciseKey) {
+    var match = findMostSimilarMatch(exerciseKey, pose, confidence, bbox);
     incrementPoseCounter(match);
     return countTotalReps();
   }
