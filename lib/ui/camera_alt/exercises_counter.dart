@@ -52,7 +52,7 @@ class ExercisesCounter {
     }
   }
 
-  countTotalReps() {
+  int countTotalReps() {
     var currentPatternIndex = 0;
     var countReps = 0;
 
@@ -73,6 +73,8 @@ class ExercisesCounter {
         currentPatternIndex = 0;
       }
     });
+    
+    return countReps;
   }
 
   int repsCounter(List<List<double>> pose, List<double> confidence, Bbox bbox) {
