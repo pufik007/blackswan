@@ -21,6 +21,9 @@ class ExercisesCounter {
     this.thresholdDistance = thresholdDistance;
     this.thresholdCount = thresholdCount;
     this.counter = LinkedHashMap<String, int>();
+    this.counter["A"] = 0;
+    this.counter["B"] = 0;
+    this.counter["unknown"] = 0;
   }
 
   init(config, exercise) {}
