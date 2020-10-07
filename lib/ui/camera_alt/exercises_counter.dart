@@ -75,7 +75,7 @@ class ExercisesCounter {
     });
   }
 
-  repsCounter(List<List<dynamic>> pose, List<double> confidence, Bbox bbox) {
+  int repsCounter(List<List<double>> pose, List<double> confidence, Bbox bbox) {
     var match = findMostSimilarMatch(this.exerciseKey, pose, confidence, bbox);
     incrementPoseCounter(match);
     return countTotalReps();

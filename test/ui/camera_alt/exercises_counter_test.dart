@@ -478,8 +478,15 @@ void main() {
     vpTreesPool['B'] = vpTreeB;
 
     var vpTreeManager = VpTreeManager();
+    var thresholdDistance = 0.1;
+    var thresholdCount = 5;
+    String exerciseKey;
+    
     vpTreeManager.put("squats", vpTreesPool);
-    var counter = ExercisesCounter(vpTreeManager);
+    var counter = ExercisesCounter(vpTreeManager, 
+                   exerciseKey,  
+                   thresholdDistance, 
+                   thresholdCount);
 
     counter.repsCounter(poseFrame11, confidenceFrame11, bboxFrame11);
     counter.repsCounter(poseFrame60, confidenceFrame60, bboxFrame60);
