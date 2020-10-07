@@ -20,6 +20,7 @@ class ExercisesCounter {
     this.exerciseKey = exerciseKey;
     this.thresholdDistance = thresholdDistance;
     this.thresholdCount = thresholdCount;
+    this.counter = LinkedHashMap<String, int>();
   }
 
   init(config, exercise) {}
@@ -73,7 +74,7 @@ class ExercisesCounter {
         currentPatternIndex = 0;
       }
     });
-    
+
     return countReps;
   }
 
