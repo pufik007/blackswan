@@ -481,12 +481,14 @@ void main() {
     var thresholdDistance = 0.1;
     var thresholdCount = 5;
     String exerciseKey = "E4";
+    List<String> pattern = ["A", "B", "A"];
 
     vpTreeManager.put(exerciseKey, vpTreesPool);
     var counter = ExercisesCounter(vpTreeManager, 
                    exerciseKey,  
                    thresholdDistance, 
-                   thresholdCount);
+                   thresholdCount,
+                   pattern);
 
     counter.repsCounter(poseFrame11, confidenceFrame11, bboxFrame11);
     counter.repsCounter(poseFrame60, confidenceFrame60, bboxFrame60);

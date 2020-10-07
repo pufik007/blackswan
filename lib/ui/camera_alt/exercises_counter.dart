@@ -15,7 +15,8 @@ class ExercisesCounter {
   ExercisesCounter(VpTreeManager vpTreeManager, 
                    String exerciseKey,  
                    double thresholdDistance, 
-                   int thresholdCount) {
+                   int thresholdCount,
+                   List<String> pattern) {
     this.vpTreeManager = vpTreeManager;
     this.exerciseKey = exerciseKey;
     this.thresholdDistance = thresholdDistance;
@@ -24,6 +25,7 @@ class ExercisesCounter {
     this.counter["A"] = 0;
     this.counter["B"] = 0;
     this.counter["unknown"] = 0;
+    this.pattern = pattern;
   }
 
   init(config, exercise) {}
