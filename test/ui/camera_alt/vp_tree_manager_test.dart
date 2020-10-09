@@ -461,18 +461,11 @@ void main() {
     var distanceA1B4 = VpTreeManager.distance(poseSpacePointA1, poseSpacePointB4);
     var distanceA1B5 = VpTreeManager.distance(poseSpacePointA1, poseSpacePointB5);
 
-    num minOfA1A2 = min(distanceA1A1, distanceA1A2);
-    num minOfA3A5 = min(distanceA1A3, distanceA1A4);
-    num minOfA1A4 = min(minOfA1A2, minOfA3A5);
-    num minOfAllA = min(distanceA1A5, minOfA1A4);
-
-    num minOfB1B2 = min(distanceA1B1, distanceA1B2);
-    num minOfB3B5 = min(distanceA1B3, distanceA1B4);
-    num minOfB1B4 = min(minOfB1B2, minOfB3B5);
-    num minOfAllB = min(distanceA1A5, minOfB1B4);
+    var minDistanceA = [distanceA1A1, distanceA1A2, distanceA1A3, distanceA1A4, distanceA1A5].reduce(min);
+    var minDistanceB = [distanceA1B1, distanceA1B2, distanceA1B3, distanceA1B4, distanceA1B5].reduce(min);
 
   
-    expect(minOfAllA < minOfAllB, 1);
+    expect(minDistanceA < minDistanceB, 1);
   });
 }
 //flutter test test\ui\camera_alt\vp_tree_manager_test.dart
