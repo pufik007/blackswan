@@ -465,7 +465,7 @@ void main() {
     var minDistanceB = [distanceA1B1, distanceA1B2, distanceA1B3, distanceA1B4, distanceA1B5].reduce(min);
 
   
-    expect(minDistanceA < minDistanceB, 1);
+    expect(minDistanceA < minDistanceB, true);
   });
 }
 //flutter test test\ui\camera_alt\vp_tree_manager_test.dart
