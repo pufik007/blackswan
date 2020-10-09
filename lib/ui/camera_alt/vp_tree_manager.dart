@@ -35,34 +35,36 @@ class VpTreeManager {
   }
 
   static double distance(PoseSpacePoint a, PoseSpacePoint b) {
-    var aMinValues = List<double>.from([double.maxFinite, double.maxFinite]);
-    var aMaxValues = List<double>.from([-double.maxFinite, -double.maxFinite]);
+    var aMinValues = List<double>.from([double.maxFinite, double.maxFinite]); // [0]:1.7976931348623157e+308 [1]:1.7976931348623157e+308
+    var aMaxValues = List<double>.from([-double.maxFinite, -double.maxFinite]); // [0]:-1.7976931348623157e+308 [1]:-1.7976931348623157e+308
     a.pose.forEach((joint) {
-      aMinValues[0] = min(aMinValues[0], joint[0]);
-      aMinValues[1] = min(aMinValues[1], joint[1]);
-      aMinValues[0] = max(aMaxValues[0], joint[0]);
-      aMinValues[1] = max(aMaxValues[1], joint[1]);
+      aMinValues[0] = min(aMinValues[0], joint[0]); // [0]:0.48276987 [1]:1.7976931348623157e+308
+      aMinValues[1] = min(aMinValues[1], joint[1]); // [0]:0.48276987 [1]:0.24532699
+      aMaxValues[0] = max(aMaxValues[0], joint[0]); // [0]:0.48276987 [1]:0.24532699
+      aMaxValues[1] = max(aMaxValues[1], joint[1]); // [0]:0.48276987 [1]:0.24532699
     });
-    var pointA = a.pose.map<List<double>>((joint) {
-      var point = List<double>.from(joint);
-      point[0] = (point[0] - aMinValues[0]) / (aMaxValues[0] - aMinValues[0]);
-      point[1] = (point[1] - aMinValues[1]) / (aMaxValues[1] - aMinValues[1]);
+    var pointA = a.pose.map<List<double>>((joint) { // [0]:0.48276987 [1]:0.24532699
+      var point = List<double>.from(joint); // [0]:0.48276987 [1]:0.24532699
+      point[0] = (point[0] - aMinValues[0]) / (aMaxValues[0] - aMinValues[0]); // {(0.48276987 - 0.42921004) = 0.05355983 / (1.7976931348623157 - 0.42921004) = 1.36848309486} = 0.0391381013
+      point[1] = (point[1] - aMinValues[1]) / (aMaxValues[1] - aMinValues[1]); // {(0.24532699 - 0.86415349) = -0.6188265 / (1.7976931348623157 - 0.86415349) = 0.93353964486} = -0.6628818641
       return point;
     }).toList();
 
-    var bMinValues = List<double>.from([double.maxFinite, double.maxFinite]);
-    var bMaxValues = List<double>.from([-double.maxFinite, -double.maxFinite]);
-    b.pose.forEach((joint) {
-      bMinValues[0] = min(bMinValues[0], joint[0]);
-      bMinValues[1] = min(bMinValues[1], joint[1]);
-      bMaxValues[0] = max(bMaxValues[0], joint[0]);
-      bMaxValues[1] = max(bMaxValues[1], joint[1]);
+    var bMinValues = List<double>.from([double.maxFinite, double.maxFinite]); // [0]:1.7976931348623157e+308 [1]:1.7976931348623157e+308
+    var bMaxValues = List<double>.from([-double.maxFinite, -double.maxFinite]); // [0]:-1.7976931348623157e+308 [1]:-1.7976931348623157e+308
+    b.pose.forEach((joint) { // [0]:0.48276987 [1]:0.24532699
+      bMinValues[0] = min(bMinValues[0], joint[0]); // [0]:1.7976931348623157e+308 [0]:0.48276987
+      bMinValues[1] = min(bMinValues[1], joint[1]); // [1]:1.7976931348623157e+308 [1]:0.24532699
+      bMaxValues[0] = max(bMaxValues[0], joint[0]); // [0]:-1.7976931348623157e+308 [0]:0.48276987
+      bMaxValues[1] = max(bMaxValues[1], joint[1]); // [1]:-1.7976931348623157e+308 [1]:0.24532699
     });
-    var pointB = b.pose.map<List<double>>((joint) {
-      var point = List<double>.from(joint);
-      point[0] = (point[0] - bMinValues[0]) / (bMaxValues[0] - bMinValues[0]);
-      point[1] = (point[1] - bMinValues[1]) / (bMaxValues[1] - bMinValues[1]);
-      return point;
+    var pointB = b.pose.map<List<double>>((joint) { // [0]:0.48276987 [1]:0.24532699
+      var point = List<double>.from(joint); // [0]:0.48276987 [1]:0.24532699
+      point[0] = (point[0] - bMinValues[0]) / (bMaxValues[0] - bMinValues[0]); 
+             // {(0.48276987 - 0.41409427) = 0.0686756 / (0.55806249 - 0.41409427) = 0.14396822} = 0.47701916436
+      point[1] = (point[1] - bMinValues[1]) / (bMaxValues[1] - bMinValues[1]); 
+             // {(0.24532699 - 0.24532699) = 0 / (0.86415349 - 0.24532699) = 0.6188265} = 0
+      return point; // [0]:0.4770191643683586 [1]:0.0
     }).toList();
 
     var confidence = List<double>();
