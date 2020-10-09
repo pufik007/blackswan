@@ -34,7 +34,7 @@ class VpTreeManager {
     return minItemInMap(result);
   }
 
-  static distance(PoseSpacePoint a, PoseSpacePoint b) {
+  static double distance(PoseSpacePoint a, PoseSpacePoint b) {
     var aMinValues = List<double>.from([double.maxFinite, double.maxFinite]);
     var aMaxValues = List<double>.from([-double.maxFinite, -double.maxFinite]);
     a.pose.forEach((joint) {
