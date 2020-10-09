@@ -1,4 +1,5 @@
 import 'package:test/test.dart';
+import 'dart:math';
 import '../../../lib/ui/camera_alt/bbox.dart';
 import '../../../lib/ui/camera_alt/pose_space_point.dart';
 import '../../../lib/ui/camera_alt/vp_tree_manager.dart';
@@ -448,10 +449,30 @@ void main() {
     var poseSpacePointB5 =
         PoseSpacePoint(poseFrame345, confidenceFrame345, bboxFrame345);
 
-    VpTreeManager.distance(poseSpacePointA1, poseSpacePointB1);
-    VpTreeManager.distance(poseSpacePointA2, poseSpacePointB2);
-    VpTreeManager.distance(poseSpacePointA3, poseSpacePointB3);
-    VpTreeManager.distance(poseSpacePointA4, poseSpacePointB4);
-    VpTreeManager.distance(poseSpacePointA5, poseSpacePointB5);
+    var distanceA1A1 = VpTreeManager.distance(poseSpacePointA1, poseSpacePointA1);
+    var distanceA1A2 = VpTreeManager.distance(poseSpacePointA1, poseSpacePointA2);
+    var distanceA1A3 = VpTreeManager.distance(poseSpacePointA1, poseSpacePointA3);
+    var distanceA1A4 = VpTreeManager.distance(poseSpacePointA1, poseSpacePointA4);
+    var distanceA1A5 = VpTreeManager.distance(poseSpacePointA1, poseSpacePointA5);
+
+    var distanceA1B1 = VpTreeManager.distance(poseSpacePointA1, poseSpacePointB1);
+    var distanceA1B2 = VpTreeManager.distance(poseSpacePointA1, poseSpacePointB2);
+    var distanceA1B3 = VpTreeManager.distance(poseSpacePointA1, poseSpacePointB3);
+    var distanceA1B4 = VpTreeManager.distance(poseSpacePointA1, poseSpacePointB4);
+    var distanceA1B5 = VpTreeManager.distance(poseSpacePointA1, poseSpacePointB5);
+
+    num minOfA1A2 = min(distanceA1A1, distanceA1A2);
+    num minOfA3A5 = min(distanceA1A3, distanceA1A4);
+    num minOfA1A4 = min(minOfA1A2, minOfA3A5);
+    num minOfAllA = min(distanceA1A5, minOfA1A4);
+
+    num minOfB1B2 = min(distanceA1B1, distanceA1B2);
+    num minOfB3B5 = min(distanceA1B3, distanceA1B4);
+    num minOfB1B4 = min(minOfB1B2, minOfB3B5);
+    num minOfAllB = min(distanceA1A5, minOfB1B4);
+
+  
+    expect(minOfAllA < minOfAllB, 1);
   });
 }
+//flutter test test\ui\camera_alt\vp_tree_manager_test.dart
