@@ -61,7 +61,7 @@ class ExercisesCounter {
   int countTotalReps() {
     var currentPatternIndex = 0;
     var countReps = 0;
-
+    
     counter.forEach((pose, count) {
       var shouldSkip = false;
       if (count < thresholdCount) {
@@ -74,12 +74,12 @@ class ExercisesCounter {
           currentPatternIndex = 0;
         }
       }
-      if (!shouldSkip && currentPatternIndex == pattern.length - 1) {
+      if (!shouldSkip && currentPatternIndex == pattern.length - 2) {
         countReps += 1;
         currentPatternIndex = 0;
       }
     });
-
+    
     return countReps;
   }
 
