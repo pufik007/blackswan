@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:html';
 import 'pose_match.dart';
 import 'vp_tree_manager.dart';
 import 'bbox.dart';
@@ -7,7 +8,7 @@ import 'pose_space_point.dart';
 class ExercisesCounter {
   VpTreeManager vpTreeManager;
   double thresholdDistance;
-  LinkedHashMap<String, int> counter;
+  List<MapEntry<String, int>> counter;
   int thresholdCount;
   List<String> pattern;
   String exerciseKey;
@@ -21,10 +22,7 @@ class ExercisesCounter {
     this.exerciseKey = exerciseKey;
     this.thresholdDistance = thresholdDistance;
     this.thresholdCount = thresholdCount;
-    this.counter = LinkedHashMap<String, int>();
-    this.counter["A"] = 0;
-    this.counter["B"] = 0;
-    this.counter["unknown"] = 0;
+    this.counter = List<MapEntry<String, int>>();
     this.pattern = pattern;
   }
 
@@ -40,20 +38,20 @@ class ExercisesCounter {
 
   incrementPoseCounter(PoseMatch poseMatch) {
     if (poseMatch.score < thresholdDistance) {
-      if (counter.entries != null) {
-        counter[poseMatch.category] = 1;
-      } else if (counter.entries.last.key == "unknown") {
-        counter[counter.entries.last.key] += 1;
+      if (counter.length == 0) {
+        counter.add(MapEntry<String, int>(poseMatch.category, 1));
+      } else if (counter.last.key == poseMatch.category) {
+        counter.last = MapEntry(poseMatch.category, counter.last.value + 1);
       } else {
-        counter[poseMatch.category] = 1;
+        counter.add(MapEntry<String, int>(poseMatch.category, 1));
       }
     } else {
-      if (counter.entries.last.key == "unknown") {
-        counter["unknown"] = 1;
-      } else if (counter.entries.last.key == "unknown") {
-        counter[counter.entries.last.key] += 1;
+      if (counter.length == 0) {
+        counter.add(MapEntry<String, int>("unknown", 1));
+      } else if (counter.last.key == "unknown") {
+        counter.last = MapEntry("unknown", counter.last.value + 1);
       } else {
-        counter["unknown"] = 1;
+        counter.add(MapEntry<String, int>("unknown", 1));
       }
     }
   }
@@ -62,13 +60,13 @@ class ExercisesCounter {
     var currentPatternIndex = 0;
     var countReps = 0;
     
-    counter.forEach((pose, count) {
+    counter.forEach((entry) {
       var shouldSkip = false;
-      if (count >= thresholdCount) {
-        if (pose == pattern[currentPatternIndex]) {
+      if (entry.value >= thresholdCount) {
+        if (entry.key == pattern[currentPatternIndex]) {
           shouldSkip = true;
         } else if (currentPatternIndex + 1 < pattern.length &&
-            pose == pattern[currentPatternIndex + 1]) {
+            entry.key == pattern[currentPatternIndex + 1]) {
           currentPatternIndex += 1;
         } else {
           currentPatternIndex = 0;
