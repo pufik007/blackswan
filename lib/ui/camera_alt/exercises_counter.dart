@@ -64,7 +64,7 @@ class ExercisesCounter {
     
     counter.forEach((pose, count) {
       var shouldSkip = false;
-      if (count < thresholdCount) {
+      if (count >= thresholdCount) {
         if (pose == pattern[currentPatternIndex]) {
           shouldSkip = true;
         } else if (currentPatternIndex + 1 < pattern.length &&
@@ -74,7 +74,7 @@ class ExercisesCounter {
           currentPatternIndex = 0;
         }
       }
-      if (!shouldSkip && currentPatternIndex == pattern.length - 2) {
+      if (!shouldSkip && currentPatternIndex == pattern.length - 1) {
         countReps += 1;
         currentPatternIndex = 0;
       }

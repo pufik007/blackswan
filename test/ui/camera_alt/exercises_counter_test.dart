@@ -480,7 +480,7 @@ void main() {
     var vpTreeManager = VpTreeManager();
     var thresholdDistance = 0.1;
     var thresholdCount = 5;
-    String exerciseKey = "E4";
+    String exerciseKey = "E1";
     List<String> pattern = ["A", "B", "A"];
 
     vpTreeManager.put(exerciseKey, vpTreesPool);
