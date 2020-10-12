@@ -34,7 +34,7 @@ class PriorityQueue {
     return contents.length;
   }
 
-  double insert(SpacePoint data, double priority) {
+  double insert(int data, double priority) {
     var index = binaryIndexOf(priority);
     if (index < 0) index = -1 - index;
     if (index < size) {

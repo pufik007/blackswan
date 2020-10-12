@@ -479,7 +479,7 @@ void main() {
 
     var vpTreeManager = VpTreeManager();
     var thresholdDistance = 0.1;
-    var thresholdCount = 5;
+    var thresholdCount = 2;
     String exerciseKey = "E4";
     List<String> pattern = ["A", "B", "A"];
 
