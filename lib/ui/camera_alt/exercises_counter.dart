@@ -1,5 +1,3 @@
-import 'dart:collection';
-import 'dart:html';
 import 'pose_match.dart';
 import 'vp_tree_manager.dart';
 import 'bbox.dart';
