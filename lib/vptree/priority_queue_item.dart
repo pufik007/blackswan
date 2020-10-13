@@ -1,9 +1,11 @@
 
+import 'space_point.dart';
+
 class PriorityQueueItem {
-  int data;
+  SpacePoint data;
   double priority;
 
-  PriorityQueueItem(int data, double priority) {
+  PriorityQueueItem(SpacePoint data, double priority) {
     this.data = data;
     this.priority = priority;
   }
