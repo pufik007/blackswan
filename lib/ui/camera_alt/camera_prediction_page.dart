@@ -13,6 +13,9 @@ import '../pages/level_bloc/level_event.dart';
 import 'package:tensorfit/data/api/entities/exercise_info.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'vp_tree_manager.dart';
+import 'exercises_counter.dart';
+import '../../vptree/vptree.dart';
 
 class CameraPredictionPage extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -33,6 +36,32 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   Level level;
   int _currentExerciseNo = 0;
   var namesExercise;
+
+  ExerciseInfo exerciseInfo;
+  var vpTreesPool = Map<String, VpTree>();
+  var vpTreeManager = VpTreeManager();
+  var thresholdDistance = 0.1;
+  var thresholdCount = 5;
+  String exerciseKey = "E1";
+  List<String> pattern = ["A", "B", "A"];
+  ExercisesCounter repsCounter;
+
+  void _validExercises(List<dynamic> recognitions){
+    if(exerciseInfo.exercise.name == "Приседания"){
+      vpTreeManager.put(exerciseKey, vpTreesPool);
+      var counter = ExercisesCounter(vpTreeManager, 
+                   exerciseKey,  
+                   thresholdDistance, 
+                   thresholdCount,
+                   pattern);
+      var pose =  recognitions[0]["keypoints"];
+      var confidence;
+      var bbox;
+      counter.repsCounter(pose, confidence, bbox);
+      
+    }
+
+  }
 
   _startTimerCountdown() {
     _counter = 3;
@@ -186,10 +215,22 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
       } else {
         Navigator.pop(context);
       }
+      if(namesExercise == "Отжимания с колен"){
+         vpTreeManager.put(exerciseKey, vpTreesPool);
+      var counter = ExercisesCounter(vpTreeManager, 
+                   exerciseKey,  
+                   thresholdDistance, 
+                   thresholdCount,
+                   pattern);
+      var pose =  _recognitions[0]["keypoints"];
+      var confidence;
+      var bbox;
+      counter.repsCounter(pose, confidence, bbox);
+      }
     }
     return Center(
       child: Container(
-        padding: EdgeInsets.only(bottom: 420.0),
+        padding: EdgeInsets.all(25),
         child: (_counter > 0)
             ? Text(
                 "",
@@ -234,22 +275,26 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                     screen.height,
                     screen.width,
                   ),
-                  Center(
-                      child: (_counter > 0)
-                          ? Text(
-                              '$_counter',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red,
-                                fontSize: 70,
-                              ),
-                            )
-                          : Text("",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red,
-                                fontSize: 40,
-                              ))),
+                  Padding(
+                    padding: EdgeInsets.all(25),
+                    child: Align(
+                        alignment: Alignment.topCenter,
+                        child: (_counter > 0)
+                            ? Text(
+                                '$_counter',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                  fontSize: 70,
+                                ),
+                              )
+                            : Text("",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                  fontSize: 40,
+                                ))),
+                  ),
                   Align(
                       alignment: Alignment.bottomCenter,
                       child: (_counterExercise != null)
