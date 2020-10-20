@@ -42,16 +42,21 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   int _currentExerciseNo = 0;
   var namesExercise;
 
+
   ExerciseInfo exerciseInfo;
   ExercisesCounter repsCounter;
   Bbox bbox;
   var repsCount;
+  var vpTreeManager = VpTreeManager();
+  var thresholdDistance = 0.1;
+  var thresholdCount = 5;
+  String exerciseKey = "E4";
+  List<String> pattern = ["A", "B", "A"];
 
   @override
   void initState() {
     super.initState();
-
-        List<List<double>> poseFrame11 = [
+    List<List<double>> poseFrame11 = [
       [0.48276987, 0.24532699],
       [0.5352102, 0.32444803],
       [0.44239267, 0.32374039],
@@ -470,7 +475,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     //   // double B =  0.0454,
     //   // double A = 0.1079
     // };
-    
+
     var poseSpacePointA1 =
         PoseSpacePoint(poseFrame11, confidenceFrame11, bboxFrame11);
     var poseSpacePointA2 =
@@ -514,32 +519,10 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
     });
-
     var vpTreesPool = Map<String, VpTree>();
     vpTreesPool['A'] = vpTreeA;
     vpTreesPool['B'] = vpTreeB;
-
-    var vpTreeManager = VpTreeManager();
-    var thresholdDistance = 0.1;
-    var thresholdCount = 2;
-    String exerciseKey = "E4";
-    List<String> pattern = ["A", "B", "A"];
-
     vpTreeManager.put(exerciseKey, vpTreesPool);
-    var counter = ExercisesCounter(vpTreeManager, 
-                   exerciseKey,  
-                   thresholdDistance, 
-                   thresholdCount,
-                   pattern);
-
-    counter.repsCounter(poseFrame11, confidenceFrame11, bboxFrame11);
-    counter.repsCounter(poseFrame11, confidenceFrame11, bboxFrame11);
-    counter.repsCounter(poseFrame60, confidenceFrame60, bboxFrame60);
-    counter.repsCounter(poseFrame60, confidenceFrame60, bboxFrame60);
-    counter.repsCounter(poseFrame11, confidenceFrame11, bboxFrame11);
-    var repsCount =
-        counter.repsCounter(poseFrame11, confidenceFrame11, bboxFrame11);
-
   }
 
   List<PoseJointLib> extractPoseSpacePoints(List<dynamic> _recognitions){
@@ -561,8 +544,37 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
         poseJointLib.forEach((element) { 
           pose.add([element.x, element.y]);
           confidence.add(element.score);
+          var poseSpacePointA1 =
+          PoseSpacePoint(pose, confidence, bbox);
+          var poseSpacePointB1 =
+          PoseSpacePoint(pose, confidence, bbox);
+          
+          var vpTreeA = new VpTreeFactory().build([
+            poseSpacePointA1 as SpacePoint,
+          ], 6, (spacePointA, spacePointB) {
+            return VpTreeManager.distance(
+                spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
+          });
+          var vpTreeB = new VpTreeFactory().build([
+            poseSpacePointB1 as SpacePoint,
+  
+          ], 6, (spacePointA, spacePointB) {
+            return VpTreeManager.distance(
+                spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
+          });
+          var vpTreesPool = Map<String, VpTree>();
+          vpTreesPool['A'] = vpTreeA;
+          vpTreesPool['B'] = vpTreeB;
+          vpTreeManager.put(exerciseKey, vpTreesPool);
+          var counter = ExercisesCounter(vpTreeManager, 
+                   exerciseKey,  
+                   thresholdDistance, 
+                   thresholdCount,
+                   pattern);
+          repsCount = counter.repsCounter(pose, confidence, bbox);
         });
       }
+
     }
   return poseJointLib;
   }
