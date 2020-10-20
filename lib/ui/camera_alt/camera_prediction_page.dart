@@ -44,14 +44,84 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
 
 
   ExerciseInfo exerciseInfo;
-  var vpTreeManager = VpTreeManager();
-  var thresholdDistance = 0.1;
-  var thresholdCount = 5;
-  String exerciseKey = "E1";
-  List<String> pattern = ["A", "B", "A"];
   ExercisesCounter repsCounter;
   Bbox bbox;
   var repsCount;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    var poseSpacePointA1 =
+        PoseSpacePoint(poseFrame11, confidenceFrame11, bboxFrame11);
+    var poseSpacePointA2 =
+        PoseSpacePoint(poseFrame95, confidenceFrame95, bboxFrame95);
+    var poseSpacePointA3 =
+        PoseSpacePoint(poseFrame170, confidenceFrame170, bboxFrame170);
+    var poseSpacePointA4 =
+        PoseSpacePoint(poseFrame229, confidenceFrame229, bboxFrame229);
+    var poseSpacePointA5 =
+        PoseSpacePoint(poseFrame315, confidenceFrame315, bboxFrame315);
+
+    var poseSpacePointB1 =
+        PoseSpacePoint(poseFrame60, confidenceFrame60, bboxFrame60);
+    var poseSpacePointB2 =
+        PoseSpacePoint(poseFrame141, confidenceFrame141, bboxFrame141);
+    var poseSpacePointB3 =
+        PoseSpacePoint(poseFrame203, confidenceFrame203, bboxFrame203);
+    var poseSpacePointB4 =
+        PoseSpacePoint(poseFrame275, confidenceFrame275, bboxFrame275);
+    var poseSpacePointB5 =
+        PoseSpacePoint(poseFrame345, confidenceFrame345, bboxFrame345);
+
+    var vpTreeA = new VpTreeFactory().build([
+      poseSpacePointA1 as SpacePoint,
+      poseSpacePointA2 as SpacePoint,
+      poseSpacePointA3 as SpacePoint,
+      poseSpacePointA4 as SpacePoint,
+      poseSpacePointA5 as SpacePoint
+    ], 6, (spacePointA, spacePointB) {
+      return VpTreeManager.distance(
+          spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
+    });
+
+    var vpTreeB = new VpTreeFactory().build([
+      poseSpacePointB1 as SpacePoint,
+      poseSpacePointB2 as SpacePoint,
+      poseSpacePointB3 as SpacePoint,
+      poseSpacePointB4 as SpacePoint,
+      poseSpacePointB5 as SpacePoint
+    ], 6, (spacePointA, spacePointB) {
+      return VpTreeManager.distance(
+          spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
+    });
+
+    var vpTreesPool = Map<String, VpTree>();
+    vpTreesPool['A'] = vpTreeA;
+    vpTreesPool['B'] = vpTreeB;
+
+    var vpTreeManager = VpTreeManager();
+    var thresholdDistance = 0.1;
+    var thresholdCount = 2;
+    String exerciseKey = "E4";
+    List<String> pattern = ["A", "B", "A"];
+
+    vpTreeManager.put(exerciseKey, vpTreesPool);
+    var counter = ExercisesCounter(vpTreeManager, 
+                   exerciseKey,  
+                   thresholdDistance, 
+                   thresholdCount,
+                   pattern);
+
+    counter.repsCounter(poseFrame11, confidenceFrame11, bboxFrame11);
+    counter.repsCounter(poseFrame11, confidenceFrame11, bboxFrame11);
+    counter.repsCounter(poseFrame60, confidenceFrame60, bboxFrame60);
+    counter.repsCounter(poseFrame60, confidenceFrame60, bboxFrame60);
+    counter.repsCounter(poseFrame11, confidenceFrame11, bboxFrame11);
+    var repsCount =
+        counter.repsCounter(poseFrame11, confidenceFrame11, bboxFrame11);
+
+  }
 
   List<PoseJointLib> extractPoseSpacePoints(List<dynamic> _recognitions){
     var poseJointLib = List<PoseJointLib>();
@@ -72,42 +142,10 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
         poseJointLib.forEach((element) { 
           pose.add([element.x, element.y]);
           confidence.add(element.score);
-          var poseSpacePointA1 =
-          PoseSpacePoint(pose, confidence, bbox);
-              var poseSpacePointB1 =
-          PoseSpacePoint(pose, confidence, bbox);
-          
-          var vpTreeA = new VpTreeFactory().build([
-            poseSpacePointA1 as SpacePoint,
-          ], 6, (spacePointA, spacePointB) {
-            return VpTreeManager.distance(
-                spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
-          });
-
-          var vpTreeB = new VpTreeFactory().build([
-            poseSpacePointB1 as SpacePoint,
-  
-          ], 6, (spacePointA, spacePointB) {
-            return VpTreeManager.distance(
-                spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
-          });
-
-          var vpTreesPool = Map<String, VpTree>();
-          vpTreesPool['A'] = vpTreeA;
-          vpTreesPool['B'] = vpTreeB;
-
-          vpTreeManager.put(exerciseKey, vpTreesPool);
-          var counter = ExercisesCounter(vpTreeManager, 
-                   exerciseKey,  
-                   thresholdDistance, 
-                   thresholdCount,
-                   pattern);
-          repsCount = counter.repsCounter(pose, confidence, bbox);
         });
       }
-
     }
-  return repsCount;
+  return poseJointLib;
   }
 
   _startTimerCountdown() {
@@ -206,11 +244,6 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
       'leftAnkle': false,
       'rightAnkle': false,
     };
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   var res = Tflite.loadModel(
