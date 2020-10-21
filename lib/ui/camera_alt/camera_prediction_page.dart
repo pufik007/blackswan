@@ -52,6 +52,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   var thresholdCount = 5;
   String exerciseKey = "E4";
   List<String> pattern = ["A", "B", "A"];
+  var modKeypointsList;
 
   @override
   void initState() {
@@ -525,19 +526,56 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     vpTreeManager.put(exerciseKey, vpTreesPool);
   }
 
-  List<PoseJointLib> extractPoseSpacePoints(List<dynamic> _recognitions){
+  int poseIndex(String part) {
+    var poseIndex = -1;
+    switch(part) {
+      case "nose": { poseIndex = 0; }
+      break;
+      case "leftShoulder": { poseIndex = 1;}
+      break;
+      case "rightShoulder": { poseIndex = 2;}
+      break;
+      case "leftElbow": { poseIndex = 3;}
+      break;
+      case "rightElbow": { poseIndex = 4;}
+      break;
+      case "leftWrist": { poseIndex = 5;}
+      break;
+      case "rightWrist": { poseIndex = 6;}
+      break;
+      case "leftHip": { poseIndex = 7;}
+      break;
+      case "rightHip": { poseIndex = 8;}
+      break;
+      case "leftKnee": { poseIndex = 9;}
+      break;
+      case "rightKnee": { poseIndex = 10;}
+      break;
+      case "leftAnkle": { poseIndex = 11;}
+      break;
+      case "rightAnkle": { poseIndex = 12;}
+      break;
+      default: { poseIndex = -1; }
+      break;
+    }
+  return poseIndex;
+}
+
+  List<PoseJointLib> extractPoseSpacePoints(List<dynamic> _recognitions) {
     var poseJointLib = List<PoseJointLib>();
     List<List<double>> pose = List<List<double>>();
     List<double> confidence = List<double>();
     if (_recognitions.length > 0) {
       var keypoints = _recognitions[0]["keypoints"];
       if (keypoints != null) {
-        var keypointsList = keypoints.values.toList();
-        keypointsList.removeAt(1);
-        keypointsList.removeAt(1);
-        keypointsList.removeAt(1);
-        keypointsList.removeAt(1);
-        keypointsList.forEach((keypoint) {
+        modKeypointsList = keypoints.values.toList().where((keypoint) =>
+          keypoint["part"] != "nose" && keypoint["part"] != "leftEye" && keypoint["part"] != "rightEye"
+        ).toList();
+        modKeypointsList.sort((a, b) =>
+          poseIndex(a["part"]).compareTo(poseIndex(b["part"]))
+        );
+
+        modKeypointsList.forEach((keypoint) {
           poseJointLib.add(PoseJointLib(keypoint["x"], keypoint["y"], keypoint["score"])
            );
         });
