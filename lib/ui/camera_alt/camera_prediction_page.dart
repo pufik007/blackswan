@@ -568,53 +568,30 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     if (_recognitions.length > 0) {
       var keypoints = _recognitions[0]["keypoints"];
       if (keypoints != null) {
-        modKeypointsList = keypoints.values.toList().where((keypoint) =>
-          keypoint["part"] != "nose" && keypoint["part"] != "leftEye" && keypoint["part"] != "rightEye"
-        ).toList();
-        modKeypointsList.sort((a, b) =>
-          poseIndex(a["part"]).compareTo(poseIndex(b["part"]))
-        );
+        modKeypointsList = keypoints.values
+            .toList()
+            .where((keypoint) =>
+                keypoint["part"] != "nose" &&
+                keypoint["part"] != "leftEye" &&
+                keypoint["part"] != "rightEye")
+            .toList();
+        modKeypointsList.sort(
+            (a, b) => poseIndex(a["part"]).compareTo(poseIndex(b["part"])));
 
         modKeypointsList.forEach((keypoint) {
-          poseJointLib.add(PoseJointLib(keypoint["x"], keypoint["y"], keypoint["score"])
-           );
+          poseJointLib.add(
+              PoseJointLib(keypoint["x"], keypoint["y"], keypoint["score"]));
         });
-        poseJointLib.forEach((element) { 
+        poseJointLib.forEach((element) {
           pose.add([element.x, element.y]);
           confidence.add(element.score);
-          var poseSpacePointA1 =
-          PoseSpacePoint(pose, confidence, bbox);
-          var poseSpacePointB1 =
-          PoseSpacePoint(pose, confidence, bbox);
-          
-          var vpTreeA = new VpTreeFactory().build([
-            poseSpacePointA1 as SpacePoint,
-          ], 6, (spacePointA, spacePointB) {
-            return VpTreeManager.distance(
-                spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
-          });
-          var vpTreeB = new VpTreeFactory().build([
-            poseSpacePointB1 as SpacePoint,
-  
-          ], 6, (spacePointA, spacePointB) {
-            return VpTreeManager.distance(
-                spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
-          });
-          var vpTreesPool = Map<String, VpTree>();
-          vpTreesPool['A'] = vpTreeA;
-          vpTreesPool['B'] = vpTreeB;
-          vpTreeManager.put(exerciseKey, vpTreesPool);
-          var counter = ExercisesCounter(vpTreeManager, 
-                   exerciseKey,  
-                   thresholdDistance, 
-                   thresholdCount,
-                   pattern);
-          repsCount = counter.repsCounter(pose, confidence, bbox);
         });
+        var counter = ExercisesCounter(vpTreeManager, exerciseKey,
+            thresholdDistance, thresholdCount, pattern);
+        repsCount = counter.repsCounter(pose, confidence, bbox);
       }
-
     }
-  return poseJointLib;
+    return poseJointLib;
   }
 
   _startTimerCountdown() {
