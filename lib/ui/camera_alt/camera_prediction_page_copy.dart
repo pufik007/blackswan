@@ -24,8 +24,8 @@ import '../../vptree/space_point.dart';
 
 class CameraPredictionPage extends StatefulWidget {
   final List<CameraDescription> cameras;
-  final Level level;
-  const CameraPredictionPage(this.cameras, this.level);
+
+  const CameraPredictionPage(this.cameras);
 
   _CameraPredictionPageState createState() => new _CameraPredictionPageState();
 }
@@ -38,9 +38,9 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   int _counterExercise;
   Timer _timer;
   Timer _exerciseTimer;
-  Level level;
   int _currentExerciseNo = 0;
   var namesExercise;
+  List exercises;
 
 
   ExerciseInfo exerciseInfo;
@@ -732,8 +732,8 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   }
 
   Widget createExerciseTimerOrEndLevel(
-      BuildContext context, List<ExerciseInfo> exercises) {
-    ExerciseInfo exerciseInfo;
+      BuildContext context) {
+   
     if (_exerciseTimer == null && _counter == 0) {
       exerciseInfo = extractCurrentExercise(exercises);
       if (exerciseInfo != null) {
@@ -773,13 +773,6 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
 
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
-    return BlocProvider(
-        create: (context) => LevelBloc(widget.level)..add(Load()),
-        child: BlocBuilder<LevelBloc, LevelState>(builder: (context, state) {
-          if (state is LevelLoading) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (state is LevelLoaded) {
             return Scaffold(
               body: Stack(
                 children: <Widget>[
@@ -834,14 +827,15 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      createExerciseTimerOrEndLevel(context, state.exercises),
+                      RaisedButton(onPressed:() {extractPoseSpacePoints(_recognitions);} )
+               ,
                     ],
                   ),
                 ],
               ),
             );
           }
-          return null;
-        }));
-  }
+    
+        
+  
 }
