@@ -43,13 +43,6 @@ class VpTreeManager {
       aMaxValues[0] = max(aMaxValues[0], joint[0]);
       aMaxValues[1] = max(aMaxValues[1], joint[1]);
     });
-    var pointA = a.pose.map<List<double>>((joint) {
-      var point = List<double>.from(joint);
-      point[0] = (point[0] - aMinValues[0]) / (aMaxValues[0] - aMinValues[0]);
-      point[1] = (point[1] - aMinValues[1]) / (aMaxValues[1] - aMinValues[1]);
-      return point;
-    }).toList();
-
     var bMinValues = List<double>.from([double.maxFinite, double.maxFinite]);
     var bMaxValues = List<double>.from([-double.maxFinite, -double.maxFinite]);
     b.pose.forEach((joint) {
@@ -58,12 +51,23 @@ class VpTreeManager {
       bMaxValues[0] = max(bMaxValues[0], joint[0]);
       bMaxValues[1] = max(bMaxValues[1], joint[1]);
     });
-    var pointB = b.pose.map<List<double>>((joint) {
-      var point = List<double>.from(joint);
-      point[0] = (point[0] - bMinValues[0]) / (bMaxValues[0] - bMinValues[0]); 
-      point[1] = (point[1] - bMinValues[1]) / (bMaxValues[1] - bMinValues[1]); 
-      return point;
-    }).toList();
+
+    
+    var heightPoseA1 = (aMaxValues[0] - aMinValues[0]);
+    var widthPoseA2 = (aMaxValues[1] - aMinValues[1]);
+    var heightPoseB1 = (bMaxValues[0] - bMinValues[0]);
+    var widthPoseB2 = (bMaxValues[1] - bMinValues[1]);
+
+    var proportionsA = heightPoseB1 / heightPoseA1;
+    var proportionsB = widthPoseB2 / widthPoseA2;
+
+    var newValuesA =  heightPoseA1 * proportionsA;
+    var newValuesB =  heightPoseB1 * proportionsB;
+
+
+    
+
+
 
     var confidence = List<double>();
     var confidenceSum = .0;
@@ -73,13 +77,13 @@ class VpTreeManager {
       confidenceSum += minConfidence;
     }
     var dist = .0;
-    for (int i = 0; i < pointA.length; i++) {
-      dist += Vector.fromList(
-                  [pointA[i][0] - pointB[i][0], pointA[i][1] - pointB[i][1]])
-              .norm() *
-          confidence[i] /
-          confidenceSum;
-    }
+    // for (int i = 0; i < pointA.length; i++) {
+    //   dist += Vector.fromList(
+    //               [pointA[i][0] - pointB[i][0], pointA[i][1] - pointB[i][1]])
+    //           .norm() *
+    //       confidence[i] /
+    //       confidenceSum;
+    // }
 
     return dist;
   }
