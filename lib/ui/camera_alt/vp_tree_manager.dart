@@ -58,11 +58,13 @@ class VpTreeManager {
     var heightPoseB1 = (bMaxValues[0] - bMinValues[0]);
     var widthPoseB2 = (bMaxValues[1] - bMinValues[1]);
 
-    var proportionsA = heightPoseB1 / heightPoseA1;
-    var proportionsB = widthPoseB2 / widthPoseA2;
+    var proportionsForHeight = heightPoseB1 / heightPoseA1;
+    var proportionsForWidth = widthPoseB2 / widthPoseA2;
 
-    var newValuesA =  heightPoseA1 * proportionsA;
-    var newValuesB =  heightPoseB1 * proportionsB;
+    var newValuesA1 =  heightPoseA1 * proportionsForHeight;
+    var newValuesA2 =  widthPoseA2 * proportionsForWidth;
+    var newValuesB1 =  heightPoseB1 * proportionsForHeight;
+    var newValuesB2 =  widthPoseB2 * proportionsForWidth;
 
 
     
