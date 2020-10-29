@@ -53,40 +53,61 @@ class VpTreeManager {
     });
 
     
-    var heightPoseA1 = (aMaxValues[0] - aMinValues[0]);
-    var widthPoseA2 = (aMaxValues[1] - aMinValues[1]);
-    var heightPoseB1 = (bMaxValues[0] - bMinValues[0]);
-    var widthPoseB2 = (bMaxValues[1] - bMinValues[1]);
+    var widthPoseA = (aMaxValues[0] - aMinValues[0]);
+    var heightPoseA = (aMaxValues[1] - aMinValues[1]);
+    var widthPoseB = (bMaxValues[0] - bMinValues[0]);
+    var heightPoseB = (bMaxValues[1] - bMinValues[1]);
 
-    var proportionsForHeight = heightPoseB1 / heightPoseA1;
-    var proportionsForWidth = widthPoseB2 / widthPoseA2;
+    var proportionsForWidth = widthPoseB / widthPoseA;
+    var proportionsForHeight = heightPoseB / heightPoseA;
 
-    var newValuesA1 =  heightPoseA1 * proportionsForHeight;
-    var newValuesA2 =  widthPoseA2 * proportionsForWidth;
-    var newValuesB1 =  heightPoseB1 * proportionsForHeight;
-    var newValuesB2 =  widthPoseB2 * proportionsForWidth;
+    var modPoseA = a.pose.map<List<double>>((joint) {
+      var point = List<double>.from(joint);
+      point[0] = point[0] * proportionsForWidth;
+      point[1] = point[1] * proportionsForHeight;
+      return point;
+    }).toList();
 
+    aMinValues[0] = double.maxFinite;
+    aMinValues[1] = double.maxFinite;
+    aMinValues[0] = -double.maxFinite;
+    aMinValues[1] = -double.maxFinite;
 
-    
+  modPoseA.forEach((joint) { 
+    aMinValues[0] = min(aMaxValues[0], joint[0]);
+    aMinValues[1] = min(aMaxValues[1], joint[1]);
+    aMinValues[0] = min(aMaxValues[0], joint[0]);
+    aMinValues[1] = min(aMaxValues[1], joint[1]);
+  });
 
+  var pointA = modPoseA.map<List<double>>((joint) {
+    var point = List<double>.from(joint);
+    point[0] = (point[0] - aMinValues[0]) / (aMaxValues[0] - aMinValues[0]);
+    point[1] = (point[1] - aMinValues[1]) / (aMaxValues[1] - aMinValues[1]);
+    return point;
+  }).toList();
 
+  var pointB = b.pose.map<List<double>>((joint) {
+    var point = List<double>.from(joint);
+    point[0] = (point[0] - bMinValues[0]) / (bMaxValues[0] - bMinValues[0]);
+    point[1] = (point[1] - bMinValues[1]) / (bMaxValues[1] - bMinValues[1]);
+    return point;
+  }).toList();
 
-    var confidence = List<double>();
-    var confidenceSum = .0;
-    for (int i = 0; i < a.pose.length; i++) {
-      var minConfidence = min(a.confidence[i], b.confidence[i]);
-      confidence.add(minConfidence);
-      confidenceSum += minConfidence;
-    }
-    var dist = .0;
-    // for (int i = 0; i < pointA.length; i++) {
-    //   dist += Vector.fromList(
-    //               [pointA[i][0] - pointB[i][0], pointA[i][1] - pointB[i][1]])
-    //           .norm() *
-    //       confidence[i] /
-    //       confidenceSum;
-    // }
-
+  var confidence = List<double>();
+  var confidenceSum = .0;
+  for (int i = 0; i < modPoseA.length; i++) {
+    var minConfidence = min(a.confidence[i], b.confidence[i]);
+    confidence.add(minConfidence);
+    confidenceSum += minConfidence;
+  }
+  var dist = .0;
+  for (int i = 0; i < pointA.length; i++) {
+    dist += Vector.fromList(
+      [pointA[i][0] - pointB[i][0], pointA[i][1] - pointB[i][1]]).norm() 
+        * confidence[i] / confidenceSum;
+  }
+  
     return dist;
   }
 }
