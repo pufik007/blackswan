@@ -70,14 +70,14 @@ class VpTreeManager {
 
     aMinValues[0] = double.maxFinite;
     aMinValues[1] = double.maxFinite;
-    aMinValues[0] = -double.maxFinite;
-    aMinValues[1] = -double.maxFinite;
+    aMaxValues[0] = -double.maxFinite;
+    aMaxValues[1] = -double.maxFinite;
 
   modPoseA.forEach((joint) { 
     aMinValues[0] = min(aMaxValues[0], joint[0]);
     aMinValues[1] = min(aMaxValues[1], joint[1]);
-    aMinValues[0] = min(aMaxValues[0], joint[0]);
-    aMinValues[1] = min(aMaxValues[1], joint[1]);
+    aMaxValues[0] = max(aMaxValues[0], joint[0]);
+    aMaxValues[1] = max(aMaxValues[1], joint[1]);
   });
 
   var pointA = modPoseA.map<List<double>>((joint) {
