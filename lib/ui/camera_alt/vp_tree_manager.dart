@@ -67,6 +67,7 @@ class VpTreeManager {
       point[1] = point[1] * proportionsForHeight;
       return point;
     }).toList();
+    print(modPoseA);
 
     aMinValues[0] = double.maxFinite;
     aMinValues[1] = double.maxFinite;
@@ -74,8 +75,8 @@ class VpTreeManager {
     aMaxValues[1] = -double.maxFinite;
 
   modPoseA.forEach((joint) { 
-    aMinValues[0] = min(aMaxValues[0], joint[0]);
-    aMinValues[1] = min(aMaxValues[1], joint[1]);
+    aMinValues[0] = min(aMinValues[0], joint[0]);
+    aMinValues[1] = min(aMinValues[1], joint[1]);
     aMaxValues[0] = max(aMaxValues[0], joint[0]);
     aMaxValues[1] = max(aMaxValues[1], joint[1]);
   });
