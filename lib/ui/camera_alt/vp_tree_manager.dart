@@ -60,19 +60,29 @@ class VpTreeManager {
 
     var proportionsForWidth = widthPoseB / widthPoseA;
     var proportionsForHeight = heightPoseB / heightPoseA;
+    var shiftForWidth = b.pose[0][0] - a.pose[0][0];
+    var shiftForHeight = b.pose[0][1] - a.pose[0][1];
 
     var modPoseA = a.pose.map<List<double>>((joint) {
       var point = List<double>.from(joint);
-      point[0] = point[0] * proportionsForWidth;
-      point[1] = point[1] * proportionsForHeight;
+      point[0] = (point[0] + shiftForWidth) * proportionsForWidth;
+      point[1] = (point[1] + shiftForHeight) * proportionsForHeight;
       return point;
     }).toList();
-    print(modPoseA);
+
+    // var modPoseA = a.pose.map<List<double>>((joint) {
+    //   var point = List<double>.from(joint);
+    //   point[0] = point[0] * proportionsForWidth;
+    //   point[1] = point[1] * proportionsForHeight;
+    //   return point;
+    // }).toList();
+    // print(modPoseA);
 
     aMinValues[0] = double.maxFinite;
     aMinValues[1] = double.maxFinite;
     aMaxValues[0] = -double.maxFinite;
     aMaxValues[1] = -double.maxFinite;
+
 
   modPoseA.forEach((joint) { 
     aMinValues[0] = min(aMinValues[0], joint[0]);
@@ -80,7 +90,7 @@ class VpTreeManager {
     aMaxValues[0] = max(aMaxValues[0], joint[0]);
     aMaxValues[1] = max(aMaxValues[1], joint[1]);
   });
-
+  
   var pointA = modPoseA.map<List<double>>((joint) {
     var point = List<double>.from(joint);
     point[0] = (point[0] - aMinValues[0]) / (aMaxValues[0] - aMinValues[0]);
@@ -94,7 +104,9 @@ class VpTreeManager {
     point[1] = (point[1] - bMinValues[1]) / (bMaxValues[1] - bMinValues[1]);
     return point;
   }).toList();
-
+  
+  
+ 
   var confidence = List<double>();
   var confidenceSum = .0;
   for (int i = 0; i < modPoseA.length; i++) {
