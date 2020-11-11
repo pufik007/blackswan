@@ -81,6 +81,7 @@ class ExercisesCounter {
 
   int repsCounter(List<List<double>> pose, List<double> confidence, Bbox bbox) {
     var match = findMostSimilarMatch(this.exerciseKey, pose, confidence, bbox);
+    print("DistancePOseMatch - ${match.category} and Score - ${match.score}");
     incrementPoseCounter(match);
     return countTotalReps();
   }
