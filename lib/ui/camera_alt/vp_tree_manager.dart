@@ -69,15 +69,14 @@ class VpTreeManager {
       point[1] = (point[1] + shiftForHeight) * proportionsForHeight;
       return point;
     }).toList();
-
+ 
     // var modPoseA = a.pose.map<List<double>>((joint) {
     //   var point = List<double>.from(joint);
     //   point[0] = point[0] * proportionsForWidth;
     //   point[1] = point[1] * proportionsForHeight;
     //   return point;
     // }).toList();
-    // print(modPoseA);
-
+   
     aMinValues[0] = double.maxFinite;
     aMinValues[1] = double.maxFinite;
     aMaxValues[0] = -double.maxFinite;
@@ -121,6 +120,10 @@ class VpTreeManager {
         * confidence[i] / confidenceSum;
   }
   
+    print("DistancePoseA - ${modPoseA.toString()}");
+    print("DistancePoseB - ${b.pose.toString()}");
+    print("DistancePoseResult - ${dist.toString()}");
+
     return dist;
   }
 }
