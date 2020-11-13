@@ -27,8 +27,10 @@ class VpTreeManager {
   PoseMatch getNearest(String exerciseKey, PoseSpacePoint poseSpacePoint) {
     var result = Map<String, List<PriorityQueueItem>>();
     exerciseVpTreePoolsMap[exerciseKey].entries.forEach((exerciseVpTreePool) {
+      print("DistancePosePool - ${exerciseVpTreePool.key}");
       result[exerciseVpTreePool.key] =
           exerciseVpTreePool.value.search(poseSpacePoint, 1, double.maxFinite);
+      print("DIstancePosePool - ${exerciseVpTreePool.key}, Result - ${result[exerciseVpTreePool.key][0].priority}");
     });
 
     return minItemInMap(result);
