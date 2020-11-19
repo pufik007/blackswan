@@ -62,15 +62,16 @@ class VpTreeManager {
 
     var proportionsForWidth = widthPoseB / widthPoseA;
     var proportionsForHeight = heightPoseB / heightPoseA;
-    var shiftForWidth = b.pose[0][0] - a.pose[0][0];
-    var shiftForHeight = b.pose[0][1] - a.pose[0][1];
 
-    var modPoseA = a.pose.map<List<double>>((joint) {
-      var point = List<double>.from(joint);
-      point[0] = (point[0] + shiftForWidth) * proportionsForWidth;
-      point[1] = (point[1] + shiftForHeight) * proportionsForHeight;
-      return point;
-    }).toList();
+    // var shiftForWidth = b.pose[0][0] - a.pose[0][0];
+    // var shiftForHeight = b.pose[0][1] - a.pose[0][1];
+
+    // var modPoseA = a.pose.map<List<double>>((joint) {
+    //   var point = List<double>.from(joint);
+    //   point[0] = (point[0] + shiftForWidth) * proportionsForWidth;
+    //   point[1] = (point[1] + shiftForHeight) * proportionsForHeight;
+    //   return point;
+    // }).toList();
  
     // var modPoseA = a.pose.map<List<double>>((joint) {
     //   var point = List<double>.from(joint);
@@ -78,6 +79,23 @@ class VpTreeManager {
     //   point[1] = point[1] * proportionsForHeight;
     //   return point;
     // }).toList();
+
+    var preModPoseA = a.pose.map<List<double>>((joint) {
+      var point = List<double>.from(joint);
+      point[0] = point[0] * proportionsForWidth;
+      point[1] = point[1] * proportionsForHeight;
+      return point;
+    }).toList();
+
+    var shiftForWidth = b.pose[0][0] - preModPoseA[0][0];
+    var shiftForHeight = b.pose[0][1] - preModPoseA[0][1];
+
+    var modPoseA = a.pose.map<List<double>>((joint) {
+      var point = List<double>.from(joint);
+      point[0] = point[0] + shiftForWidth;
+      point[1] = point[1] + shiftForHeight;
+      return point;
+    }).toList();
    
     aMinValues[0] = double.maxFinite;
     aMinValues[1] = double.maxFinite;
@@ -92,6 +110,9 @@ class VpTreeManager {
     aMaxValues[1] = max(aMaxValues[1], joint[1]);
   });
   
+  print("preModPoseA - $preModPoseA");
+  print("modPoseA - $modPoseA");
+
   var pointA = modPoseA.map<List<double>>((joint) {
     var point = List<double>.from(joint);
     point[0] = (point[0] - aMinValues[0]) / (aMaxValues[0] - aMinValues[0]);
