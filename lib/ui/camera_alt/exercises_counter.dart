@@ -57,7 +57,9 @@ class ExercisesCounter {
   int countTotalReps() {
     var currentPatternIndex = 0;
     var countReps = 0;
-    
+
+    print("DistancePose threshouldCount - $thresholdCount");
+    print("DistancePose pattern - $pattern");
     counter.forEach((entry) {
       var shouldSkip = false;
       if (entry.value >= thresholdCount) {
@@ -70,6 +72,9 @@ class ExercisesCounter {
           currentPatternIndex = 0;
         }
       }
+
+      print("DistancePose shouldSkip - $shouldSkip");
+      print("DistancePose currentPatternIndex - $currentPatternIndex");
       if (!shouldSkip && currentPatternIndex == pattern.length - 1) {
         countReps += 1;
         currentPatternIndex = 0;
@@ -81,7 +86,7 @@ class ExercisesCounter {
 
   int repsCounter(List<List<double>> pose, List<double> confidence, Bbox bbox) {
     var match = findMostSimilarMatch(this.exerciseKey, pose, confidence, bbox);
-    print("DistancePOseMatch - ${match.category} and Score - ${match.score}");
+    print("DistancePoseMatch - ${match.category} and Score - ${match.score}");
     incrementPoseCounter(match);
     return countTotalReps();
   }
