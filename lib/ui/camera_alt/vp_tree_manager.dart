@@ -90,7 +90,7 @@ class VpTreeManager {
     var shiftForWidth = b.pose[0][0] - preModPoseA[0][0];
     var shiftForHeight = b.pose[0][1] - preModPoseA[0][1];
 
-    print("preModPoseA - $preModPoseA");
+    print("Distance pose - preModPoseA - $preModPoseA");
 
     var modPoseA = preModPoseA.map<List<double>>((joint) {
       var point = List<double>.from(joint);
@@ -113,8 +113,8 @@ class VpTreeManager {
   });
   
   
-  print("modPoseA - $modPoseA");
-  print("b.pose - ${b.pose}");
+  print("DistancePose - modPoseA - $modPoseA");
+  print("DistancePose - b.pose - ${b.pose}");
 
   var pointA = modPoseA.map<List<double>>((joint) {
     var point = List<double>.from(joint);
