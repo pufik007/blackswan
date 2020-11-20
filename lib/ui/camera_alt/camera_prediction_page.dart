@@ -559,11 +559,10 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
           pose.add([element.x, element.y]);
           confidence.add(element.score);
         });
-        print(pose);
+        print('pose right here - $pose');
         print(confidence);
-        var counter = ExercisesCounter(vpTreeManager, exerciseKey,
-            thresholdDistance, thresholdCount, pattern);
-        repsCount = counter.repsCounter(pose, confidence, bbox);
+        repsCount = repsCounter.repsCounter(pose, confidence, bbox);
+        print('repsCount - $repsCount');
       }
     }
     return poseJointLib;
@@ -667,6 +666,11 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     };
   }
 
+//   void printWrapped(String text) {
+//   final pattern = RegExp('.{3,800}'); // 800 is the size of each chunk
+//   pattern.allMatches(text).forEach((match) => print(match.group(0)));
+// }
+
   var res = Tflite.loadModel(
       model: "assets/posenet_mv1_075_float_from_checkpoints.tflite");
 
@@ -674,11 +678,15 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     setState(() {});
   }
 
+  
+
   setRecognitions(recognitions, imageHeight, imageWidth) {
     setState(() {
       _recognitions = recognitions;
       _imageHeight = imageHeight;
       _imageWidth = imageWidth;
+      // printWrapped("this is recognations - $_recognitions");
+  
     });
 
     var isHumanPoseValid = _validateRecognitions(recognitions);
@@ -709,6 +717,8 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
       BuildContext context, List<ExerciseInfo> exercises) {
     ExerciseInfo exerciseInfo;
     if (_exerciseTimer == null && _counter == 0) {
+      repsCounter = ExercisesCounter(vpTreeManager, exerciseKey,
+        thresholdDistance, thresholdCount, pattern);
       exerciseInfo = extractCurrentExercise(exercises);
       if (exerciseInfo != null) {
         namesExercise = exerciseInfo.exercise.name;
@@ -717,7 +727,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
         Navigator.pop(context);
       }
     } else {
-      if (namesExercise == 'Стульчик') {
+      if (namesExercise == 'Отжимания с колен') {
         extractPoseSpacePoints(_recognitions);
       }
     } 
