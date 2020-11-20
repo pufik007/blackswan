@@ -35,20 +35,27 @@ class ExercisesCounter {
   }
 
   incrementPoseCounter(PoseMatch poseMatch) {
+    print("DisrancePose poseMatchScore - ${poseMatch.score}, caregory - ${poseMatch.category}");
+    print("DisrancePose thresholsDistance - $thresholdDistance");
+    print("DisrancePose counterLength - ${counter.length}");
     if (poseMatch.score < thresholdDistance) {
       if (counter.length == 0) {
         counter.add(MapEntry<String, int>(poseMatch.category, 1));
       } else if (counter.last.key == poseMatch.category) {
+        print("DistancePose counterLastKey - ${counter.last.key}");
         counter.last = MapEntry(poseMatch.category, counter.last.value + 1);
       } else {
+        print("DistancePose counterLastKey - ${counter.last.key}");
         counter.add(MapEntry<String, int>(poseMatch.category, 1));
       }
     } else {
       if (counter.length == 0) {
         counter.add(MapEntry<String, int>("unknown", 1));
       } else if (counter.last.key == "unknown") {
+        print("DistancePose counterLastKey - ${counter.last.key}");
         counter.last = MapEntry("unknown", counter.last.value + 1);
       } else {
+        print("DistancePose counterLastKey - ${counter.last.key}");
         counter.add(MapEntry<String, int>("unknown", 1));
       }
     }
@@ -73,6 +80,7 @@ class ExercisesCounter {
         }
       }
 
+      print("DistancePose entryKey - ${entry.key}, value - ${entry.value}");
       print("DistancePose shouldSkip - $shouldSkip");
       print("DistancePose currentPatternIndex - $currentPatternIndex");
       if (!shouldSkip && currentPatternIndex == pattern.length - 1) {
