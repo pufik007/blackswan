@@ -5,13 +5,8 @@ import 'dart:math' as math;
 import 'dart:async';
 import 'camera.dart';
 import 'bndbox.dart';
-import '../pages/level_bloc/level_state.dart';
 import '../../data/api/entities/exercise_info.dart';
-import '../../data/api/entities/level.dart';
-import '../pages/level_bloc/level_bloc.dart';
-import '../pages/level_bloc/level_event.dart';
 import 'package:tensorfit/data/api/entities/exercise_info.dart';
-import 'package:tensorfit/data/api/entities/level.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'vp_tree_manager.dart';
 import 'exercises_counter.dart';
@@ -24,8 +19,7 @@ import '../../vptree/space_point.dart';
 
 class CameraPredictionPage extends StatefulWidget {
   final List<CameraDescription> cameras;
-  final Level level;
-  const CameraPredictionPage(this.cameras, this.level);
+  const CameraPredictionPage(this.cameras);
 
   _CameraPredictionPageState createState() => new _CameraPredictionPageState();
 }
@@ -38,7 +32,6 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   int _counterExercise;
   Timer _timer;
   Timer _exerciseTimer;
-  Level level;
   int _currentExerciseNo = 0;
   var namesExercise;
 
@@ -559,10 +552,11 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
           pose.add([element.x, element.y]);
           confidence.add(element.score);
         });
-        print('pose right here - $pose');
-        print(confidence);
-        repsCount = repsCounter.repsCounter(pose, confidence, bbox);
-        print('repsCount - $repsCount');
+        // print(pose);
+        // print(confidence);
+        var counter = ExercisesCounter(vpTreeManager, exerciseKey,
+            thresholdDistance, thresholdCount, pattern);
+        repsCount = counter.repsCounter(pose, confidence, bbox);
       }
     }
     return poseJointLib;
@@ -666,10 +660,10 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     };
   }
 
-//   void printWrapped(String text) {
-//   final pattern = RegExp('.{3,800}'); // 800 is the size of each chunk
-//   pattern.allMatches(text).forEach((match) => print(match.group(0)));
-// }
+  void printWrapped(String text) {
+  final pattern = RegExp('.{3,800}'); // 800 is the size of each chunk
+  pattern.allMatches(text).forEach((match) => print(match.group(0)));
+}
 
   var res = Tflite.loadModel(
       model: "assets/posenet_mv1_075_float_from_checkpoints.tflite");
@@ -685,7 +679,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
       _recognitions = recognitions;
       _imageHeight = imageHeight;
       _imageWidth = imageWidth;
-      // printWrapped("this is recognations - $_recognitions");
+      printWrapped("this is recognations - $_recognitions");
   
     });
 
@@ -714,23 +708,13 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   }
 
   Widget createExerciseTimerOrEndLevel(
-      BuildContext context, List<ExerciseInfo> exercises) {
-    ExerciseInfo exerciseInfo;
-    if (_exerciseTimer == null && _counter == 0) {
-      repsCounter = ExercisesCounter(vpTreeManager, exerciseKey,
-        thresholdDistance, thresholdCount, pattern);
-      exerciseInfo = extractCurrentExercise(exercises);
-      if (exerciseInfo != null) {
-        namesExercise = exerciseInfo.exercise.name;
-        _startTimerExercises(exerciseInfo);
-      } else {
-        Navigator.pop(context);
-      }
-    } else {
-      if (namesExercise == 'Отжимания с колен') {
+      BuildContext context) {
+    if (_counter == 0) {
+      namesExercise = 'Стульчик';
+      if (namesExercise == 'Стульчик') {
         extractPoseSpacePoints(_recognitions);
       }
-    } 
+    }  
     return Center(
       child: Container(
         padding: EdgeInsets.all(25),
@@ -744,7 +728,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                 ),
               )
             : Text(
-                "$_counterExercise sec",
+                "",
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
@@ -757,14 +741,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
 
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
-    return BlocProvider(
-        create: (context) => LevelBloc(widget.level)..add(Load()),
-        child: BlocBuilder<LevelBloc, LevelState>(builder: (context, state) {
-          if (state is LevelLoading) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (state is LevelLoaded) {
-            return Scaffold(
+    return Scaffold(
               body: Stack(
                 children: <Widget>[
                   Camera(
@@ -819,14 +796,11 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      createExerciseTimerOrEndLevel(context, state.exercises),
+                      createExerciseTimerOrEndLevel(context),
                     ],
                   ),
                 ],
               ),
             );
           }
-          return null;
-        }));
-  }
 }

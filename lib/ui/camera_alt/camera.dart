@@ -18,6 +18,7 @@ class Camera extends StatefulWidget {
 class _CameraState extends State<Camera> {
   CameraController controller;
   bool isDetecting = false;
+  int fpsThreshold = 0;
 
   @override
   void initState() {
@@ -28,7 +29,7 @@ class _CameraState extends State<Camera> {
     } else {
       controller = new CameraController(
         widget.cameras[0],
-        ResolutionPreset.high,
+        ResolutionPreset.medium,
       );
       controller.initialize().then((_) {
         if (!mounted) {
@@ -41,21 +42,25 @@ class _CameraState extends State<Camera> {
             isDetecting = true;
 
             int startTime = new DateTime.now().millisecondsSinceEpoch;
-            Tflite.runPoseNetOnFrame(
-              bytesList: img.planes.map((plane) {
-                return plane.bytes;
-              }).toList(),
-              imageHeight: img.height,
-              imageWidth: img.width,
-              numResults: 2,
-            ).then((recognitions) {
-              int endTime = new DateTime.now().millisecondsSinceEpoch;
-              print("Detection took ${endTime - startTime}");
+            print('fps - $fpsThreshold');
+            if (startTime > fpsThreshold) {
+              Tflite.runPoseNetOnFrame(
+                bytesList: img.planes.map((plane) {
+                  return plane.bytes;
+                }).toList(),
+                imageHeight: img.height,
+                imageWidth: img.width,
+                numResults: 2,
+              ).then((recognitions) {
+                int endTime = new DateTime.now().millisecondsSinceEpoch;
+                print("Detection took ${endTime - startTime}");
 
-              widget.setRecognitions(recognitions, img.height, img.width);
+                widget.setRecognitions(recognitions, img.height, img.width);
 
-              isDetecting = false;
+                isDetecting = false;
             });
+            }
+            
           }
         });
       });
