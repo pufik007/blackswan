@@ -38,24 +38,42 @@ class _HomePageState extends State<HomePage> {
                 height: double.infinity,
                 padding:
                     new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                child: ListTile(
-                  title: Container(
-                    padding: new EdgeInsets.symmetric(
-                        vertical: 30.0, horizontal: 10.0),
-                    child: Text(
-                      'Here will be a city allustration',
-                      style: TextStyle(
-                        fontSize: 21,
-                        color: Colors.white,
-                      ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                        padding: new EdgeInsets.symmetric(
+                            vertical: 30.0, horizontal: 10.0),
+                        child: Text(
+                          'Here will be a city allustration',
+                          style: TextStyle(
+                            fontSize: 21,
+                            color: Colors.white,
+                          ),
+                        ),
                     ),
-                  ),
-                  subtitle: Container(
-                    padding: new EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 10.0),
-                    child: Text('Workout plan',
-                        style: TextStyle(fontSize: 32, color: Colors.white)),
-                  ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          padding: new EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          child: Text('Workout plan',
+                              style: TextStyle(fontSize: 32, color: Colors.white)),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 50),
+                          child: RaisedButton(
+                            onPressed: null, 
+                            color: Colors.red, 
+                              child: Text('213', 
+                                style: TextStyle(
+                                  color: Colors.red),
+                                ),
+                        )
+                        )],
+                        
+                    ),
+                  ]
                 ),
               ),
               LevelCardListWidget(level, date, image, imageAlign),
