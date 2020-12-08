@@ -3,9 +3,9 @@ import '../../../lib/ui/camera_alt/exercises_counter.dart';
 import '../../../lib/ui/camera_alt/bbox.dart';
 import '../../../lib/ui/camera_alt/vp_tree_manager.dart';
 import '../../../lib/ui/camera_alt/pose_space_point.dart';
-import '../../../lib/vptree/space_point.dart';
-import '../../../lib/vptree/vptree_factory.dart';
-import '../../../lib/vptree/vptree.dart';
+import 'package:vptree/space_point.dart';
+import 'package:vptree/vptree_factory.dart';
+import 'package:vptree/vptree.dart';
 
 void main() {
   test('Exercises counter should be incremented', () {
