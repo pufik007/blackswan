@@ -7,6 +7,7 @@ import 'package:tensorfit/data/api/entities/level.dart';
 import 'package:tensorfit/ui/pages/level_bloc/bloc.dart';
 import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 import 'level_bloc/level_bloc.dart';
+import 'exercise_page.dart';
 
 class LevelPage extends StatelessWidget {
   final Level level;
@@ -173,7 +174,8 @@ class LevelPage extends StatelessWidget {
                             IconButton(
                               icon:
                                   Icon(Icons.chevron_right, color: Colors.blue),
-                              onPressed: () {},
+                              onPressed: () {
+                              },
                             ),
                           ],
                         ),
@@ -212,7 +214,7 @@ class LevelPage extends StatelessWidget {
         duration = '${exercise.duration ?? 0} sec';
       }
 
-      var actions = List<Widget>();
+      // var actions = List<Widget>();
 
       // if (exercise.difficulty != 'easy') {
       //   actions.add(Dismissible(
@@ -277,8 +279,13 @@ class LevelPage extends StatelessWidget {
                         top: padding / 2),
                     child: AspectRatio(
                       aspectRatio: 4 / 3,
+                      child: Container(
+                         margin: EdgeInsets.all(15),
+                        child: Text("${exercise.numberOfReps.toString()} points",
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold , color: Colors.purple) 
+                          )),
                       // child: Image(
-                      //     image: AssetImage('assets/test.png'),
+                      //     image: AssetImage('assets/journey/C002.gif'),
                       //     fit: BoxFit.cover),
                     ),
                   ),
@@ -306,7 +313,14 @@ class LevelPage extends StatelessWidget {
                 ],
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+               Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) =>
+                  ExercisePage(exercise.exercise.id, exercise.exercise.description, 
+                    exercise.exercise.name, exercise.duration)
+                ),
+              );
+            },
           ),
         ),
       ));
