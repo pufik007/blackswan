@@ -1,5 +1,5 @@
-import '../../vptree/space_point.dart';
 import '../camera_alt/bbox.dart';
+import 'package:vptree/space_point.dart';
 
 class PoseSpacePoint extends SpacePoint {
   List<List<double>> pose;
