@@ -1,26 +1,16 @@
 class ExerciseDetection {
   final int id;
-  final String difficulty;
-  final int duration;
-  final Exercise exercise;
-  final int levelID;
-  final int numberOfReps;
-  final int position;
-  final int substituteID;
-  final ExerciseDetection substitute;
-  final List<ExerciseDetection> substitutes;
+  final int thresholdDistance;
+  final int thresholdCount;
+  final String exerciseKey;
+  final List<String> pattern;
 
   ExerciseDetection({
     this.id,
-    this.difficulty,
-    this.duration,
-    this.exercise,
-    this.levelID,
-    this.numberOfReps,
-    this.position,
-    this.substituteID,
-    this.substitute,
-    this.substitutes,
+    this.thresholdDistance,
+    this.thresholdCount,
+    this.exerciseKey,
+    this.pattern,
   });
 
   static fromJsonObject(List<dynamic> jsonObject) {
@@ -29,13 +19,7 @@ class ExerciseDetection {
     if (jsonObject == null) {
       return res;
     }
-
     res = [];
-    for (var json in jsonObject) {
-      res.sort((a, b) => a.position.compareTo(b.position));
-      res.add(ExerciseDetection.fromJson(json));
-    }
-
     return res;
   }
 
@@ -46,29 +30,19 @@ class ExerciseDetection {
 
     return ExerciseDetection(
       id: json['id'],
-      difficulty: json['difficulty'],
-      duration: json['duration'],
-      exercise: Exercise.fromJson(json['exercise']),
-      levelID: json['level_id'],
-      numberOfReps: json['number_of_reps'],
-      position: json['position'],
-      substituteID: json['substitute_id'],
-      substitute: ExerciseDetection.fromJson(json['substitute']),
-      substitutes: ExerciseDetection.fromJsonObject(json['substitutes']),
+      thresholdDistance: json['thresholdDistance'],
+      thresholdCount: json['thresholdCount'],
+      exerciseKey: json['exerciseKey'],
+      pattern: json['pattern'],
     );
   }
 
   Map<String, dynamic> toJson() => {
         'id': this.id,
-        'difficulty': this.difficulty,
-        'duration': this.duration,
-        'exercise': this.exercise,
-        'level_id': this.levelID,
-        'number_of_reps': this.numberOfReps,
-        'position': this.position,
-        'substitute_id': this.substituteID,
-        'substitute': this.substitute,
-        'substitutes': this.substitutes,
+        'thresholdDistance': this.thresholdDistance,
+        'thresholdCount': this.thresholdCount,
+        'exerciseKey': this.exerciseKey,
+        'pattern': this.pattern,
       };
 }
 
