@@ -388,7 +388,7 @@ abstract class Api {
     }
   }
 
-  static Future<PrivateResponse> getExerciseDetections(
+  static Future<PrivateResponse> getExerciseDetection(
       User user, String client, String token, String id) async {
     try {
       Map<String, String> headers = {
@@ -405,12 +405,12 @@ abstract class Api {
       print(httpRes.body);
 
       if (httpRes.statusCode == 200) {
-        var exercises = ExerciseDetection.fromJsonObject(json.decode(httpRes.body));
+        var exercise = ExerciseDetection.fromJsonObject(json.decode(httpRes.body));
         var newToken = httpRes.headers['access-token'];
         if (newToken == null) {
           return PrivateResponse.error(['API: token is absent in header']);
         } else {
-          return PrivateResponse.ok(newToken, exercises);
+          return PrivateResponse.ok(newToken, exercise);
         }
       } else {
         var errors = Errors.fromJson(json.decode(httpRes.body));
