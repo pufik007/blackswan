@@ -1,6 +1,7 @@
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tensorfit/data/api/entities/exerciseDetection.dart';
 import 'package:tensorfit/data/api/entities/exercise_info.dart';
 import 'package:tensorfit/data/api/entities/goal.dart';
 import 'package:tensorfit/data/api/entities/journey.dart';
@@ -301,6 +302,24 @@ class Data {
     var res = await Api.getGoals();
     if (res.response != null && res.response is List<Goal>) {
       this._goals = res.response;
+    }
+  }
+
+  Future<ExerciseDetection> getExerciseDetection(String exerciseID) async {
+    var res = await Api.getExerciseDetection(
+      this._settings.user,
+      this._settings.client,
+      this._settings.token,
+      exerciseID
+    );
+
+    if (res.token != null && res.response != null && res.response is List<ExerciseDetection>) {
+      await this._settings.setToken(res.token);
+      return res.response;
+    } else if (res.errors != null) {
+      return null;
+    } else {
+      return null;
     }
   }
 }
