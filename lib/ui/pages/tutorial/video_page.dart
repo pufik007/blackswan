@@ -1,6 +1,6 @@
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import './tutorial.dart';
 
 class VideoPage extends StatefulWidget {
   VideoPage();
@@ -43,7 +43,11 @@ class _VideoPageState extends State<VideoPage> {
               IconButton(
                   icon: Icon(Icons.arrow_back, color: Colors.black),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                     Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) =>
+                            Tutorial()
+                          ),
+                        );
                   },
                 ),
             ],
@@ -52,7 +56,6 @@ class _VideoPageState extends State<VideoPage> {
       ),
     );
   }
-
   @override
   void dispose() {
     super.dispose();
