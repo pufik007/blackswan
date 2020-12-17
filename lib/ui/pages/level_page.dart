@@ -285,7 +285,7 @@ class LevelPage extends StatelessWidget {
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold , color: Colors.purple) 
                           )),
                       // child: Image(
-                      //     image: AssetImage('assets/journey/C002.gif'),
+                      //     image: AssetImage('assets'),
                       //     fit: BoxFit.cover),
                     ),
                   ),

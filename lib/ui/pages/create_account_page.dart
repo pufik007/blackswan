@@ -35,9 +35,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   Widget build(BuildContext context) {
     if (this._bloc == null) {
       this._bloc = LoginBloc(BlocProvider.of<AppBloc>(context));
+      
     }
-
-    return LoginAdapt(
+      return LoginAdapt(
       child: this._buildBody(context),
       minAspectRatio: 0.7,
     );
