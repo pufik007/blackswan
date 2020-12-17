@@ -7,14 +7,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 
-class OnePage extends StatefulWidget {
+class PageOne extends StatefulWidget {
   final double currentPage;
-  OnePage(this.currentPage);
+  PageOne(this.currentPage);
   @override
-  _OnePageState createState() => _OnePageState();
+  _PageOneState createState() => _PageOneState();
 }
 
-class _OnePageState extends State<OnePage> {
+class _PageOneState extends State<PageOne> {
   VideoPlayerController _controller;
   
   @override

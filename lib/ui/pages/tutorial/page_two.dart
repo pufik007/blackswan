@@ -5,14 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 
 
-class TwoPage extends StatefulWidget {
+class PageTwo extends StatefulWidget {
   final double currentPage;
-  TwoPage(this.currentPage);
+  PageTwo(this.currentPage);
   @override
-  _TwoPageState createState() => _TwoPageState();
+  _PageTwoState createState() => _PageTwoState();
 }
 
-class _TwoPageState extends State<TwoPage> {
+class _PageTwoState extends State<PageTwo> {
   VideoPlayerController _controller;
 
   @override

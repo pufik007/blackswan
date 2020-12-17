@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 
-class ThreePage extends StatefulWidget {
+class PageThree extends StatefulWidget {
   final double currentPage;
-  ThreePage(this.currentPage);
+  PageThree(this.currentPage);
   @override
-  _ThreePageState createState() => _ThreePageState();
+  _PageThreeState createState() => _PageThreeState();
 }
 
-class _ThreePageState extends State<ThreePage> {
+class _PageThreeState extends State<PageThree> {
   @override
   Widget build(BuildContext context) {
     return Container(
