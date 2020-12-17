@@ -38,8 +38,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     }
 
       return LoginAdapt(
-      child: this._buildBody(context),
-      minAspectRatio: 0.7,
+        child: this._buildBody(context),
+        minAspectRatio: 0.7,
     );
   }
 
