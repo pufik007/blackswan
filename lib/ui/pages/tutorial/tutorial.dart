@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'one_page.dart';
-import 'two_page.dart';
-import 'three_page.dart';
+import 'page_one.dart';
+import 'page_two.dart';
+import 'page_three.dart';
 
 class Tutorial extends StatelessWidget {
   @override
@@ -63,7 +63,7 @@ class _PageViewDemoState extends State<PageViewDemo> {
 
 class MyPage4Widget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {//TO DO удалить после вёрстки
     return Column(
       children: <Widget>[
         Row(
@@ -91,7 +91,7 @@ class MyPage4Widget extends StatelessWidget {
 
 class MyPage5Widget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {//TO DO удалить после вёрстки
     return Column(
       children: <Widget>[
         Row(
@@ -119,7 +119,7 @@ class MyPage5Widget extends StatelessWidget {
 
 class MyPage6Widget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {//TO DO удалить после вёрстки
     return Column(
       children: <Widget>[
         Row(
