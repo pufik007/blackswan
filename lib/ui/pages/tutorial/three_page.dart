@@ -41,7 +41,7 @@ class _ThreePageState extends State<ThreePage> {
                         fontWeight: FontWeight.bold),
                   )
                 ]),
-          SizedBox(height: 10,),
+          SizedBox(height: 30,),
           Container(
             padding: EdgeInsets.only(bottom: 20.0, top: 20),
             child: RaisedButton(
@@ -59,14 +59,14 @@ class _ThreePageState extends State<ThreePage> {
                   style: TextStyle(fontSize: 17, color: Colors.white)),
             ),
           ),
-          Container(
-            padding: EdgeInsets.only(bottom: 52.0),
-            child: DotsIndicator(
+           DotsIndicator(
               dotsCount: 6,
               decorator: DotsDecorator(activeColor: Colors.white),
               position: widget.currentPage,
             ),
-          ),
+          SizedBox(
+            height: 52,
+          )
         ],
       ),
     );
