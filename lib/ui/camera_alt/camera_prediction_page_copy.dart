@@ -7,15 +7,14 @@ import 'camera.dart';
 import 'bndbox.dart';
 import '../../data/api/entities/exercise_info.dart';
 import 'package:tensorfit/data/api/entities/exercise_info.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'vp_tree_manager.dart';
 import 'exercises_counter.dart';
-import '../../vptree/vptree.dart';
 import 'pose_space_point.dart';
 import 'bbox.dart';
 import 'pose_joint_lib.dart';
-import '../../vptree/vptree_factory.dart';
-import '../../vptree/space_point.dart';
+import 'package:vptree/space_point.dart';
+import 'package:vptree/vptree_factory.dart';
+import 'package:vptree/vptree.dart';
 
 class CameraPredictionPage extends StatefulWidget {
   final List<CameraDescription> cameras;

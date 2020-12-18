@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'package:ml_linalg/vector.dart';
 import './pose_space_point.dart';
-import '../../vptree/vptree.dart';
-import '../../vptree/priority_queue_item.dart';
 import 'pose_match.dart';
+import 'package:vptree/vptree.dart';
+import 'package:vptree/priority_queue_item.dart';
 
 class VpTreeManager {
   var exerciseVpTreePoolsMap = Map<String, Map<String, VpTree>>();
