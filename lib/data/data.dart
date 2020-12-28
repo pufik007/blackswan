@@ -305,7 +305,7 @@ class Data {
     }
   }
 
-  Future<ExerciseDetection> getExerciseDetection(String exerciseID) async {
+  Future<List<ExerciseDetection>> getExerciseDetection(String exerciseID) async {
     var res = await Api.getExerciseDetection(
       this._settings.user,
       this._settings.client,
