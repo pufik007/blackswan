@@ -7,6 +7,10 @@ import 'package:tensorfit/data/api/entities/level.dart';
 import 'package:tensorfit/ui/pages/level_bloc/bloc.dart';
 import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 import 'level_bloc/level_bloc.dart';
+import 'package:tensorfit/ui/camera_alt/exercise_detection_bloc/exercise_detection_bloc.dart';
+import 'package:tensorfit/ui/camera_alt/exercise_detection_bloc/exercise_detection_event.dart';
+import 'package:tensorfit/ui/camera_alt/exercise_detection_bloc/exercise_detection_state.dart';
+
 
 class LevelPage extends StatelessWidget {
   final Level level;
@@ -26,15 +30,22 @@ class LevelPage extends StatelessWidget {
         foregroundColor: Colors.white,
         backgroundColor: Colors.orange[800],
         elevation: 6.0,
-        child: Icon(
+        child: (LevelLoaded != null)
+        ?  CircularProgressIndicator()
+        : Icon(
           Icons.play_circle_outline,
           size: 50.0,
-        ),
+          ),
         onPressed: () {
-          BlocProvider.of<HomeNavigatorBloc>(context)
-              .add(NavigateToCameraPredictionPage(
-            level,
-          ));
+          if (LevelLoaded == null) {
+            BlocProvider.of<HomeNavigatorBloc>(context)
+                .add(NavigateToCameraPredictionPage(
+              level,
+            ));
+          } else {
+            return null;
+          }
+          
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -59,8 +70,17 @@ class LevelPage extends StatelessWidget {
                 ],
               ),
             );
+          } else if (state is ExerciseDetectionLoading) {
+             return Center(child: CircularProgressIndicator());
+          } else if (state is ExerciseDetectionLoaded) {
+            return SingleChildScrollView(
+              child: Column(children: <Widget>[
+                this._buildHeader(context, state.exercises),
+                this._buildExercises(context, state.exercises),
+              ],
+            ),
+            );
           }
-
           return null;
         },
       ),
