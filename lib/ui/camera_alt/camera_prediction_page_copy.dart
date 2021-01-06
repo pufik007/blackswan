@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:tensorfit/ui/camera_alt/exercise_detection_bloc/exercise_detection_bloc.dart';
+import 'package:tensorfit/ui/camera_alt/exercise_detection_bloc/exercise_detection_event.dart';
+import 'package:tensorfit/ui/camera_alt/exercise_detection_bloc/exercise_detection_state.dart';
 import 'package:tflite/tflite.dart';
 import 'dart:math' as math;
 import 'dart:async';
 import 'camera.dart';
 import 'bndbox.dart';
+import '../pages/level_bloc/level_state.dart';
 import '../../data/api/entities/exercise_info.dart';
+import '../../data/api/entities/level.dart';
+import '../pages/level_bloc/level_bloc.dart';
+import '../pages/level_bloc/level_event.dart';
 import 'package:tensorfit/data/api/entities/exercise_info.dart';
+import 'package:tensorfit/data/api/entities/level.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'vp_tree_manager.dart';
 import 'exercises_counter.dart';
 import 'pose_space_point.dart';
@@ -15,10 +24,12 @@ import 'pose_joint_lib.dart';
 import 'package:vptree/space_point.dart';
 import 'package:vptree/vptree_factory.dart';
 import 'package:vptree/vptree.dart';
+import '../../data/api/entities/exerciseDetection.dart';
 
 class CameraPredictionPage extends StatefulWidget {
   final List<CameraDescription> cameras;
-  const CameraPredictionPage(this.cameras);
+  final Level level;
+  const CameraPredictionPage(this.cameras, this.level);
 
   _CameraPredictionPageState createState() => new _CameraPredictionPageState();
 }
@@ -31,12 +42,15 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   int _counterExercise;
   Timer _timer;
   Timer _exerciseTimer;
+  Level level;
   int _currentExerciseNo = 0;
   var namesExercise;
 
 
   ExerciseInfo exerciseInfo;
   ExercisesCounter repsCounter;
+  ExerciseDetection exerciseDetection;
+
   Bbox bbox;
   var repsCount;
   var vpTreeManager = VpTreeManager();
@@ -551,11 +565,10 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
           pose.add([element.x, element.y]);
           confidence.add(element.score);
         });
-        // print(pose);
-        // print(confidence);
-        var counter = ExercisesCounter(vpTreeManager, exerciseKey,
-            thresholdDistance, thresholdCount, pattern);
-        repsCount = counter.repsCounter(pose, confidence, bbox);
+        print('pose right here - $pose');
+        print(confidence);
+        repsCount = repsCounter.repsCounter(pose, confidence, bbox);
+        print('repsCount - $repsCount');
       }
     }
     return poseJointLib;
@@ -659,10 +672,10 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     };
   }
 
-  void printWrapped(String text) {
-  final pattern = RegExp('.{3,800}'); // 800 is the size of each chunk
-  pattern.allMatches(text).forEach((match) => print(match.group(0)));
-}
+//   void printWrapped(String text) {
+//   final pattern = RegExp('.{3,800}'); // 800 is the size of each chunk
+//   pattern.allMatches(text).forEach((match) => print(match.group(0)));
+// }
 
   var res = Tflite.loadModel(
       model: "assets/posenet_mv1_075_float_from_checkpoints.tflite");
@@ -678,7 +691,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
       _recognitions = recognitions;
       _imageHeight = imageHeight;
       _imageWidth = imageWidth;
-      printWrapped("this is recognations - $_recognitions");
+      // printWrapped("this is recognations - $_recognitions");
   
     });
 
@@ -707,13 +720,23 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   }
 
   Widget createExerciseTimerOrEndLevel(
-      BuildContext context) {
-    if (_counter == 0) {
-      namesExercise = 'Стульчик';
-      if (namesExercise == 'Стульчик') {
+      BuildContext context, List<ExerciseInfo> exercises) {
+    ExerciseInfo exerciseInfo;
+    if (_exerciseTimer == null && _counter == 0) {
+      repsCounter = ExercisesCounter(vpTreeManager, exerciseKey,
+        thresholdDistance, thresholdCount, pattern);
+      exerciseInfo = extractCurrentExercise(exercises);
+      if (exerciseInfo != null) {
+        namesExercise = exerciseInfo.exercise.name;
+        _startTimerExercises(exerciseInfo);
+      } else {
+        Navigator.pop(context);
+      }
+    } else {
+      if (namesExercise == 'Отжимания с колен') {
         extractPoseSpacePoints(_recognitions);
       }
-    }  
+    } 
     return Center(
       child: Container(
         padding: EdgeInsets.all(25),
@@ -727,7 +750,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                 ),
               )
             : Text(
-                "",
+                "$_counterExercise sec",
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
@@ -739,67 +762,72 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   }
 
   Widget build(BuildContext context) {
-    Size screen = MediaQuery.of(context).size;
-    return Scaffold(
-              body: Stack(
+    var id = "10";
+
+    return  BlocProvider(
+        create: (context) => ExerciseDetectionBloc(id)..add(LoadExerciseDetection()),
+        child: BlocBuilder<ExerciseDetectionBloc, ExerciseDetectionState>(builder: (context, state) {
+          if (state is ExerciseDetectionLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (state is ExerciseDetectionLoaded) {
+            return Scaffold(
+              body: Column(
                 children: <Widget>[
-                  Camera(
-                    widget.cameras,
-                    setRecognitions,
-                  ),
-                  BndBox(
-                    _recognitions == null ? [] : _recognitions,
-                    math.max(_imageHeight, _imageWidth),
-                    math.min(_imageHeight, _imageWidth),
-                    screen.height,
-                    screen.width,
-                  ),
-                  Center(
-                    child: Text('$repsCount',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red,
-                        fontSize: 20,
-                      )
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(25),
-                    child: Align(
-                        alignment: Alignment.topCenter,
-                        child: (_counter > 0)
-                            ? Text(
-                                '$_counter',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.red,
-                                  fontSize: 70,
-                                ),
-                              )
-                            : Text("",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.red,
-                                  fontSize: 40,
-                                ))),
-                  ),
-                  Align(
-                      alignment: Alignment.bottomCenter,
-                      child: (_counterExercise != null)
-                          ? Text('$namesExercise',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.red,
-                                  fontSize: 30))
-                          : Text("")),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      createExerciseTimerOrEndLevel(context),
-                    ],
-                  ),
+                   Text(thresholdDistance.toString()),
+                   Text(thresholdCount.toString()),
+                   Text(exerciseKey.toString()),
+                   Text(pattern.toString()),
+                  
                 ],
               ),
             );
+  }
+    return null;
+        }),
+    );
+  }
+}
+
+class DetectComponent extends StatefulWidget {
+  @override
+  _DetectComponentState createState() => _DetectComponentState();
+}
+
+class _DetectComponentState extends State<DetectComponent> {
+  ExerciseInfo exerciseInfo;
+  ExerciseDetection exerciseDetection;
+
+  @override
+  Widget build(BuildContext context) {
+
+    var thresholdDistance = exerciseDetection.thresholdDistance;
+    var thresholdCount = exerciseDetection.thresholdCount;
+    String exerciseKey = exerciseDetection.exerciseKey;
+    List<String> pattern = exerciseDetection.pattern as List;
+
+    return  BlocProvider(
+        create: (context) => ExerciseDetectionBloc(exerciseInfo.id.toString())..add(LoadExerciseDetection()),
+        child: BlocBuilder<ExerciseDetectionBloc, ExerciseDetectionState>(builder: (context, state) {
+          if (state is LevelLoading) {
+            return Center(child: CircularProgressIndicator());
           }
+          if (state is LevelLoaded) {
+            return Scaffold(
+              body: Column(
+                children: <Widget>[
+                   Text(thresholdDistance.toString()),
+                   Text(thresholdCount.toString()),
+                   Text(exerciseKey.toString()),
+                   Text(pattern.toString()),
+                  
+                ],
+              ),
+            );
+  }
+
+        }),
+    );
+    
+  }       
 }

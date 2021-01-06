@@ -392,14 +392,13 @@ abstract class Api {
       User user, String client, String token, String id) async {
     try {
       Map<String, String> headers = {
-        "id": id,
         "uid": user.email,
         "client": client,
         "access-token": token,
         "Content-type": "application/json",
       };
 
-      var httpRes = await http.get('$_url/exercise/{$id}/exercise_detections',
+      var httpRes = await http.get('$_url/exercise/$id/exercise_detections',
           headers: headers);
 
       print(httpRes.body);

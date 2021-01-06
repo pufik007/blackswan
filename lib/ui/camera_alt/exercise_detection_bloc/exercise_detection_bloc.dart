@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:tensorfit/data/api/entities/exerciseDetection.dart';
-import 'package:tensorfit/data/data.dart';
-
-import '../../pages/level_bloc/level_event.dart';
+import '../../../data/data.dart';
 import './exercise_detection_state.dart';
+import './exercise_detection_event.dart';
 
-class ExerciseDetectionBloc extends Bloc<LevelEvent, ExerciseDetectionState> {
-  final LevelEvent exerciseID; 
+class ExerciseDetectionBloc extends Bloc<ExerciseDetectionEvent, ExerciseDetectionState> {
+  final String exerciseID; 
   List<dynamic> _exerciseDetect;
 
   ExerciseDetectionBloc(this.exerciseID);
@@ -17,13 +15,13 @@ class ExerciseDetectionBloc extends Bloc<LevelEvent, ExerciseDetectionState> {
   ExerciseDetectionState get initialState => ExerciseDetectionLoading();
 
   @override
-  Stream<ExerciseDetectionState> mapEventToState(LevelEvent event) async* {
-    if (event is Load) {
+  Stream<ExerciseDetectionState> mapEventToState(ExerciseDetectionEvent event) async* {
+    if (event is LoadExerciseDetection) {
       this._exerciseDetect = await Data.instance.getExerciseDetection(this.exerciseID.toString());
       
       if (_exerciseDetect == null) {
         await new Future.delayed(const Duration(seconds: 5));
-        this.add(Load());
+        this.add(LoadExerciseDetection());
       } else {
         yield ExerciseDetectionLoaded(_exerciseDetect);
       }
