@@ -22,9 +22,6 @@ class LevelPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var exerciseIds = [1,2,3,4,5,6,7,8,9,10];
-    // for (var i = 0; i < context.findAncestorStateOfType(); i++) {
-    //         exerciseIds = levelLoaded.exercises[i];
-    //       } 
 
     return Scaffold(
       backgroundColor: this._bgColor,
@@ -40,9 +37,7 @@ class LevelPage extends StatelessWidget {
           size: 50.0,
           ),
         onPressed: () {
-          
           LevelBloc(this.level)..add(LoadDetections(exerciseIds));
-        
           
         },
       ),

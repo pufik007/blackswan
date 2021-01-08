@@ -11,6 +11,7 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
   final Level level;
 
   List<ExerciseInfo> _exercises;
+  List<dynamic> _exercisesId = List<dynamic>();
 
   LevelBloc(this.level);
 
@@ -30,14 +31,23 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
       }
 
       } else if (event is LoadDetections) {
+      
         this._exercises = await Data.instance.getExercises(this.level);
+        if(this._exercises != null) {
+          for(var i = 0; i < this._exercises.length; i++) {
+            print(this._exercises[i].exercise.id);
+            _exercisesId.add(this._exercises[i].exercise.id);
+          }
+          print(_exercisesId);
+        }
 
         if (this._exercises == null) {
           await new Future.delayed(const Duration(seconds: 5));
           this.add(Load());
         } else {
           yield LevelLoaded(this.level, this._exercises);
-        } 
+        }
+        
         
       } else if (event is HarderExercise) {
       for (int i = 0; i < this._exercises.length; i++) {
