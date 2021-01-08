@@ -16,6 +16,12 @@ class Load extends LevelEvent {
   Load() : super([]);
 }
 
+class LoadDetections extends LevelEvent {
+  final List<int> exerciseIds;
+
+  LoadDetections(this.exerciseIds) : super([exerciseIds]);
+}
+
 class HarderExercise extends LevelEvent {
   final int exerciseID;
 

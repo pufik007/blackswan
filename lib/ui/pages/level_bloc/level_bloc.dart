@@ -28,7 +28,18 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
       } else {
         yield LevelLoaded(this.level, this._exercises);
       }
-    } else if (event is HarderExercise) {
+
+      } else if (event is LoadDetections) {
+        this._exercises = await Data.instance.getExercises(this.level);
+
+        if (this._exercises == null) {
+          await new Future.delayed(const Duration(seconds: 5));
+          this.add(Load());
+        } else {
+          yield LevelLoaded(this.level, this._exercises);
+        } 
+        
+      } else if (event is HarderExercise) {
       for (int i = 0; i < this._exercises.length; i++) {
         if (this._exercises[i].id == event.exerciseID) {
           var exercise = this._exercises[i];
@@ -84,6 +95,7 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
           }
         }
       }
+    
     }
   }
 }

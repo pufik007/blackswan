@@ -7,8 +7,6 @@ import 'package:tensorfit/data/api/entities/level.dart';
 import 'package:tensorfit/ui/pages/level_bloc/bloc.dart';
 import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 import 'level_bloc/level_bloc.dart';
-import 'package:tensorfit/ui/camera_alt/exercise_detection_bloc/exercise_detection_bloc.dart';
-import 'package:tensorfit/ui/camera_alt/exercise_detection_bloc/exercise_detection_event.dart';
 import 'package:tensorfit/ui/camera_alt/exercise_detection_bloc/exercise_detection_state.dart';
 
 
@@ -18,11 +16,16 @@ class LevelPage extends StatelessWidget {
   final Alignment imageAlign;
   final Color _bgColor = const Color.fromARGB(255, 18, 11, 25);
 
-  const LevelPage(this.level, this.image, this.imageAlign);
 
-  @override
+  const LevelPage(this.level, this.image, this.imageAlign);
+  
   @override
   Widget build(BuildContext context) {
+    var exerciseIds = [1,2,3,4,5,6,7,8,9,10];
+    // for (var i = 0; i < context.findAncestorStateOfType(); i++) {
+    //         exerciseIds = levelLoaded.exercises[i];
+    //       } 
+
     return Scaffold(
       backgroundColor: this._bgColor,
       body: this._buildBody(context),
@@ -30,21 +33,16 @@ class LevelPage extends StatelessWidget {
         foregroundColor: Colors.white,
         backgroundColor: Colors.orange[800],
         elevation: 6.0,
-        child: (LevelLoaded != null)
+        child: (LevelLoaded == null)
         ?  CircularProgressIndicator()
         : Icon(
           Icons.play_circle_outline,
           size: 50.0,
           ),
         onPressed: () {
-          if (LevelLoaded == null) {
-            BlocProvider.of<HomeNavigatorBloc>(context)
-                .add(NavigateToCameraPredictionPage(
-              level,
-            ));
-          } else {
-            return null;
-          }
+          
+          LevelBloc(this.level)..add(LoadDetections(exerciseIds));
+        
           
         },
       ),
@@ -71,14 +69,20 @@ class LevelPage extends StatelessWidget {
               ),
             );
           } else if (state is ExerciseDetectionLoading) {
-             return Center(child: CircularProgressIndicator());
+              return SingleChildScrollView(
+                child: Column(children: <Widget>[
+                  this._buildHeader(context, state.exercises),
+                  this._buildExercises(context, state.exercises),
+                ],
+              ),
+            );
           } else if (state is ExerciseDetectionLoaded) {
-            return SingleChildScrollView(
-              child: Column(children: <Widget>[
-                this._buildHeader(context, state.exercises),
-                this._buildExercises(context, state.exercises),
-              ],
-            ),
+              return SingleChildScrollView(
+                child: Column(children: <Widget>[
+                  this._buildHeader(context, state.exercises),
+                  this._buildExercises(context, state.exercises),
+                ],
+              ),
             );
           }
           return null;
