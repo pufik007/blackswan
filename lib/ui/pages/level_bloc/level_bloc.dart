@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:tensorfit/data/api/entities/exerciseDetection.dart';
 import 'package:tensorfit/data/api/entities/exercise_info.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
 import 'package:tensorfit/data/data.dart';
+import 'package:tensorfit/ui/camera_alt/exercise_detection_bloc/exercise_detection_state.dart';
 
 import 'level_event.dart';
 import 'level_state.dart';
@@ -11,7 +13,8 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
   final Level level;
 
   List<ExerciseInfo> _exercises;
-  List<dynamic> _exercisesId = List<dynamic>();
+  List<ExerciseDetection> _exerciseDetection;
+  List<String> exerciseIds = [];
 
   LevelBloc(this.level);
 
@@ -29,27 +32,24 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
       } else {
         yield LevelLoaded(this.level, this._exercises);
       }
+    } else if (event is LoadDetections) {
+      this._exerciseDetection =
+          await Data.instance.getExerciseDetection(this.exerciseIds.toString());
 
-      } else if (event is LoadDetections) {
-      
-        this._exercises = await Data.instance.getExercises(this.level);
-        if(this._exercises != null) {
-          for(var i = 0; i < this._exercises.length; i++) {
-            print(this._exercises[i].exercise.id);
-            _exercisesId.add(this._exercises[i].exercise.id);
-          }
-          print(_exercisesId);
-        }
+      if (this._exerciseDetection == null) {
+        await new Future.delayed(const Duration(seconds: 5));
+        this.add(LoadDetections(event.exerciseIds));
+      } else {
+        yield ExerciseDetectionLoaded(this._exerciseDetection);
+      }
 
-        if (this._exercises == null) {
-          await new Future.delayed(const Duration(seconds: 5));
-          this.add(Load());
-        } else {
-          yield LevelLoaded(this.level, this._exercises);
-        }
-        
-        
-      } else if (event is HarderExercise) {
+      if (this._exercises == null) {
+        await new Future.delayed(const Duration(seconds: 5));
+        this.add(Load());
+      } else {
+        yield LevelLoaded(this.level, this._exercises);
+      }
+    } else if (event is HarderExercise) {
       for (int i = 0; i < this._exercises.length; i++) {
         if (this._exercises[i].id == event.exerciseID) {
           var exercise = this._exercises[i];
@@ -68,7 +68,8 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
 
           for (var sub in exercise.substitutes) {
             if (sub.difficulty == newDifficulty) {
-              var error = await Data.instance.replaceExercise(exercise.id, sub.id);
+              var error =
+                  await Data.instance.replaceExercise(exercise.id, sub.id);
               if (error == null) {
                 this.add(Load());
               }
@@ -96,7 +97,8 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
 
           for (var sub in exercise.substitutes) {
             if (sub.difficulty == newDifficulty) {
-              var error = await Data.instance.replaceExercise(exercise.id, sub.id);
+              var error =
+                  await Data.instance.replaceExercise(exercise.id, sub.id);
               if (error == null) {
                 this.add(Load());
               }
@@ -105,7 +107,6 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
           }
         }
       }
-    
     }
   }
 }
