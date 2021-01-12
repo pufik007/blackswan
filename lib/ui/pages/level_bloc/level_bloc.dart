@@ -4,7 +4,6 @@ import 'package:tensorfit/data/api/entities/exerciseDetection.dart';
 import 'package:tensorfit/data/api/entities/exercise_info.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
 import 'package:tensorfit/data/data.dart';
-import 'package:tensorfit/ui/camera_alt/exercise_detection_bloc/exercise_detection_state.dart';
 
 import 'level_event.dart';
 import 'level_state.dart';
