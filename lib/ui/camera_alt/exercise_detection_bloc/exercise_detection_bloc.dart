@@ -23,7 +23,7 @@ class ExerciseDetectionBloc extends Bloc<ExerciseDetectionEvent, ExerciseDetecti
         await new Future.delayed(const Duration(seconds: 5));
         this.add(LoadExerciseDetection());
       } else {
-        yield ExerciseDetectionLoaded(_exerciseDetect);
+        yield ExerciseDetectionLoad(_exerciseDetect);
       }
     } 
   }

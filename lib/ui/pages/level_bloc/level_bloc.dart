@@ -13,7 +13,6 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
 
   List<ExerciseInfo> _exercises;
   List<ExerciseDetection> _exerciseDetection;
-  List<String> exerciseIds = [];
 
   LevelBloc(this.level);
 
@@ -24,7 +23,6 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
   Stream<LevelState> mapEventToState(LevelEvent event) async* {
     if (event is Load) {
       this._exercises = await Data.instance.getExercises(this.level);
-
       if (this._exercises == null) {
         await new Future.delayed(const Duration(seconds: 5));
         this.add(Load());
@@ -32,9 +30,8 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
         yield LevelLoaded(this.level, this._exercises);
       }
     } else if (event is LoadDetections) {
-      this._exerciseDetection =
-          await Data.instance.getExerciseDetection(this.exerciseIds.toString());
-
+      this._exerciseDetection = await Data.instance
+          .getExerciseDetection(event.exerciseIds.toString());
       if (this._exerciseDetection == null) {
         await new Future.delayed(const Duration(seconds: 5));
         this.add(LoadDetections(event.exerciseIds));
