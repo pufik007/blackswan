@@ -7,8 +7,7 @@ import 'package:tensorfit/data/api/entities/level.dart';
 import 'package:tensorfit/ui/pages/level_bloc/bloc.dart';
 import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 import 'level_bloc/level_bloc.dart';
-import 'package:tensorfit/ui/camera_alt/exercise_detection_bloc/exercise_detection_state.dart';
-
+import '../camera_alt/exercise_detection_bloc/exercise_detection_state.dart';
 
 class LevelPage extends StatelessWidget {
   final Level level;
@@ -16,36 +15,18 @@ class LevelPage extends StatelessWidget {
   final Alignment imageAlign;
   final Color _bgColor = const Color.fromARGB(255, 18, 11, 25);
 
-
   const LevelPage(this.level, this.image, this.imageAlign);
-  
+
   @override
   Widget build(BuildContext context) {
-    var exerciseIds = [1,2,3,4,5,6,7,8,9,10];
-
     return Scaffold(
       backgroundColor: this._bgColor,
       body: this._buildBody(context),
-      floatingActionButton: FloatingActionButton(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.orange[800],
-        elevation: 6.0,
-        child: (LevelLoaded == null)
-        ?  CircularProgressIndicator()
-        : Icon(
-          Icons.play_circle_outline,
-          size: 50.0,
-          ),
-        onPressed: () {
-          LevelBloc(this.level)..add(LoadDetections(exerciseIds));
-          
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
   Widget _buildBody(BuildContext context) {
+    List<String> exerciseIds = [];
     return BlocProvider(
       create: (context) => LevelBloc(this.level)..add(Load()),
       child: BlocBuilder<LevelBloc, LevelState>(
@@ -60,20 +41,59 @@ class LevelPage extends StatelessWidget {
                 children: <Widget>[
                   this._buildHeader(context, state.exercises),
                   this._buildExercises(context, state.exercises),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  FloatingActionButton(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.orange[800],
+                    elevation: 6.0,
+                    child: (ExerciseDetectionLoading == null)
+                        ? CircularProgressIndicator()
+                        : Icon(
+                            Icons.download_sharp,
+                            size: 50.0,
+                          ),
+                    onPressed: () {
+                      for (var i = 0; i < state.exercises.length; i++) {
+                        exerciseIds
+                            .add(state.exercises[i].exercise.id.toString());
+                      }
+                      BlocProvider.of<LevelBloc>(context)
+                          .add(LoadDetections(exerciseIds));
+                    },
+                  ),
                 ],
               ),
             );
           } else if (state is ExerciseDetectionLoading) {
-              return SingleChildScrollView(
-                child: Column(children: <Widget>[
+            return SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
                   this._buildHeader(context, state.exercises),
                   this._buildExercises(context, state.exercises),
+                  if (ExerciseDetectionLoading == null)
+                    FloatingActionButton(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.orange[800],
+                      elevation: 6.0,
+                      child: (LevelLoaded != null)
+                          ? Icon(
+                              Icons.download_sharp,
+                              size: 50.0,
+                            )
+                          : CircularProgressIndicator(),
+                      onPressed: () {
+                        return;
+                      },
+                    ),
                 ],
               ),
             );
           } else if (state is ExerciseDetectionLoaded) {
-              return SingleChildScrollView(
-                child: Column(children: <Widget>[
+            return SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
                   this._buildHeader(context, state.exercises),
                   this._buildExercises(context, state.exercises),
                 ],
@@ -229,8 +249,7 @@ class LevelPage extends StatelessWidget {
         duration = '${exercise.duration ?? 0} sec';
       }
 
-      var actions = List<Widget>();
-
+      // var actions = List<Widget>();
       // if (exercise.difficulty != 'easy') {
       //   actions.add(Dismissible(
       //     child: Container(),
@@ -294,6 +313,14 @@ class LevelPage extends StatelessWidget {
                         top: padding / 2),
                     child: AspectRatio(
                       aspectRatio: 4 / 3,
+                      child: Container(
+                          margin: EdgeInsets.all(15),
+                          child: Text(
+                              "${exercise.numberOfReps.toString()} points",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.purple))),
                       // child: Image(
                       //     image: AssetImage('assets/test.png'),
                       //     fit: BoxFit.cover),
@@ -302,10 +329,11 @@ class LevelPage extends StatelessWidget {
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                          border: Border(
-                        bottom:
-                            BorderSide(width: 0.5, color: theme.disabledColor),
-                      )),
+                        border: Border(
+                          bottom: BorderSide(
+                              width: 0.5, color: theme.disabledColor),
+                        ),
+                      ),
                       margin: EdgeInsets.only(right: padding),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -332,21 +360,28 @@ class LevelPage extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
-          alignment: Alignment.topCenter,
+          alignment: Alignment.bottomCenter,
           decoration: BoxDecoration(
             color: this._bgColor,
           ),
           child: FractionallySizedBox(
-            widthFactor: 0.95,
+            widthFactor: 0.9,
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(padding),
                 color: Colors.white,
               ),
               padding: EdgeInsets.only(top: padding),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: items,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(padding),
+                  color: Colors.white,
+                ),
+                padding: EdgeInsets.only(bottom: padding),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: items,
+                ),
               ),
             ),
           ),
