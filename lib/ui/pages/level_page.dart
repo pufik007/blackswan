@@ -25,8 +25,28 @@ class LevelPage extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(BuildContext context) {
+  _buildFab(context, state) {
     List<String> exerciseIds = [];
+    return FloatingActionButton(
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.orange[800],
+      elevation: 6.0,
+      child: (state == ExerciseDetectionLoading)
+          ? CircularProgressIndicator()
+          : Icon(
+              Icons.download_sharp,
+              size: 50.0,
+            ),
+      onPressed: () {
+        for (var i = 0; i < state.exercises.length; i++) {
+          exerciseIds.add(state.exercises[i].exercise.id.toString());
+        }
+        BlocProvider.of<LevelBloc>(context).add(LoadDetections(exerciseIds));
+      },
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
     return BlocProvider(
       create: (context) => LevelBloc(this.level)..add(Load()),
       child: BlocBuilder<LevelBloc, LevelState>(
@@ -41,27 +61,9 @@ class LevelPage extends StatelessWidget {
                 children: <Widget>[
                   this._buildHeader(context, state.exercises),
                   this._buildExercises(context, state.exercises),
+                  _buildFab(context, state),
                   SizedBox(
                     height: 5,
-                  ),
-                  FloatingActionButton(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.orange[800],
-                    elevation: 6.0,
-                    child: (ExerciseDetectionLoading == null)
-                        ? CircularProgressIndicator()
-                        : Icon(
-                            Icons.download_sharp,
-                            size: 50.0,
-                          ),
-                    onPressed: () {
-                      for (var i = 0; i < state.exercises.length; i++) {
-                        exerciseIds
-                            .add(state.exercises[i].exercise.id.toString());
-                      }
-                      BlocProvider.of<LevelBloc>(context)
-                          .add(LoadDetections(exerciseIds));
-                    },
                   ),
                 ],
               ),
@@ -72,21 +74,6 @@ class LevelPage extends StatelessWidget {
                 children: <Widget>[
                   this._buildHeader(context, state.exercises),
                   this._buildExercises(context, state.exercises),
-                  if (ExerciseDetectionLoading == null)
-                    FloatingActionButton(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.orange[800],
-                      elevation: 6.0,
-                      child: (LevelLoaded != null)
-                          ? Icon(
-                              Icons.download_sharp,
-                              size: 50.0,
-                            )
-                          : CircularProgressIndicator(),
-                      onPressed: () {
-                        return;
-                      },
-                    ),
                 ],
               ),
             );
