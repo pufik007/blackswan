@@ -27,23 +27,47 @@ class LevelPage extends StatelessWidget {
 
   _buildFab(context, state) {
     List<String> exerciseIds = [];
-    return FloatingActionButton(
-      foregroundColor: Colors.white,
-      backgroundColor: Colors.orange[800],
-      elevation: 6.0,
-      child: (state == ExerciseDetectionLoading)
-          ? CircularProgressIndicator()
-          : Icon(
-              Icons.download_sharp,
-              size: 50.0,
-            ),
-      onPressed: () {
-        for (var i = 0; i < state.exercises.length; i++) {
-          exerciseIds.add(state.exercises[i].exercise.id.toString());
-        }
-        BlocProvider.of<LevelBloc>(context).add(LoadDetections(exerciseIds));
-      },
-    );
+    if (state is LevelLoaded) {
+      return FloatingActionButton(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.orange[800],
+        elevation: 6.0,
+        child: Icon(
+          Icons.download_sharp,
+          size: 50.0,
+        ),
+        onPressed: () {
+          for (var i = 0; i < state.exercises.length; i++) {
+            exerciseIds.add(state.exercises[i].exercise.id.toString());
+          }
+          BlocProvider.of<LevelBloc>(context).add(LoadDetections(exerciseIds));
+        },
+      );
+    } else if (state is ExerciseDetectionLoading) {
+      return FloatingActionButton(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.orange[800],
+        elevation: 6.0,
+        child: CircularProgressIndicator(),
+        onPressed: () {},
+      );
+    } else if (state is ExerciseDetectionLoaded) {
+      return FloatingActionButton(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.orange[800],
+        elevation: 6.0,
+        child: Icon(
+          Icons.play_circle_outline,
+          size: 50.0,
+        ),
+        onPressed: () {
+          for (var i = 0; i < state.exercises.length; i++) {
+            exerciseIds.add(state.exercises[i].exercise.id.toString());
+          }
+          BlocProvider.of<LevelBloc>(context).add(LoadDetections(exerciseIds));
+        },
+      );
+    }
   }
 
   Widget _buildBody(BuildContext context) {
