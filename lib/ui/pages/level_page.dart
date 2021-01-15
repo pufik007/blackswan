@@ -74,6 +74,7 @@ class LevelPage extends StatelessWidget {
                 children: <Widget>[
                   this._buildHeader(context, state.exercises),
                   this._buildExercises(context, state.exercises),
+                  _buildFab(context, state),
                 ],
               ),
             );
@@ -83,6 +84,7 @@ class LevelPage extends StatelessWidget {
                 children: <Widget>[
                   this._buildHeader(context, state.exercises),
                   this._buildExercises(context, state.exercises),
+                  _buildFab(context, state),
                 ],
               ),
             );
