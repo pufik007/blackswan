@@ -21,6 +21,7 @@ import 'pose_joint_lib.dart';
 import 'package:vptree/space_point.dart';
 import 'package:vptree/vptree_factory.dart';
 import 'package:vptree/vptree.dart';
+import 'stop_exercise_page/stop_page_exercise.dart';
 
 class CameraPredictionPage extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -755,6 +756,19 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     );
   }
 
+  endButton() {
+    return RaisedButton(onPressed: (){ 
+          Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) =>
+                      StopPageExercise()
+                      )
+                    );
+    },
+    elevation: 0,
+    color: Colors.transparent,
+    child: Icon(Icons.stop_circle_outlined, size: 50, color: Colors.purple,),);
+  }
+
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
     return BlocProvider(
@@ -807,7 +821,14 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                                   fontSize: 40,
                                 ))),
                   ),
+                   Container(
+                     padding: EdgeInsets.only(bottom:30),
+                     child: Align(
+                        alignment: Alignment.bottomCenter,
+                  child: endButton(),),
+                   ),
                   Align(
+                    
                       alignment: Alignment.bottomCenter,
                       child: (_counterExercise != null)
                           ? Text('$namesExercise',
