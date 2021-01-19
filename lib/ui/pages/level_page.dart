@@ -61,10 +61,9 @@ class LevelPage extends StatelessWidget {
           size: 50.0,
         ),
         onPressed: () {
-          for (var i = 0; i < state.exercises.length; i++) {
-            exerciseIds.add(state.exercises[i].exercise.id.toString());
-          }
-          BlocProvider.of<LevelBloc>(context).add(LoadDetections(exerciseIds));
+          BlocProvider.of<HomeNavigatorBloc>(context).add(
+            NavigateToCameraPredictionPage(level),
+          );
         },
       );
     }
