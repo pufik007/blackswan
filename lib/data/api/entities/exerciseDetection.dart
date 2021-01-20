@@ -23,7 +23,12 @@ class ExerciseDetection {
     if (jsonObject == null) {
       return res;
     }
+    
     res = [];
+    for (var json in jsonObject) {
+      res.add(ExerciseDetection.fromJson(json));
+    }
+
     return res;
   }
 

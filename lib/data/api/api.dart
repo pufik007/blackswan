@@ -404,12 +404,13 @@ abstract class Api {
       print(httpRes.body);
 
       if (httpRes.statusCode == 200) {
-        var exercise = ExerciseDetection.fromJsonObject(json.decode(httpRes.body));
+        var exerciseDetections = ExerciseDetection.fromJsonObject(json.decode(httpRes.body));
         var newToken = httpRes.headers['access-token'];
         if (newToken == null) {
           return PrivateResponse.error(['API: token is absent in header']);
         } else {
-          return PrivateResponse.ok(newToken, exercise);
+          return PrivateResponse.ok(newToken, exerciseDetections);
+          
         }
       } else {
         var errors = Errors.fromJson(json.decode(httpRes.body));
