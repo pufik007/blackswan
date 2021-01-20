@@ -62,7 +62,7 @@ class LevelPage extends StatelessWidget {
         ),
         onPressed: () {
           BlocProvider.of<HomeNavigatorBloc>(context).add(
-            NavigateToCameraPredictionPage(level),
+            NavigateToCameraPredictionPage(level, state.exerciseDetections),
           );
         },
       );
