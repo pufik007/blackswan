@@ -3,10 +3,13 @@ import 'package:bloc/bloc.dart';
 import '../../../data/data.dart';
 import './exercise_detection_state.dart';
 import './exercise_detection_event.dart';
+import '../../../data/api/entities/exercise_info.dart';
+
 
 class ExerciseDetectionBloc extends Bloc<ExerciseDetectionEvent, ExerciseDetectionState> {
   final String exerciseID; 
   List<dynamic> _exerciseDetect;
+  List<ExerciseInfo> exercises;
 
   ExerciseDetectionBloc(this.exerciseID);
     
@@ -23,7 +26,7 @@ class ExerciseDetectionBloc extends Bloc<ExerciseDetectionEvent, ExerciseDetecti
         await new Future.delayed(const Duration(seconds: 5));
         this.add(LoadExerciseDetection());
       } else {
-        yield ExerciseDetectionLoad(_exerciseDetect);
+        yield ExerciseDetectionLoad(_exerciseDetect, exercises);
       }
     } 
   }

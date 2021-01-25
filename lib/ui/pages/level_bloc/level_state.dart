@@ -8,8 +8,6 @@ import '../../../data/api/entities/exerciseDetection.dart';
 @immutable
 abstract class LevelState extends Equatable {
   LevelState();
-
-  List<ExerciseInfo> get exercises => null;
 }
 
 class LevelLoading extends LevelState {
