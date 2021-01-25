@@ -18,18 +18,29 @@ class LevelLoading extends LevelState {
 class LevelLoaded extends LevelState {
   final Level level;
   final List<ExerciseInfo> exercises;
+  final List<ExerciseDetection> exerciseDetections;
 
-  LevelLoaded(this.level, this.exercises);
+  LevelLoaded(this.level, this.exercises, this.exerciseDetections);
 
   @override
   List<Object> get props => [this.level, this.exercises];
 }
 
-class ExerciseDetectionLoaded extends LevelState {
-  final List<ExerciseDetection> exerciseDetections;
+class ExerciseDetectionLoading extends LevelState {
+  final List<ExerciseInfo> exercises;
 
-  ExerciseDetectionLoaded(this.exerciseDetections);
+  ExerciseDetectionLoading(this.exercises);
 
   @override
-  List<Object> get props => [this.exerciseDetections];
+  List<Object> get props => [this.exercises];
+}
+
+class ExerciseDetectionLoaded extends LevelState {
+  final List<ExerciseDetection> exerciseDetections;
+  final List<ExerciseInfo> exercises;
+
+  ExerciseDetectionLoaded(this.exerciseDetections, this.exercises);
+
+  @override
+  List<Object> get props => [this.exerciseDetections, this.exercises];
 }

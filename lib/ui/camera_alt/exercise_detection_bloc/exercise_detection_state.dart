@@ -10,8 +10,10 @@ abstract class ExerciseDetectionState extends Equatable {
 }
 
 class ExerciseDetectionLoading extends ExerciseDetectionState {
+  final List<ExerciseInfo> exercises = [];
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [this.exercises];
 }
 
 class ExerciseDetectionLoad extends ExerciseDetectionState {
@@ -21,5 +23,5 @@ class ExerciseDetectionLoad extends ExerciseDetectionState {
   ExerciseDetectionLoad(this.exerciseDetect, this.exercises);
 
   @override
-  List<Object> get props => [this.exerciseDetect];
+  List<Object> get props => [this.exerciseDetect, this.exercises];
 }

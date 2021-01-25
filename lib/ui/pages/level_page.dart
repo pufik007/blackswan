@@ -7,7 +7,7 @@ import 'package:tensorfit/data/api/entities/level.dart';
 import 'package:tensorfit/ui/pages/level_bloc/bloc.dart';
 import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 import 'level_bloc/level_bloc.dart';
-import '../camera_alt/exercise_detection_bloc/exercise_detection_state.dart';
+
 
 class LevelPage extends StatelessWidget {
   final Level level;

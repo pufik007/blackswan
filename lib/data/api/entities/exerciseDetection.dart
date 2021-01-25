@@ -3,7 +3,7 @@ class ExerciseDetection {
   final int exerciseId;
   final String exerciseKey;
   final String pattern;
-  final Object patternFrames;
+  final Map patternFrames;
   final int thresholdCount;
   final int thresholdDistance;
  

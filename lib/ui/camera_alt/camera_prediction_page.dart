@@ -21,11 +21,14 @@ import 'pose_joint_lib.dart';
 import 'package:vptree/space_point.dart';
 import 'package:vptree/vptree_factory.dart';
 import 'package:vptree/vptree.dart';
+import 'package:tensorfit/data/api/entities/exerciseDetection.dart';
+import 'dart:convert';
 
 class CameraPredictionPage extends StatefulWidget {
   final List<CameraDescription> cameras;
   final Level level;
-  const CameraPredictionPage(this.cameras, this.level);
+  final List<ExerciseDetection> exerciseDetection;
+  const CameraPredictionPage(this.cameras, this.level, this.exerciseDetection);
 
   _CameraPredictionPageState createState() => new _CameraPredictionPageState();
 }
@@ -41,6 +44,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   Level level;
   int _currentExerciseNo = 0;
   var namesExercise;
+  ExerciseDetection exerciseDetection;
 
 
   ExerciseInfo exerciseInfo;
@@ -48,15 +52,12 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   Bbox bbox;
   var repsCount;
   var vpTreeManager = VpTreeManager();
-  var thresholdDistance = 0.1;
-  var thresholdCount = 2;
-  String exerciseKey = "E4";
-  List<String> pattern = ["A", "B", "A"];
   var modKeypointsList;
 
   @override
   void initState() {
     super.initState();
+    
     List<List<double>> poseFrame11 = [
       [0.50261167, 0.17781262],
       [0.54448713, 0.26657622],
@@ -495,7 +496,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     var vpTreesPool = Map<String, VpTree>();
     vpTreesPool['A'] = vpTreeA;
     vpTreesPool['B'] = vpTreeB;
-    vpTreeManager.put(exerciseKey, vpTreesPool);
+    vpTreeManager.put(widget.exerciseDetection[0].exerciseKey, vpTreesPool);
   }
 
   int poseIndex(String part) {
@@ -713,12 +714,29 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     return exerciseInfo;
   }
 
+  ExerciseDetection extractCurrentExerciseDetection(List<ExerciseDetection> exercisesDetection) {
+    ExerciseDetection exerciseDetection;
+    for (int i = 0; i < exercisesDetection.length; i++) {
+      if (exercisesDetection[i].id != null &&
+          exercisesDetection[i].id != 0 &&
+          i > _currentExerciseNo) {
+        exerciseDetection = exercisesDetection[i];
+        _currentExerciseNo = i;
+        break;
+      }
+    }
+    return exerciseDetection;
+  }
+  List<String> pattert;
+
   Widget createExerciseTimerOrEndLevel(
-      BuildContext context, List<ExerciseInfo> exercises) {
+      BuildContext context, List<ExerciseInfo> exercises, List<ExerciseDetection> exercisesDetection) {
     ExerciseInfo exerciseInfo;
     if (_exerciseTimer == null && _counter == 0) {
-      repsCounter = ExercisesCounter(vpTreeManager, exerciseKey,
-        thresholdDistance, thresholdCount, pattern);
+      exerciseDetection = extractCurrentExerciseDetection(exercisesDetection);
+      repsCounter = ExercisesCounter(vpTreeManager, exerciseDetection.exerciseKey,
+        0.1, 
+            5, exerciseDetection.pattern.split(" "));
       exerciseInfo = extractCurrentExercise(exercises);
       if (exerciseInfo != null) {
         namesExercise = exerciseInfo.exercise.name;
@@ -819,7 +837,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      createExerciseTimerOrEndLevel(context, state.exercises),
+                      createExerciseTimerOrEndLevel(context, state.exercises, widget.exerciseDetection),
                     ],
                   ),
                 ],

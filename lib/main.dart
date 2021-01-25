@@ -14,6 +14,7 @@ import 'ui/pages/journey_page.dart';
 import 'ui/pages/level_page.dart';
 import 'package:camera/camera.dart';
 import 'ui/camera_alt/camera_prediction_page.dart';
+import 'data/api/entities/exerciseDetection.dart';
 
 List<CameraDescription> cameras;
 
@@ -124,9 +125,10 @@ class _AppState extends State<App> {
                     case '/camera_prediction_page':
                       final List args = settings.arguments;
                       final Level level = args[0];
+                      final List<ExerciseDetection> exerciseDetection = args[1];
                       return MaterialPageRoute(
                         builder: (context) {
-                          return CameraPredictionPage(cameras, level);
+                          return CameraPredictionPage(cameras, level, exerciseDetection);
                         },
                       );
                     default:

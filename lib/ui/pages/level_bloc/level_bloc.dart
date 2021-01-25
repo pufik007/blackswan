@@ -27,7 +27,7 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
         await new Future.delayed(const Duration(seconds: 5));
         this.add(Load());
       } else {
-        yield LevelLoaded(this.level, this._exercises);
+        yield LevelLoaded(this.level, this._exercises, this._exerciseDetection);
       }
     } else if (event is LoadDetections) {
       this._exerciseDetection = await Data.instance
@@ -36,7 +36,7 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
         await new Future.delayed(const Duration(seconds: 5));
         this.add(LoadDetections(event.exerciseIds));
       } else {
-        yield ExerciseDetectionLoaded(this._exerciseDetection);
+        yield ExerciseDetectionLoaded(this._exerciseDetection, this._exercises);
       }
     } else if (event is HarderExercise) {
       for (int i = 0; i < this._exercises.length; i++) {
