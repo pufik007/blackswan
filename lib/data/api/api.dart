@@ -398,7 +398,7 @@ abstract class Api {
         "Content-type": "application/json",
       };
 
-      var httpRes = await http.get('$_url/exercise/$id/exercise_detections',
+      var httpRes = await http.get('$_url/exercise_detections?exercise_ids=$id',
           headers: headers);
 
       print(httpRes.body);
