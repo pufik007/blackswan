@@ -1,11 +1,8 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:tensorfit/data/navigator_bloc/bloc.dart';
-import 'video_page.dart';
 import 'package:video_player/video_player.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-
+import '../../../main.dart';
 
 class PageOne extends StatefulWidget {
   final double currentPage;
@@ -16,7 +13,7 @@ class PageOne extends StatefulWidget {
 
 class _PageOneState extends State<PageOne> {
   VideoPlayerController _controller;
-  
+
   @override
   void initState() {
     super.initState();
@@ -25,13 +22,28 @@ class _PageOneState extends State<PageOne> {
           ..initialize().then((_) {
             _controller.play();
             _controller.setLooping(true);
-
+            _controller.setVolume(0.5);
             setState(() {});
           });
   }
 
   @override
   Widget build(BuildContext context) {
+    var heightBg = MediaQuery.of(context).size.height;
+    var widthBg = MediaQuery.of(context).size.width;
+
+    if (heightBg != null && widthBg != null) {
+      if (heightBg >= 800) {
+        heightBg = MediaQuery.of(context).size.height;
+      } else {
+        heightBg = MediaQuery.of(context).size.height * 1.1;
+      }
+      if (widthBg >= 380) {
+        widthBg = MediaQuery.of(context).size.width;
+      } else {
+        widthBg = MediaQuery.of(context).size.width * 1.1;
+      }
+    }
     return MaterialApp(
       home: SafeArea(
         child: Scaffold(
@@ -53,19 +65,22 @@ class _PageOneState extends State<PageOne> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Container(
-                      padding:
-                          EdgeInsets.only(bottom: 15.0, right: 30, left: 30),
+                      padding: EdgeInsets.only(
+                          bottom: 10,
+                          left: widthBg * 0.1,
+                          right: widthBg * 0.1),
                       child: RaisedButton(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
                             side: BorderSide(color: Colors.white)),
-                        padding: EdgeInsets.only(
-                            bottom: 21, top: 21),
+                        padding:
+                            EdgeInsets.symmetric(vertical: widthBg * 0.045),
                         onPressed: () {
                           Navigator.push<_PlayerVideoAndPopPage>(
                             context,
                             MaterialPageRoute<_PlayerVideoAndPopPage>(
-                              builder: (BuildContext context) => _PlayerVideoAndPopPage(),
+                              builder: (BuildContext context) =>
+                                  _PlayerVideoAndPopPage(),
                             ),
                           );
                         },
@@ -74,8 +89,7 @@ class _PageOneState extends State<PageOne> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(right: 2.0),
+                            Container(
                               child: Icon(
                                 Icons.play_circle_outline,
                                 size: 20,
@@ -83,8 +97,7 @@ class _PageOneState extends State<PageOne> {
                             ),
                             Text('See it in action',
                                 style: TextStyle(
-                                    fontSize: 17,
-                                    color: Colors.black)),
+                                    fontSize: 17, color: Colors.black)),
                           ],
                         ),
                       ),
@@ -93,18 +106,23 @@ class _PageOneState extends State<PageOne> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                           side: BorderSide(color: Colors.deepPurple)),
-                      padding: EdgeInsets.only(
-                          bottom: 21, top: 21, right: 122, left: 122),
+                      padding: EdgeInsets.symmetric(
+                          vertical: widthBg * 0.05,
+                          horizontal: heightBg * 0.15),
                       onPressed: () {
-                        BlocProvider.of<LoginNavigatorBloc>(context)
-                          .add(NavigateToCreateAccount());
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => App()));
+                        setState(() {
+                          _controller.setVolume(0);
+                        });
                       },
                       color: Colors.deepPurple,
                       child: Text('Get started',
-                          style:
-                              TextStyle(fontSize: 17, color: Colors.white)),
+                          style: TextStyle(fontSize: 17, color: Colors.white)),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Container(
                       padding: EdgeInsets.only(bottom: 10.0),
                       child: DotsIndicator(
@@ -115,15 +133,16 @@ class _PageOneState extends State<PageOne> {
                     ),
                     RaisedButton(
                         onPressed: () {
-                          BlocProvider.of<LoginNavigatorBloc>(context)
-                            .add(NavigateToCreateAccount());
-                       },
+                          Navigator.of(context)
+                              .pushReplacementNamed('/create_account');
+                        },
                         color: Colors.transparent,
                         elevation: 0,
                         child: Text('Returning user? Log in',
-                            style: TextStyle(color: Colors.white))
-                      ),
-                      SizedBox(height: 32,),
+                            style: TextStyle(color: Colors.white))),
+                    SizedBox(
+                      height: 32,
+                    ),
                   ],
                 ),
               ),

@@ -104,14 +104,15 @@ class _InfoItemState extends State<InfoItem> {
                       )),
                 )
         ]),
-        if (isActive == true)
-          Container(
+        (isActive == true)
+          ? Container(
             margin: EdgeInsets.only(left: 10),
             child: Text(
               '${widget.infoItem1.subTitle}',
               style: TextStyle(fontSize: 13, color: Colors.white),
-            ),
-          ),
+            )
+          )
+          : null
       ]),
     );
   }

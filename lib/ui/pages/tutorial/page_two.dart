@@ -1,9 +1,8 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 
+import '../../../main.dart';
 
 class PageTwo extends StatefulWidget {
   final double currentPage;
@@ -29,6 +28,21 @@ class _PageTwoState extends State<PageTwo> {
 
   @override
   Widget build(BuildContext context) {
+    var heightBg = MediaQuery.of(context).size.height;
+    var widthBg = MediaQuery.of(context).size.width;
+
+    if (heightBg != null && widthBg != null) {
+      if (heightBg >= 800) {
+        heightBg = MediaQuery.of(context).size.height;
+      } else {
+        heightBg = MediaQuery.of(context).size.height * 1.1;
+      }
+      if (widthBg >= 380) {
+        widthBg = MediaQuery.of(context).size.width;
+      } else {
+        widthBg = MediaQuery.of(context).size.width * 1.1;
+      }
+    }
     return MaterialApp(
         theme: ThemeData(
           primaryColor: Color(0xffb55e28),
@@ -81,12 +95,15 @@ class _PageTwoState extends State<PageTwo> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                         side: BorderSide(color: Colors.deepPurple)),
-                    padding: EdgeInsets.only(
-                        bottom: 21, top: 21, right: 122, left: 122),
-                    onPressed:  () {
-                      BlocProvider.of<LoginNavigatorBloc>(context)
-                        .add(NavigateToCreateAccount());
-                       },
+                    padding: EdgeInsets.symmetric(
+                        vertical: widthBg * 0.05, horizontal: heightBg * 0.15),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => App()));
+                      setState(() {
+                        _controller.setVolume(0);
+                      });
+                    },
                     color: Colors.deepPurple,
                     child: Text('Get started',
                         style: TextStyle(fontSize: 17, color: Colors.white)),
