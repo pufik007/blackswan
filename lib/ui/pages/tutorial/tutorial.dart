@@ -48,11 +48,9 @@ class _PageViewDemoState extends State<PageViewDemo> {
     return PageView(
       controller: _controller,
       children: [
-        
         PageOne(currentPage),
         PageTwo(currentPage),
         PageThree(currentPage),
-       
         // FourePage(),
         // MyPage5Widget(),
         // MyPage6Widget(),

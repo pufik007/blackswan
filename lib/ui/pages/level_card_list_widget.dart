@@ -68,7 +68,7 @@ class LevelCardListWidget extends StatelessWidget {
 
   Widget _getLevel(Level level, bool isSelected, DateTime date) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 160.0, horizontal: 10.0),
+      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
       child: LevelCard(
         date: date,
         level: level,
