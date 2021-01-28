@@ -66,7 +66,7 @@ class _FivePageState extends State<StopPageExercise> {
       }
     }
     return Scaffold(
-          body: ListView(
+      body: ListView(
         children: <Widget>[
           Container(
             height: 200,
@@ -95,9 +95,6 @@ class _FivePageState extends State<StopPageExercise> {
                         height: heightBg * 0.6,
                         width: widthBg * 0.9,
                         child: InfoList(_info)),
-                    SizedBox(
-                      height: 20,
-                    ),
                     RaisedButton(
                       color: Colors.deepPurple,
                       shape: RoundedRectangleBorder(

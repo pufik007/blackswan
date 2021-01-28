@@ -47,7 +47,7 @@ class _InfoItemState extends State<InfoItem> {
           color: Colors.deepPurple[700],
           borderRadius: BorderRadius.circular(30)),
       child: Column(children: [
-        Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+        Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
           IconButton(
               icon: fab,
               onPressed: () {
@@ -105,14 +105,13 @@ class _InfoItemState extends State<InfoItem> {
                 )
         ]),
         (isActive == true)
-          ? Container(
-            margin: EdgeInsets.only(left: 10),
-            child: Text(
-              '${widget.infoItem1.subTitle}',
-              style: TextStyle(fontSize: 13, color: Colors.white),
-            )
-          )
-          : null
+            ? Container(
+                margin: EdgeInsets.only(left: 10),
+                child: Text(
+                  '${widget.infoItem1.subTitle}',
+                  style: TextStyle(fontSize: 13, color: Colors.white),
+                ))
+            : Container()
       ]),
     );
   }
