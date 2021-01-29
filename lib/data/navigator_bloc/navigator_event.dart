@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
-import '../../data/api/entities/exerciseDetection.dart';
+import '../api/entities/exercise_detection.dart';
 import '../../data/api/entities/level.dart';
 
 @immutable
@@ -40,7 +40,8 @@ class NavigateToLevel extends NavigatorEvent {
 class NavigateToCameraPredictionPage extends NavigatorEvent {
   final Level level;
   final List<ExerciseDetection> exerciseDetections;
-  NavigateToCameraPredictionPage(this.level, this.exerciseDetections) : super([level]);
+  NavigateToCameraPredictionPage(this.level, this.exerciseDetections)
+      : super([level]);
 }
 
 class NavigateBack extends NavigatorEvent {

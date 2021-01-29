@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:tensorfit/data/api/entities/exerciseDetection.dart';
+import 'package:tensorfit/data/api/entities/exercise_detection.dart';
 import 'package:tensorfit/data/api/entities/exercise_info.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
 import 'package:tensorfit/data/data.dart';
@@ -30,8 +30,8 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
         yield LevelLoaded(this.level, this._exercises, this._exerciseDetection);
       }
     } else if (event is LoadDetections) {
-      this._exerciseDetection = await Data.instance
-          .getExerciseDetection(event.exerciseIds.toString());
+      this._exerciseDetection =
+          await Data.instance.getExerciseDetection(event.exerciseIds);
       if (this._exerciseDetection == null) {
         await new Future.delayed(const Duration(seconds: 5));
         this.add(LoadDetections(event.exerciseIds));

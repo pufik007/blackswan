@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:tensorfit/data/api/entities/exercise_info.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
-import '../../../data/api/entities/exerciseDetection.dart';
+import '../../../data/api/entities/exercise_detection.dart';
 
 @immutable
 abstract class LevelState extends Equatable {

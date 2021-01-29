@@ -1,7 +1,7 @@
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:tensorfit/data/api/entities/exerciseDetection.dart';
+import 'package:tensorfit/data/api/entities/exercise_detection.dart';
 import 'package:tensorfit/data/api/entities/exercise_info.dart';
 import 'package:tensorfit/data/api/entities/goal.dart';
 import 'package:tensorfit/data/api/entities/journey.dart';
@@ -48,12 +48,15 @@ class Data {
   loginFacebook() async {
     final facebookSignIn = FacebookLogin();
 
-    final FacebookLoginResult facebookUser = await facebookSignIn.logIn(['email']);
+    final FacebookLoginResult facebookUser =
+        await facebookSignIn.logIn(['email']);
 
     if (facebookUser.status == FacebookLoginStatus.loggedIn) {
       var res = await Api.loginFacebook(facebookUser.accessToken.token);
 
-      if (res.token != null && res.response != null && res.response is UserResponse) {
+      if (res.token != null &&
+          res.response != null &&
+          res.response is UserResponse) {
         await this._settings.setClient(res.response.client);
         await this._settings.setToken(res.token);
         await this._settings.setUser(res.response.user);
@@ -75,7 +78,9 @@ class Data {
 
     var res = await Api.loginGoogle(auth.idToken);
 
-    if (res.token != null && res.response != null && res.response is UserResponse) {
+    if (res.token != null &&
+        res.response != null &&
+        res.response is UserResponse) {
       await this._settings.setClient(res.response.client);
       await this._settings.setToken(res.token);
       await this._settings.setUser(res.response.user);
@@ -136,7 +141,9 @@ class Data {
 
   Future<String> register(String email, String password) async {
     var res = await Api.register(email, password);
-    if (res.token != null && res.response != null && res.response is UserResponse) {
+    if (res.token != null &&
+        res.response != null &&
+        res.response is UserResponse) {
       await this._settings.setClient(res.response.client);
       await this._settings.setToken(res.token);
       await this._settings.setUser(res.response.user);
@@ -150,7 +157,9 @@ class Data {
 
   Future<String> login(String email, String password) async {
     var res = await Api.login(email, password);
-    if (res.token != null && res.response != null && res.response is UserResponse) {
+    if (res.token != null &&
+        res.response != null &&
+        res.response is UserResponse) {
       await this._settings.setClient(res.response.client);
       await this._settings.setToken(res.token);
       await this._settings.setUser(res.response.user);
@@ -224,8 +233,10 @@ class Data {
     }
   }
 
-  Future<String> fillUserData(DateTime dateOfBirth, int height, int weight, UserGenderType gender) async {
-    var newUser = this._settings.user.update(dateOfBirth, height, weight, gender, 'ru');
+  Future<String> fillUserData(DateTime dateOfBirth, int height, int weight,
+      UserGenderType gender) async {
+    var newUser =
+        this._settings.user.update(dateOfBirth, height, weight, gender, 'ru');
 
     var res = await Api.updateUser(
       newUser,
@@ -251,7 +262,9 @@ class Data {
       this._settings.token,
     );
 
-    if (res.token != null && res.response != null && res.response is List<Level>) {
+    if (res.token != null &&
+        res.response != null &&
+        res.response is List<Level>) {
       await this._settings.setToken(res.token);
       return res.response;
     } else if (res.errors != null) {
@@ -269,7 +282,9 @@ class Data {
       level.id,
     );
 
-    if (res.token != null && res.response != null && res.response is List<ExerciseInfo>) {
+    if (res.token != null &&
+        res.response != null &&
+        res.response is List<ExerciseInfo>) {
       await this._settings.setToken(res.token);
       return res.response;
     } else if (res.errors != null) {
@@ -305,15 +320,14 @@ class Data {
     }
   }
 
-  Future<List<ExerciseDetection>> getExerciseDetection(String exerciseID) async {
-    var res = await Api.getExerciseDetection(
-      this._settings.user,
-      this._settings.client,
-      this._settings.token,
-      exerciseID
-    );
+  Future<List<ExerciseDetection>> getExerciseDetection(
+      List<String> exerciseIds) async {
+    var res = await Api.getExerciseDetections(this._settings.user,
+        this._settings.client, this._settings.token, exerciseIds);
 
-    if (res.token != null && res.response != null && res.response is List<ExerciseDetection>) {
+    if (res.token != null &&
+        res.response != null &&
+        res.response is List<ExerciseDetection>) {
       await this._settings.setToken(res.token);
       return res.response;
     } else if (res.errors != null) {

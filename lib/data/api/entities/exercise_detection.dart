@@ -6,7 +6,7 @@ class ExerciseDetection {
   final Map patternFrames;
   final int thresholdCount;
   final int thresholdDistance;
- 
+
   ExerciseDetection({
     this.id,
     this.exerciseId,
@@ -17,15 +17,15 @@ class ExerciseDetection {
     this.thresholdDistance,
   });
 
-  static fromJsonObject(List<dynamic> jsonObject) {
+  static fromJsonArray(List<dynamic> jsonArray) {
     List<ExerciseDetection> res;
 
-    if (jsonObject == null) {
+    if (jsonArray == null) {
       return res;
     }
-    
+
     res = [];
-    for (var json in jsonObject) {
+    for (var json in jsonArray) {
       res.add(ExerciseDetection.fromJson(json));
     }
 
