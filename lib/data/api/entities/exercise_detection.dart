@@ -5,7 +5,7 @@ class ExerciseDetection {
   final String pattern;
   final Map patternFrames;
   final int thresholdCount;
-  final int thresholdDistance;
+  final double thresholdDistance;
 
   ExerciseDetection({
     this.id,
@@ -43,8 +43,8 @@ class ExerciseDetection {
       exerciseKey: json['exercise_key'],
       pattern: json['pattern'],
       patternFrames: json['pattern_frames'],
-      thresholdDistance: json['thresholdDistance'],
-      thresholdCount: json['thresholdCount'],
+      thresholdDistance: json['threshold_distance'],
+      thresholdCount: json['threshold_count'],
     );
   }
 
@@ -54,7 +54,7 @@ class ExerciseDetection {
         'exercise_key': this.exerciseKey,
         'pattern': this.pattern,
         'pattern_frames': this.patternFrames,
-        'thresholdDistance': this.thresholdDistance,
-        'thresholdCount': this.thresholdCount,
+        'threshold_distance': this.thresholdDistance,
+        'threshold_count': this.thresholdCount,
       };
 }

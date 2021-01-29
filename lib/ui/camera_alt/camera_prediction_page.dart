@@ -741,8 +741,8 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
       repsCounter = ExercisesCounter(
           vpTreeManager,
           exerciseDetection.exerciseKey,
-          0.1,
-          5,
+          exerciseDetection.thresholdDistance,
+          exerciseDetection.thresholdCount,
           exerciseDetection.pattern.split(" "));
       if (exerciseInfo != null) {
         namesExercise = exerciseInfo.exercise.name;
