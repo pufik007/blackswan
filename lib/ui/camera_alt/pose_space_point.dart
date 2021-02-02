@@ -8,15 +8,18 @@ class PoseSpacePoint extends SpacePoint {
   PoseSpacePoint(List pose, List confidence, Bbox bbox) : super(null);
 
   static fromJsonArray(List<dynamic> jsonArray) {
-    var pose = List<List<double>>();
-    var confidence = List<double>();
-    var bbox = List<Object>();
+    List<PoseSpacePoint> res;
 
-    for (var json in jsonArray) {
-      pose.add(json['pose']);
-      confidence.add(json['confidence']);
-      bbox.add(json['bbox']);
+    if (jsonArray == null) {
+      return res;
     }
+
+    res = [];
+    for (var json in jsonArray) {
+      res.add(PoseSpacePoint.fromJson(json));
+    }
+
+    return res;
   }
 
   factory PoseSpacePoint.fromJson(Map<String, dynamic> json) {
@@ -24,10 +27,24 @@ class PoseSpacePoint extends SpacePoint {
       return null;
     }
 
+    var pose = List<List<double>>();
+    (json['pose'] as List).forEach((poseJointCoordsJson) {
+      var poseJointCoords = List<double>();
+      (poseJointCoordsJson as List).forEach((element) {
+        poseJointCoords.add(element);
+      });
+      pose.add(poseJointCoords);
+    });
+
+    var confidence = List<double>();
+    (json['confidence'] as List).forEach((element) {
+      confidence.add(element);
+    });
+
     return PoseSpacePoint(
-      json['pose'],
-      json['confidence'],
-      Bbox.fromJsonArray(['bbox']),
+      pose,
+      confidence,
+      Bbox.fromJson(json['bbox']),
     );
   }
 
