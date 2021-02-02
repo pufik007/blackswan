@@ -52,17 +52,20 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   var vpTreeManager = VpTreeManager();
   var modKeypointsList;
 
-  qweqweqe(exerciseDetection) {
-    List<List<double>> poseFrame11 = [];
-    var qweqwe = exerciseDetection.patternFrames["A"][0]['11']['pose'];
-    for (var i = 0; i < qweqwe.length; i++) {
-      poseFrame11.add(qweqwe[i].cast<double>());
-    }
+  exerciseDetectionChangeTypes(exerciseDetection) {
+    // List<List<double>> poseFrame11 = [];
+    // var exerciseDetectionList =
+    //     exerciseDetection.patternFrames["A"][0]['11']['pose'];
+    // for (var i = 0; i < exerciseDetectionList.length; i++) {
+    //   poseFrame11.add(exerciseDetectionList[i].cast<double>());
+    // }
 
-    List<double> confidenceFrame11 = exerciseDetection.patternFrames["A"][0]
-            ['11']['confidence']
-        .cast<double>();
+    // List<double> confidenceFrame11 = exerciseDetection.patternFrames["A"][0]
+    //         ['11']['confidence']
+    //     .cast<double>();
 
+    List<List<double>> poseFrame11;
+    List<double> confidenceFrame11;
     Bbox bboxFrame11;
 
     List<List<double>> poseFrame95 = [
@@ -416,8 +419,10 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     // maxY:0.8569849136024282]
     // ['A', 0.175], ['B', 0.0441]
 
-    var poseSpacePointA1 =
-        PoseSpacePoint(poseFrame11, confidenceFrame11, bboxFrame11);
+    var poseSpacePointA1 = PoseSpacePoint(
+        exerciseDetection.patternFrames["A"][0]['11']['pose'],
+        exerciseDetection.patternFrames["A"][0]['11']['confidence'],
+        bboxFrame95);
     var poseSpacePointA2 =
         PoseSpacePoint(poseFrame95, confidenceFrame95, bboxFrame95);
     var poseSpacePointA3 =
@@ -752,7 +757,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
       }
     } else {
       if (namesExercise == 'Стоять в планке на локтях') {
-        qweqweqe(exerciseDetection);
+        exerciseDetectionChangeTypes(exerciseDetection);
         extractPoseSpacePoints(_recognitions);
       }
     }
