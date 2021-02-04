@@ -2,23 +2,25 @@ import '../camera_alt/bbox.dart';
 import 'package:vptree/space_point.dart';
 
 class PoseSpacePoint extends SpacePoint {
-  List pose;
-  List confidence;
+  List<List<double>> pose;
+  List<double> confidence;
   Bbox bbox;
-  PoseSpacePoint(List pose, List confidence, Bbox bbox) : super(null);
+  PoseSpacePoint(List<List<double>> pose, List<double> confidence, Bbox bbox)
+      : super(null) {
+    this.pose = pose;
+    this.confidence = confidence;
+    this.bbox = bbox;
+  }
 
-  static fromJsonArray(List<dynamic> jsonArray) {
+  static fromJsonArray(Map<String, dynamic> jsonArray) {
     List<PoseSpacePoint> res;
 
     if (jsonArray == null) {
       return res;
     }
-
     res = [];
-    for (var json in jsonArray) {
-      res.add(PoseSpacePoint.fromJson(json));
-    }
 
+    res.add(PoseSpacePoint.fromJson(jsonArray));
     return res;
   }
 
