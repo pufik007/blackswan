@@ -53,77 +53,68 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   var modKeypointsList;
 
   exerciseDetectionChangeTypes(exerciseDetection) {
-    var frame11 = PoseSpacePoint.fromJsonArray(
-        exerciseDetection.patternFrames['A'][0]['11']);
-    var frame95 = PoseSpacePoint.fromJsonArray(
-        exerciseDetection.patternFrames['A'][1]['95']);
-    var frame170 = PoseSpacePoint.fromJsonArray(
-        exerciseDetection.patternFrames['A'][2]['170']);
-    var frame229 = PoseSpacePoint.fromJsonArray(
-        exerciseDetection.patternFrames['A'][3]['229']);
-    var frame315 = PoseSpacePoint.fromJsonArray(
-        exerciseDetection.patternFrames['A'][4]['315']);
-    var frame60 = PoseSpacePoint.fromJsonArray(
-        exerciseDetection.patternFrames['B'][0]['60']);
-    var frame141 = PoseSpacePoint.fromJsonArray(
-        exerciseDetection.patternFrames['B'][1]['141']);
-    var frame203 = PoseSpacePoint.fromJsonArray(
-        exerciseDetection.patternFrames['B'][2]['203']);
-    var frame275 = PoseSpacePoint.fromJsonArray(
-        exerciseDetection.patternFrames['B'][3]['275']);
-    var frame345 = PoseSpacePoint.fromJsonArray(
-        exerciseDetection.patternFrames['B'][4]['345']);
+    var detectionList = exerciseDetection.patternFrames;
+    var frame11 = PoseSpacePoint.fromJsonArray(detectionList['A'][0]['11']);
+    var frame95 = PoseSpacePoint.fromJsonArray(detectionList['A'][1]['95']);
+    var frame170 = PoseSpacePoint.fromJsonArray(detectionList['A'][2]['170']);
+    var frame229 = PoseSpacePoint.fromJsonArray(detectionList['A'][3]['229']);
+    var frame315 = PoseSpacePoint.fromJsonArray(detectionList['A'][4]['315']);
+    var frame60 = PoseSpacePoint.fromJsonArray(detectionList['B'][0]['60']);
+    var frame141 = PoseSpacePoint.fromJsonArray(detectionList['B'][1]['141']);
+    var frame203 = PoseSpacePoint.fromJsonArray(detectionList['B'][2]['203']);
+    var frame275 = PoseSpacePoint.fromJsonArray(detectionList['B'][3]['275']);
+    var frame345 = PoseSpacePoint.fromJsonArray(detectionList['B'][4]['345']);
 
     var poseSpacePointA1 = PoseSpacePoint(
-      frame11[0].pose,
-      frame11[0].confidence,
-      frame11[0].bbox,
+      frame11.pose,
+      frame11.confidence,
+      frame11.bbox,
     );
     var poseSpacePointA2 = PoseSpacePoint(
-      frame95[0].pose,
-      frame95[0].confidence,
-      frame95[0].bbox,
+      frame95.pose,
+      frame95.confidence,
+      frame95.bbox,
     );
     var poseSpacePointA3 = PoseSpacePoint(
-      frame170[0].pose,
-      frame170[0].confidence,
-      frame170[0].bbox,
+      frame170.pose,
+      frame170.confidence,
+      frame170.bbox,
     );
     var poseSpacePointA4 = PoseSpacePoint(
-      frame229[0].pose,
-      frame229[0].confidence,
-      frame229[0].bbox,
+      frame229.pose,
+      frame229.confidence,
+      frame229.bbox,
     );
     var poseSpacePointA5 = PoseSpacePoint(
-      frame315[0].pose,
-      frame315[0].confidence,
-      frame315[0].bbox,
+      frame315.pose,
+      frame315.confidence,
+      frame315.bbox,
     );
 
     var poseSpacePointB1 = PoseSpacePoint(
-      frame60[0].pose,
-      frame60[0].confidence,
-      frame60[0].bbox,
+      frame60.pose,
+      frame60.confidence,
+      frame60.bbox,
     );
     var poseSpacePointB2 = PoseSpacePoint(
-      frame141[0].pose,
-      frame141[0].confidence,
-      frame141[0].bbox,
+      frame141.pose,
+      frame141.confidence,
+      frame141.bbox,
     );
     var poseSpacePointB3 = PoseSpacePoint(
-      frame203[0].pose,
-      frame203[0].confidence,
-      frame203[0].bbox,
+      frame203.pose,
+      frame203.confidence,
+      frame203.bbox,
     );
     var poseSpacePointB4 = PoseSpacePoint(
-      frame275[0].pose,
-      frame275[0].confidence,
-      frame275[0].bbox,
+      frame275.pose,
+      frame275.confidence,
+      frame275.bbox,
     );
     var poseSpacePointB5 = PoseSpacePoint(
-      frame345[0].pose,
-      frame345[0].confidence,
-      frame345[0].bbox,
+      frame345.pose,
+      frame345.confidence,
+      frame345.bbox,
     );
 
     var vpTreeA = new VpTreeFactory().build([

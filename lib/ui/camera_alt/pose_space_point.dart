@@ -13,15 +13,7 @@ class PoseSpacePoint extends SpacePoint {
   }
 
   static fromJsonArray(Map<String, dynamic> jsonArray) {
-    List<PoseSpacePoint> res;
-
-    if (jsonArray == null) {
-      return res;
-    }
-    res = [];
-
-    res.add(PoseSpacePoint.fromJson(jsonArray));
-    return res;
+    return PoseSpacePoint.fromJson(jsonArray);
   }
 
   factory PoseSpacePoint.fromJson(Map<String, dynamic> json) {
