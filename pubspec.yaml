@@ -100,3 +100,4 @@ flutter:
     - assets/posenet_mv1_075_float_from_checkpoints.tflite
     - assets/video.mp4
     - assets/journey.png
+    - assets/backgroundEndOfExercises.png

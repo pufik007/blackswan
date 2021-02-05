@@ -3,6 +3,13 @@ import 'package:camera/camera.dart';
 import 'package:tflite/tflite.dart';
 import 'dart:math' as math;
 import 'dart:async';
+import 'package:vptree/space_point.dart';
+import 'package:vptree/vptree_factory.dart';
+import 'package:vptree/vptree.dart';
+import 'package:tensorfit/data/api/entities/exercise_info.dart';
+import 'package:tensorfit/data/api/entities/level.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'camera.dart';
 import 'bndbox.dart';
 import '../pages/level_bloc/level_state.dart';
@@ -10,18 +17,12 @@ import '../../data/api/entities/exercise_info.dart';
 import '../../data/api/entities/level.dart';
 import '../pages/level_bloc/level_bloc.dart';
 import '../pages/level_bloc/level_event.dart';
-import 'package:tensorfit/data/api/entities/exercise_info.dart';
-import 'package:tensorfit/data/api/entities/level.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'vp_tree_manager.dart';
 import 'exercises_counter.dart';
 import 'pose_space_point.dart';
 import 'bbox.dart';
 import 'pose_joint_lib.dart';
-import 'package:vptree/space_point.dart';
-import 'package:vptree/vptree_factory.dart';
-import 'package:vptree/vptree.dart';
-import 'package:tensorfit/data/api/entities/exercise_detection.dart';
+import '../../data/api/entities/exercise_detection.dart';
 
 class CameraPredictionPage extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -433,7 +434,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
         namesExercise = exerciseInfo.exercise.name;
         _startTimerExercises(exerciseInfo);
       } else {
-        Navigator.pop(context);
+        Navigator.of(context).pushReplacementNamed('/end_of_exercises');
       }
     } else {
       if (namesExercise != null) {
@@ -441,6 +442,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
         extractPoseSpacePoints(_recognitions);
       }
     }
+
     return Center(
       child: Container(
         padding: EdgeInsets.all(25),
@@ -454,7 +456,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                 ),
               )
             : Text(
-                "$_counterExercise sec",
+                "${fastExercisesTimer()} sec",
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
