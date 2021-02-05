@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 import 'package:tensorfit/generated/i18n.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import './tutorial/tutorial.dart';
 import 'package:tensorfit/ui/widgets/tensorfit_button.dart';
 import 'package:tensorfit/ui/widgets/login_adapt.dart';
 
@@ -49,7 +50,12 @@ class FirstPage extends StatelessWidget {
             TensorfitButton(
               title: S.of(context).first_create_account,
               onPressed: () {
-                BlocProvider.of<LoginNavigatorBloc>(context).add(NavigateToCreateAccount());
+                Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) =>
+                            Tutorial()
+                          ),
+                        );
+                  // BlocProvider.of<LoginNavigatorBloc>(context).add(NavigateToCreateAccount());
               },
             ),
             TensorfitBorderedButton(

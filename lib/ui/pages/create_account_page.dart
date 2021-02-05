@@ -34,12 +34,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   @override
   Widget build(BuildContext context) {
     if (this._bloc == null) {
-      this._bloc = LoginBloc(BlocProvider.of<AppBloc>(context));
+      this._bloc = LoginBloc(BlocProvider.of<AppBloc>(context));   
     }
 
-    return LoginAdapt(
-      child: this._buildBody(context),
-      minAspectRatio: 0.7,
+      return LoginAdapt(
+        child: this._buildBody(context),
+        minAspectRatio: 0.7,
     );
   }
 
