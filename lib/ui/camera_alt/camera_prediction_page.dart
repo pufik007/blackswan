@@ -66,55 +66,55 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     var frame345 = PoseSpacePoint.fromJsonArray(detectionList['B'][4]['345']);
 
     var poseSpacePointA1 = PoseSpacePoint(
-      frame11.pose,
-      frame11.confidence,
-      frame11.bbox,
+      frame11[0].pose,
+      frame11[0].confidence,
+      frame11[0].bbox,
     );
     var poseSpacePointA2 = PoseSpacePoint(
-      frame95.pose,
-      frame95.confidence,
-      frame95.bbox,
+      frame95[0].pose,
+      frame95[0].confidence,
+      frame95[0].bbox,
     );
     var poseSpacePointA3 = PoseSpacePoint(
-      frame170.pose,
-      frame170.confidence,
-      frame170.bbox,
+      frame170[0].pose,
+      frame170[0].confidence,
+      frame170[0].bbox,
     );
     var poseSpacePointA4 = PoseSpacePoint(
-      frame229.pose,
-      frame229.confidence,
-      frame229.bbox,
+      frame229[0].pose,
+      frame229[0].confidence,
+      frame229[0].bbox,
     );
     var poseSpacePointA5 = PoseSpacePoint(
-      frame315.pose,
-      frame315.confidence,
-      frame315.bbox,
+      frame315[0].pose,
+      frame315[0].confidence,
+      frame315[0].bbox,
     );
 
     var poseSpacePointB1 = PoseSpacePoint(
-      frame60.pose,
-      frame60.confidence,
-      frame60.bbox,
+      frame60[0].pose,
+      frame60[0].confidence,
+      frame60[0].bbox,
     );
     var poseSpacePointB2 = PoseSpacePoint(
-      frame141.pose,
-      frame141.confidence,
-      frame141.bbox,
+      frame141[0].pose,
+      frame141[0].confidence,
+      frame141[0].bbox,
     );
     var poseSpacePointB3 = PoseSpacePoint(
-      frame203.pose,
-      frame203.confidence,
-      frame203.bbox,
+      frame203[0].pose,
+      frame203[0].confidence,
+      frame203[0].bbox,
     );
     var poseSpacePointB4 = PoseSpacePoint(
-      frame275.pose,
-      frame275.confidence,
-      frame275.bbox,
+      frame275[0].pose,
+      frame275[0].confidence,
+      frame275[0].bbox,
     );
     var poseSpacePointB5 = PoseSpacePoint(
-      frame345.pose,
-      frame345.confidence,
-      frame345.bbox,
+      frame345[0].pose,
+      frame345[0].confidence,
+      frame345[0].bbox,
     );
 
     var vpTreeA = new VpTreeFactory().build([
@@ -390,6 +390,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
 
   ExerciseInfo extractCurrentExercise(List<ExerciseInfo> exercises) {
     ExerciseInfo exerciseInfo;
+
     for (int i = 0; i < exercises.length; i++) {
       if (exercises[i].duration != null &&
           exercises[i].duration != 0 &&
@@ -399,6 +400,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
         break;
       }
     }
+
     return exerciseInfo;
   }
 
@@ -419,22 +421,22 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
     ExerciseInfo exerciseInfo;
     if (_exerciseTimer == null && _counter == 0) {
       exerciseInfo = extractCurrentExercise(exercises);
-      exerciseDetection =
-          extractCurrentExerciseDetection(exercisesDetection, exerciseInfo);
-      repsCounter = ExercisesCounter(
-          vpTreeManager,
-          exerciseDetection.exerciseKey,
-          exerciseDetection.thresholdDistance,
-          exerciseDetection.thresholdCount,
-          exerciseDetection.pattern.split(" "));
       if (exerciseInfo != null) {
+        exerciseDetection =
+            extractCurrentExerciseDetection(exercisesDetection, exerciseInfo);
+        repsCounter = ExercisesCounter(
+            vpTreeManager,
+            exerciseDetection.exerciseKey,
+            exerciseDetection.thresholdDistance,
+            exerciseDetection.thresholdCount,
+            exerciseDetection.pattern.split(" "));
         namesExercise = exerciseInfo.exercise.name;
         _startTimerExercises(exerciseInfo);
       } else {
         Navigator.pop(context);
       }
     } else {
-      if (namesExercise == 'Стоять в планке на локтях') {
+      if (namesExercise != null) {
         exerciseDetectionChangeTypes(exerciseDetection);
         extractPoseSpacePoints(_recognitions);
       }
