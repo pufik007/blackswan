@@ -456,7 +456,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                 ),
               )
             : Text(
-                "${fastExercisesTimer()} sec",
+                "$_counterExercise sec",
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
