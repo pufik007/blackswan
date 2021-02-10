@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:tensorfit/ui/widgets/map_bloc/bloc.dart' as map;
 import 'level_card_list_widget.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
+import './home_page.dart';
 
-class HomePage extends StatefulWidget {
+class HomePageAlt extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePageAlt> {
   // ignore: close_sinks
   final _mapBloc = map.MapBloc();
   Level level;
@@ -36,13 +37,12 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               Container(
                 height: double.infinity,
-                padding:
-                    new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 0.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                        padding: new EdgeInsets.symmetric(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.symmetric(
                             vertical: 30.0, horizontal: 10.0),
                         child: Text(
                           'Here will be a city allustration',
@@ -51,32 +51,40 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.white,
                           ),
                         ),
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Container(
-                          padding: new EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 10.0),
-                          child: Text('Workout plan',
-                              style: TextStyle(fontSize: 32, color: Colors.white)),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 50),
-                          child: RaisedButton(
-                            onPressed: null, 
-                            color: Colors.red, 
-                              child: Text('213', 
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 10.0),
+                            child: Text('Workout plan',
                                 style: TextStyle(
-                                  color: Colors.red),
+                                    fontSize: 32, color: Colors.white)),
+                          ),
+                          Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: RaisedButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomePage()));
+                                },
+                                color: Colors.red,
+                                child: Text(
+                                  'Change',
+                                  style: TextStyle(color: Colors.black),
                                 ),
-                        )
-                        )],
-                        
-                    ),
-                  ]
-                ),
+                              ))
+                        ],
+                      ),
+                      Container(
+                          height: 400,
+                          child: LevelCardListWidget(
+                              level, date, image, imageAlign)),
+                    ]),
               ),
-              LevelCardListWidget(level, date, image, imageAlign),
             ],
           )),
     );
