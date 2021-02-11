@@ -55,16 +55,16 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
 
   exerciseDetectionChangeTypes(exerciseDetection) {
     var detectionList = exerciseDetection.patternFrames;
-    var frame11 = PoseSpacePoint.fromJsonArray(detectionList['A'][0]['11']);
-    var frame95 = PoseSpacePoint.fromJsonArray(detectionList['A'][1]['95']);
-    var frame170 = PoseSpacePoint.fromJsonArray(detectionList['A'][2]['170']);
-    var frame229 = PoseSpacePoint.fromJsonArray(detectionList['A'][3]['229']);
-    var frame315 = PoseSpacePoint.fromJsonArray(detectionList['A'][4]['315']);
-    var frame60 = PoseSpacePoint.fromJsonArray(detectionList['B'][0]['60']);
-    var frame141 = PoseSpacePoint.fromJsonArray(detectionList['B'][1]['141']);
-    var frame203 = PoseSpacePoint.fromJsonArray(detectionList['B'][2]['203']);
-    var frame275 = PoseSpacePoint.fromJsonArray(detectionList['B'][3]['275']);
-    var frame345 = PoseSpacePoint.fromJsonArray(detectionList['B'][4]['345']);
+    var frame11 = PoseSpacePoint.fromJsonArray(detectionList['A']['11']);
+    var frame95 = PoseSpacePoint.fromJsonArray(detectionList['A']['95']);
+    var frame170 = PoseSpacePoint.fromJsonArray(detectionList['A']['170']);
+    var frame229 = PoseSpacePoint.fromJsonArray(detectionList['A']['229']);
+    var frame315 = PoseSpacePoint.fromJsonArray(detectionList['A']['315']);
+    var frame60 = PoseSpacePoint.fromJsonArray(detectionList['B']['60']);
+    var frame141 = PoseSpacePoint.fromJsonArray(detectionList['B']['141']);
+    var frame203 = PoseSpacePoint.fromJsonArray(detectionList['B']['203']);
+    var frame275 = PoseSpacePoint.fromJsonArray(detectionList['B']['275']);
+    var frame345 = PoseSpacePoint.fromJsonArray(detectionList['B']['345']);
 
     var poseSpacePointA1 = PoseSpacePoint(
       frame11[0].pose,

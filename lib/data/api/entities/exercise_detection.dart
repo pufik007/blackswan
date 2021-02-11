@@ -1,9 +1,11 @@
+import '../../../ui/camera_alt/pose_space_point.dart';
+
 class ExerciseDetection {
   final int id;
   final int exerciseId;
   final String exerciseKey;
   final String pattern;
-  final Map<String, dynamic> patternFrames;
+  final Map<String, Map<String, PoseSpacePoint>> patternFrames;
   final int thresholdCount;
   final double thresholdDistance;
 
@@ -37,12 +39,25 @@ class ExerciseDetection {
       return null;
     }
 
+    var patternFramesNodesMap = Map<String, Map<String, PoseSpacePoint>>();
+    var patternFramesJson = json['pattern_frames'] as Map<String, dynamic>;
+    patternFramesJson.keys.forEach((element) {
+      var patternFramesNode = Map<String, PoseSpacePoint>();
+      var patternFramesNodeJson =
+          patternFramesJson[element] as Map<String, dynamic>;
+      patternFramesNodeJson.keys.forEach((nodeElement) {
+        patternFramesNode[nodeElement] =
+            PoseSpacePoint.fromJson(patternFramesNodeJson[element]);
+      });
+      patternFramesNodesMap[element] = patternFramesNode;
+    });
+
     return ExerciseDetection(
       id: json['id'],
       exerciseId: json['exercise_id'],
       exerciseKey: json['exercise_key'],
       pattern: json['pattern'],
-      patternFrames: json['pattern_frames'],
+      patternFrames: patternFramesNodesMap,
       thresholdDistance: json['threshold_distance'],
       thresholdCount: json['threshold_count'],
     );
