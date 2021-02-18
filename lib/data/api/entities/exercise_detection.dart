@@ -45,8 +45,8 @@ class ExerciseDetection {
       var patternFramesNode = Map<String, PoseSpacePoint>();
       var patternFramesNodeJson =
           patternFramesJson[element] as Map<String, dynamic>;
-      patternFramesNodeJson.keys.forEach((nodeElement) {
-        patternFramesNode[nodeElement] =
+      patternFramesNodeJson.keys.forEach((element) {
+        patternFramesNode[element] =
             PoseSpacePoint.fromJson(patternFramesNodeJson[element]);
       });
       patternFramesNodesMap[element] = patternFramesNode;
