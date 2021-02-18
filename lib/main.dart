@@ -18,6 +18,7 @@ import 'ui/pages/level_page.dart';
 import 'package:camera/camera.dart';
 import 'ui/camera_alt/camera_prediction_page.dart';
 import 'ui/pages/tutorial/tutorial.dart';
+import 'ui/pages/tutorialOfExercises/camera_page_for_tutorial.dart';
 
 List<CameraDescription> cameras;
 
@@ -36,7 +37,8 @@ class OneTimePage extends StatefulWidget {
   SplashState createState() => SplashState();
 }
 
-class SplashState extends State<OneTimePage> with AfterLayoutMixin<OneTimePage> {
+class SplashState extends State<OneTimePage>
+    with AfterLayoutMixin<OneTimePage> {
   Future checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _seen = (prefs.getBool('seen') ?? false);
@@ -107,7 +109,7 @@ class _AppState extends State<App> {
                   '/log_in': (context) => LogInPage(),
                   '/create_account': (context) => CreateAccountPage(),
                 },
-                home: FirstPage(),
+                home: FirstPage(cameras),
               ),
             );
           } else if (state is JourneyCreation) {

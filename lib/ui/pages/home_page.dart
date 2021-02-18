@@ -36,10 +36,10 @@ class _HomePageState extends State<HomePage> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     for (var i = 0; i < 6; i++) {
-      await precacheImage(_leftImages[i].image, this.context);
-      await precacheImage(_leftImagesH[i].image, this.context);
-      await precacheImage(_rightImages[i].image, this.context);
-      await precacheImage(_rightImagesH[i].image, this.context);
+      // await precacheImage(_leftImages[i].image, this.context);
+      // await precacheImage(_leftImagesH[i].image, this.context);
+      // await precacheImage(_rightImages[i].image, this.context);
+      // await precacheImage(_rightImagesH[i].image, this.context);
     }
     this._mapBloc.add(map.Load());
   }
