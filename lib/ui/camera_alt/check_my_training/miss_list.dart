@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'info_model.dart';
-import 'info_item.dart';
+import 'mistackes_model.dart';
+import 'miss_item.dart';
 
-class InfoList extends StatelessWidget {
-  final List<InfoModel> infoSample;
-  InfoList(this.infoSample);
+class MissList extends StatelessWidget {
+  final List<MistackesModel> infoSample;
+  MissList(this.infoSample);
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +13,11 @@ class InfoList extends StatelessWidget {
         ? LayoutBuilder(builder: (ctx, constraints) {
             return Text('Нет ошибок');
           })
-        : ListView(
+        : Column(
             children: infoSample
-                .map((inf) => InfoItem(
-                      key: ValueKey(inf.id),
-                      infoItem1: inf,
+                .map((miss) => MissItems(
+                      key: ValueKey(miss.id),
+                      missItem: miss,
                     ))
                 .toList(),
           );

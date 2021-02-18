@@ -17,7 +17,6 @@ import '../../camera_alt/pose_joint_lib.dart';
 import 'package:vptree/space_point.dart';
 import 'package:vptree/vptree_factory.dart';
 import 'package:vptree/vptree.dart';
-import '../../camera_alt/stop_exercise_page/stop_page_exercise.dart';
 import '../../camera_alt/end_of_exercises/end_of_exercises.dart';
 
 class CameraPageTutorial extends StatefulWidget {
@@ -776,22 +775,6 @@ class _CameraPredictionPageState extends State<CameraPageTutorial> {
     );
   }
 
-  endButton() {
-    return RaisedButton(
-      onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => StopPageExercise()));
-      },
-      elevation: 0,
-      color: Colors.transparent,
-      child: Icon(
-        Icons.stop_circle_outlined,
-        size: 50,
-        color: Colors.purple,
-      ),
-    );
-  }
-
   endPageExercisesButton() {
     return RaisedButton(
       onPressed: () {
@@ -801,7 +784,7 @@ class _CameraPredictionPageState extends State<CameraPageTutorial> {
       elevation: 0,
       color: Colors.transparent,
       child: Icon(
-        Icons.stop,
+        Icons.stop_circle_outlined,
         size: 50,
         color: Colors.red,
       ),
@@ -859,30 +842,14 @@ class _CameraPredictionPageState extends State<CameraPageTutorial> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          'This is Stop page - ',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        endButton(),
-                      ],
+                    Text(
+                      'This is End of exrcises page - ',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          'This is End of exrcises page - ',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        endPageExercisesButton(),
-                      ],
-                    )
+                    endPageExercisesButton(),
                   ],
                 ),
               )),
