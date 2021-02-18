@@ -59,67 +59,57 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
 
   exerciseDetectionChangeTypes(exerciseDetection) {
     var detectionList = exerciseDetection.patternFrames;
-    var frame11 = PoseSpacePoint.fromJsonArray(detectionList['A']['11']);
-    var frame95 = PoseSpacePoint.fromJsonArray(detectionList['A']['95']);
-    var frame170 = PoseSpacePoint.fromJsonArray(detectionList['A']['170']);
-    var frame229 = PoseSpacePoint.fromJsonArray(detectionList['A']['229']);
-    var frame315 = PoseSpacePoint.fromJsonArray(detectionList['A']['315']);
-    var frame60 = PoseSpacePoint.fromJsonArray(detectionList['B']['60']);
-    var frame141 = PoseSpacePoint.fromJsonArray(detectionList['B']['141']);
-    var frame203 = PoseSpacePoint.fromJsonArray(detectionList['B']['203']);
-    var frame275 = PoseSpacePoint.fromJsonArray(detectionList['B']['275']);
-    var frame345 = PoseSpacePoint.fromJsonArray(detectionList['B']['345']);
 
     var poseSpacePointA1 = PoseSpacePoint(
-      frame11[0].pose,
-      frame11[0].confidence,
-      frame11[0].bbox,
+      detectionList['A']['11'].pose,
+      detectionList['A']['11'].confidence,
+      detectionList['A']['11'].bbox,
     );
     var poseSpacePointA2 = PoseSpacePoint(
-      frame95[0].pose,
-      frame95[0].confidence,
-      frame95[0].bbox,
+      detectionList['A']['11'].pose,
+      detectionList['A']['11'].confidence,
+      detectionList['A']['11'].bbox,
     );
     var poseSpacePointA3 = PoseSpacePoint(
-      frame170[0].pose,
-      frame170[0].confidence,
-      frame170[0].bbox,
+      detectionList['A']['11'].pose,
+      detectionList['A']['11'].confidence,
+      detectionList['A']['11'].bbox,
     );
     var poseSpacePointA4 = PoseSpacePoint(
-      frame229[0].pose,
-      frame229[0].confidence,
-      frame229[0].bbox,
+      detectionList['A']['11'].pose,
+      detectionList['A']['11'].confidence,
+      detectionList['A']['11'].bbox,
     );
     var poseSpacePointA5 = PoseSpacePoint(
-      frame315[0].pose,
-      frame315[0].confidence,
-      frame315[0].bbox,
+      detectionList['A']['11'].pose,
+      detectionList['A']['11'].confidence,
+      detectionList['A']['11'].bbox,
     );
 
     var poseSpacePointB1 = PoseSpacePoint(
-      frame60[0].pose,
-      frame60[0].confidence,
-      frame60[0].bbox,
+      detectionList['A']['11'].pose,
+      detectionList['A']['11'].confidence,
+      detectionList['A']['11'].bbox,
     );
     var poseSpacePointB2 = PoseSpacePoint(
-      frame141[0].pose,
-      frame141[0].confidence,
-      frame141[0].bbox,
+      detectionList['A']['11'].pose,
+      detectionList['A']['11'].confidence,
+      detectionList['A']['11'].bbox,
     );
     var poseSpacePointB3 = PoseSpacePoint(
-      frame203[0].pose,
-      frame203[0].confidence,
-      frame203[0].bbox,
+      detectionList['A']['11'].pose,
+      detectionList['A']['11'].confidence,
+      detectionList['A']['11'].bbox,
     );
     var poseSpacePointB4 = PoseSpacePoint(
-      frame275[0].pose,
-      frame275[0].confidence,
-      frame275[0].bbox,
+      detectionList['A']['11'].pose,
+      detectionList['A']['11'].confidence,
+      detectionList['A']['11'].bbox,
     );
     var poseSpacePointB5 = PoseSpacePoint(
-      frame345[0].pose,
-      frame345[0].confidence,
-      frame345[0].bbox,
+      detectionList['A']['11'].pose,
+      detectionList['A']['11'].confidence,
+      detectionList['A']['11'].bbox,
     );
 
     var vpTreeA = new VpTreeFactory().build([
