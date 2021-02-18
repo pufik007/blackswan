@@ -50,12 +50,7 @@ class FirstPage extends StatelessWidget {
             TensorfitButton(
               title: S.of(context).first_create_account,
               onPressed: () {
-                Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) =>
-                            Tutorial()
-                          ),
-                        );
-                  // BlocProvider.of<LoginNavigatorBloc>(context).add(NavigateToCreateAccount());
+                BlocProvider.of<LoginNavigatorBloc>(context).add(NavigateToCreateAccount());
               },
             ),
             TensorfitBorderedButton(

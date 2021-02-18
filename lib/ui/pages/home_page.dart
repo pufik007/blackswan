@@ -5,6 +5,7 @@ import 'package:tensorfit/data/app_bloc/app_event.dart';
 import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 import 'package:tensorfit/ui/widgets/map_bloc/bloc.dart' as map;
 import 'package:tensorfit/ui/widgets/map_widget.dart';
+import './home_page_alt.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -109,16 +110,32 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                       onPressed: () {
-                        BlocProvider.of<AppBloc>(context).add(Logout());
+                        BlocProvider.of<HomeNavigatorBloc>(context)
+                            .add(NavigateToCreateJourney());
                       },
                     ),
                     IconButton(
-                      icon: Icon(
-                        Icons.crop_square,
-                        size: size,
-                        color: color,
+                      iconSize: size * 2,
+                      icon: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Icon(
+                            Icons.crop_square,
+                            size: size,
+                            color: color,
+                          ),
+                          Text(
+                            'Change',
+                            style: style,
+                          ),
+                        ],
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePageAlt()));
+                      },
                     ),
                     IconButton(
                       icon: Icon(

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:after_layout/after_layout.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'generated/i18n.dart';
 import 'data/navigator_bloc/navigator_bloc.dart';
 import 'data/app_bloc/bloc.dart';
 import 'data/api/entities/level.dart';
 import 'ui/pages/create_account_page.dart';
 import 'ui/pages/first_page.dart';
-import './ui/pages/home_page.dart';
+import 'ui/pages/home_page.dart';
 import 'ui/pages/log_in_page.dart';
 import 'ui/pages/logo_page.dart';
 import 'ui/pages/journey_page.dart';
@@ -16,6 +19,8 @@ import 'package:camera/camera.dart';
 import 'ui/camera_alt/camera_prediction_page.dart';
 import 'data/api/entities/exercise_detection.dart';
 import 'ui/camera_alt/end_of_exercises_page.dart';
+import 'ui/pages/tutorial/tutorial.dart';
+
 
 List<CameraDescription> cameras;
 
@@ -26,7 +31,40 @@ Future<Null> main() async {
   } on CameraException catch (e) {
     print('Error: $e.code\nError Message: $e.message');
   }
-  runApp(new App());
+  runApp(MaterialApp(home: OneTimePage()));
+}
+
+class OneTimePage extends StatefulWidget {
+  @override
+  SplashState createState() => SplashState();
+}
+
+class SplashState extends State<OneTimePage> with AfterLayoutMixin<OneTimePage> {
+  Future checkFirstSeen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool _seen = (prefs.getBool('seen') ?? false);
+
+    if (_seen) {
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => App()));
+    } else {
+      await prefs.setBool('seen', true);
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => Tutorial()));
+    }
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) => checkFirstSeen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(''),
+      ),
+    );
+  }
 }
 
 class App extends StatefulWidget {

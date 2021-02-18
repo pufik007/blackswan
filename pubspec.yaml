@@ -24,6 +24,8 @@ dependencies:
 
   shared_preferences: ^0.5.4
 
+  after_layout: ^1.0.7+2
+
   intl: ^0.16.0
 
   firebase_auth: ^0.15.5+3

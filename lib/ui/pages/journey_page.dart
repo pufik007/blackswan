@@ -344,7 +344,7 @@ class JourneyPage extends StatelessWidget {
     var theme = Theme.of(context);
 
     return RawMaterialButton(
-      fillColor: selected ? theme.buttonColor : Colors.grey[300],
+      fillColor: selected ? theme.buttonColor : Colors.purple[400],
       shape: CircleBorder(),
       elevation: 0.0,
       child: Text(
@@ -352,7 +352,7 @@ class JourneyPage extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(
           fontWeight: FontWeight.w700,
-          color: selected ? Colors.grey[300] : (enabled ? theme.buttonColor : Colors.grey),
+          color: selected ? Colors.grey[300] : (enabled ? Color.fromRGBO(31, 32, 35, 1) : Color.fromRGBO(31, 32, 35, 1)),
         ),
       ),
       onPressed: enabled || selected
