@@ -3,7 +3,8 @@ import 'dart:ui';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
-import 'package:tensorfit/data/api/entities/level.dart';
+import '../api/entities/exercise_detection.dart';
+import '../../data/api/entities/level.dart';
 
 @immutable
 abstract class NavigatorEvent extends Equatable {
@@ -38,7 +39,9 @@ class NavigateToLevel extends NavigatorEvent {
 
 class NavigateToCameraPredictionPage extends NavigatorEvent {
   final Level level;
-  NavigateToCameraPredictionPage(this.level) : super([level]);
+  final List<ExerciseDetection> exerciseDetections;
+  NavigateToCameraPredictionPage(this.level, this.exerciseDetections)
+      : super([level]);
 }
 
 class NavigateBack extends NavigatorEvent {

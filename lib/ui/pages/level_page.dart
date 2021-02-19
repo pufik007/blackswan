@@ -7,7 +7,7 @@ import 'package:tensorfit/data/api/entities/level.dart';
 import 'package:tensorfit/ui/pages/level_bloc/bloc.dart';
 import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 import 'level_bloc/level_bloc.dart';
-import 'exercise_page.dart';
+
 
 class LevelPage extends StatelessWidget {
   final Level level;
@@ -18,12 +18,55 @@ class LevelPage extends StatelessWidget {
   const LevelPage(this.level, this.image, this.imageAlign);
 
   @override
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: this._bgColor,
       body: this._buildBody(context),
     );
+  }
+
+  _buildFab(context, state) {
+    List<String> exerciseIds = [];
+    if (state is LevelLoaded) {
+      return FloatingActionButton(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.orange[800],
+        elevation: 6.0,
+        child: Icon(
+          Icons.download_sharp,
+          size: 50.0,
+        ),
+        onPressed: () {
+          for (var i = 0; i < state.exercises.length; i++) {
+            exerciseIds.add(state.exercises[i].exercise.id.toString());
+          }
+          BlocProvider.of<LevelBloc>(context).add(LoadDetections(exerciseIds));
+        },
+      );
+    } else if (state is ExerciseDetectionLoading) {
+      return FloatingActionButton(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.orange[800],
+        elevation: 6.0,
+        child: CircularProgressIndicator(),
+        onPressed: () {},
+      );
+    } else if (state is ExerciseDetectionLoaded) {
+      return FloatingActionButton(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.orange[800],
+        elevation: 6.0,
+        child: Icon(
+          Icons.play_circle_outline,
+          size: 50.0,
+        ),
+        onPressed: () {
+          BlocProvider.of<HomeNavigatorBloc>(context).add(
+            NavigateToCameraPredictionPage(level, state.exerciseDetections),
+          );
+        },
+      );
+    }
   }
 
   Widget _buildBody(BuildContext context) {
@@ -41,29 +84,34 @@ class LevelPage extends StatelessWidget {
                 children: <Widget>[
                   this._buildHeader(context, state.exercises),
                   this._buildExercises(context, state.exercises),
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: FloatingActionButton(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.purple,
-                      elevation: 6.0,
-                      child: Icon(
-                        Icons.play_circle_outline,
-                        size: 50.0,
-                      ),
-                      onPressed: () {
-                        BlocProvider.of<HomeNavigatorBloc>(context)
-                            .add(NavigateToCameraPredictionPage(
-                          level,
-                        ));
-                      },
-                    ),
+                  _buildFab(context, state),
+                  SizedBox(
+                    height: 5,
                   ),
                 ],
               ),
             );
+          } else if (state is ExerciseDetectionLoading) {
+            return SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  this._buildHeader(context, state.exercises),
+                  this._buildExercises(context, state.exercises),
+                  _buildFab(context, state),
+                ],
+              ),
+            );
+          } else if (state is ExerciseDetectionLoaded) {
+            return SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  this._buildHeader(context, state.exercises),
+                  this._buildExercises(context, state.exercises),
+                  _buildFab(context, state),
+                ],
+              ),
+            );
           }
-
           return null;
         },
       ),
@@ -174,8 +222,7 @@ class LevelPage extends StatelessWidget {
                             IconButton(
                               icon:
                                   Icon(Icons.chevron_right, color: Colors.blue),
-                              onPressed: () {
-                              },
+                              onPressed: () {},
                             ),
                           ],
                         ),
@@ -215,7 +262,6 @@ class LevelPage extends StatelessWidget {
       }
 
       // var actions = List<Widget>();
-
       // if (exercise.difficulty != 'easy') {
       //   actions.add(Dismissible(
       //     child: Container(),
@@ -280,22 +326,26 @@ class LevelPage extends StatelessWidget {
                     child: AspectRatio(
                       aspectRatio: 4 / 3,
                       child: Container(
-                         margin: EdgeInsets.all(15),
-                        child: Text("${exercise.numberOfReps.toString()} points",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold , color: Colors.purple) 
-                          )),
+                          margin: EdgeInsets.all(15),
+                          child: Text(
+                              "${exercise.numberOfReps.toString()} points",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.purple))),
                       // child: Image(
-                      //     image: AssetImage('assets'),
+                      //     image: AssetImage('assets/test.png'),
                       //     fit: BoxFit.cover),
                     ),
                   ),
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                          border: Border(
-                        bottom:
-                            BorderSide(width: 0.5, color: theme.disabledColor),
-                      )),
+                        border: Border(
+                          bottom: BorderSide(
+                              width: 0.5, color: theme.disabledColor),
+                        ),
+                      ),
                       margin: EdgeInsets.only(right: padding),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -313,18 +363,12 @@ class LevelPage extends StatelessWidget {
                 ],
               ),
             ),
-            onPressed: () {
-               Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) =>
-                  ExercisePage(exercise.exercise.id, exercise.exercise.description, 
-                    exercise.exercise.name, exercise.duration)
-                ),
-              );
-            },
+            onPressed: () {},
           ),
         ),
       ));
     }
+
     return Stack(
       children: <Widget>[
         Container(
@@ -342,10 +386,10 @@ class LevelPage extends StatelessWidget {
               padding: EdgeInsets.only(top: padding),
               child: Container(
                 decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(padding),
-                color: Colors.white,
-              ),
-              padding: EdgeInsets.only(bottom: padding),
+                  borderRadius: BorderRadius.circular(padding),
+                  color: Colors.white,
+                ),
+                padding: EdgeInsets.only(bottom: padding),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: items,
