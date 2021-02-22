@@ -110,8 +110,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                       onPressed: () {
-                        BlocProvider.of<HomeNavigatorBloc>(context)
-                            .add(NavigateToCreateJourney());
+                        BlocProvider.of<AppBloc>(context).add(Logout());
                       },
                     ),
                     IconButton(
