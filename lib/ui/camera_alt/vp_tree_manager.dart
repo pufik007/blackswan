@@ -30,7 +30,8 @@ class VpTreeManager {
       print("DistancePosePool - ${exerciseVpTreePool.key}");
       result[exerciseVpTreePool.key] =
           exerciseVpTreePool.value.search(poseSpacePoint, 1, double.maxFinite);
-      print("DIstancePosePool - ${exerciseVpTreePool.key}, Result - ${result[exerciseVpTreePool.key][0].priority}");
+      print(
+          "DIstancePosePool - ${exerciseVpTreePool.key}, Result - ${result[exerciseVpTreePool.key][0].priority}");
     });
 
     return minItemInMap(result);
@@ -54,7 +55,6 @@ class VpTreeManager {
       bMaxValues[1] = max(bMaxValues[1], joint[1]);
     });
 
-    
     var widthPoseA = (aMaxValues[0] - aMinValues[0]);
     var heightPoseA = (aMaxValues[1] - aMinValues[1]);
     var widthPoseB = (bMaxValues[0] - bMinValues[0]);
@@ -72,7 +72,7 @@ class VpTreeManager {
     //   point[1] = (point[1] + shiftForHeight) * proportionsForHeight;
     //   return point;
     // }).toList();
- 
+
     // var modPoseA = a.pose.map<List<double>>((joint) {
     //   var point = List<double>.from(joint);
     //   point[0] = point[0] * proportionsForWidth;
@@ -98,54 +98,52 @@ class VpTreeManager {
       point[1] = point[1] + shiftForHeight;
       return point;
     }).toList();
-   
+
     aMinValues[0] = double.maxFinite;
     aMinValues[1] = double.maxFinite;
     aMaxValues[0] = -double.maxFinite;
     aMaxValues[1] = -double.maxFinite;
 
+    modPoseA.forEach((joint) {
+      aMinValues[0] = min(aMinValues[0], joint[0]);
+      aMinValues[1] = min(aMinValues[1], joint[1]);
+      aMaxValues[0] = max(aMaxValues[0], joint[0]);
+      aMaxValues[1] = max(aMaxValues[1], joint[1]);
+    });
 
-  modPoseA.forEach((joint) { 
-    aMinValues[0] = min(aMinValues[0], joint[0]);
-    aMinValues[1] = min(aMinValues[1], joint[1]);
-    aMaxValues[0] = max(aMaxValues[0], joint[0]);
-    aMaxValues[1] = max(aMaxValues[1], joint[1]);
-  });
-  
-  
-  print("DistancePose - modPoseA - $modPoseA");
-  print("DistancePose - b.pose - ${b.pose}");
+    print("DistancePose - modPoseA - $modPoseA");
+    print("DistancePose - b.pose - ${b.pose}");
 
-  var pointA = modPoseA.map<List<double>>((joint) {
-    var point = List<double>.from(joint);
-    point[0] = (point[0] - aMinValues[0]) / (aMaxValues[0] - aMinValues[0]);
-    point[1] = (point[1] - aMinValues[1]) / (aMaxValues[1] - aMinValues[1]);
-    return point;
-  }).toList();
+    var pointA = modPoseA.map<List<double>>((joint) {
+      var point = List<double>.from(joint);
+      point[0] = (point[0] - aMinValues[0]) / (aMaxValues[0] - aMinValues[0]);
+      point[1] = (point[1] - aMinValues[1]) / (aMaxValues[1] - aMinValues[1]);
+      return point;
+    }).toList();
 
-  var pointB = b.pose.map<List<double>>((joint) {
-    var point = List<double>.from(joint);
-    point[0] = (point[0] - bMinValues[0]) / (bMaxValues[0] - bMinValues[0]);
-    point[1] = (point[1] - bMinValues[1]) / (bMaxValues[1] - bMinValues[1]);
-    return point;
-  }).toList();
-  
-  
- 
-  var confidence = List<double>();
-  var confidenceSum = .0;
-  for (int i = 0; i < modPoseA.length; i++) {
-    var minConfidence = min(a.confidence[i], b.confidence[i]);
-    confidence.add(minConfidence);
-    confidenceSum += minConfidence;
-  }
-  var dist = .0;
-  for (int i = 0; i < pointA.length; i++) {
-    dist += Vector.fromList(
-      [pointA[i][0] - pointB[i][0], pointA[i][1] - pointB[i][1]]).norm() 
-        * confidence[i] / confidenceSum;
-  }
-  
+    var pointB = b.pose.map<List<double>>((joint) {
+      var point = List<double>.from(joint);
+      point[0] = (point[0] - bMinValues[0]) / (bMaxValues[0] - bMinValues[0]);
+      point[1] = (point[1] - bMinValues[1]) / (bMaxValues[1] - bMinValues[1]);
+      return point;
+    }).toList();
+
+    var confidence = List<double>();
+    var confidenceSum = .0;
+    for (int i = 0; i < modPoseA.length; i++) {
+      double minConfidence = min(a.confidence[i], b.confidence[i]);
+      confidence.add(minConfidence);
+      confidenceSum += minConfidence;
+    }
+    var dist = .0;
+    for (int i = 0; i < pointA.length; i++) {
+      dist += Vector.fromList(
+                  [pointA[i][0] - pointB[i][0], pointA[i][1] - pointB[i][1]])
+              .norm() *
+          confidence[i] /
+          confidenceSum;
+    }
+
     print("DistancePoseA - ${modPoseA.toString()}");
     print("DistancePoseB - ${b.pose.toString()}");
     print("DistancePoseResult - ${dist.toString()}");

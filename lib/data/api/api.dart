@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:tensorfit/data/api/entities/errors.dart';
+import 'package:tensorfit/data/api/entities/exercise_detection.dart';
 import 'package:tensorfit/data/api/entities/goal.dart';
 import 'package:tensorfit/data/api/responses/public_response.dart';
 import 'package:tensorfit/data/api/responses/private_response.dart';
@@ -377,6 +378,40 @@ abstract class Api {
           return PrivateResponse.error(['API: token is absent in header']);
         } else {
           return PrivateResponse.ok(newToken, null);
+        }
+      } else {
+        var errors = Errors.fromJson(json.decode(httpRes.body));
+        return PrivateResponse.error(errors.errors);
+      }
+    } catch (e) {
+      return PrivateResponse.error(['${e.toString()}']);
+    }
+  }
+
+  static Future<PrivateResponse> getExerciseDetections(
+      User user, String client, String token, List<String> exerciseIds) async {
+    try {
+      Map<String, String> headers = {
+        "uid": user.email,
+        "client": client,
+        "access-token": token,
+        "Content-type": "application/json",
+      };
+
+      var httpRes = await http.get(
+          '$_url/exercise_detections?exercise_ids=${exerciseIds.join(',')}',
+          headers: headers);
+
+      print(httpRes.body);
+
+      if (httpRes.statusCode == 200) {
+        var exerciseDetections =
+            ExerciseDetection.fromJsonArray(json.decode(httpRes.body));
+        var newToken = httpRes.headers['access-token'];
+        if (newToken == null) {
+          return PrivateResponse.error(['API: token is absent in header']);
+        } else {
+          return PrivateResponse.ok(newToken, exerciseDetections);
         }
       } else {
         var errors = Errors.fromJson(json.decode(httpRes.body));

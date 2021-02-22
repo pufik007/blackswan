@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:tensorfit/data/api/entities/exercise_detection.dart';
 import 'package:tensorfit/data/api/entities/exercise_info.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
 import 'package:tensorfit/data/data.dart';
@@ -11,6 +12,7 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
   final Level level;
 
   List<ExerciseInfo> _exercises;
+  List<ExerciseDetection> _exerciseDetection;
 
   LevelBloc(this.level);
 
@@ -21,12 +23,20 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
   Stream<LevelState> mapEventToState(LevelEvent event) async* {
     if (event is Load) {
       this._exercises = await Data.instance.getExercises(this.level);
-
       if (this._exercises == null) {
         await new Future.delayed(const Duration(seconds: 5));
         this.add(Load());
       } else {
-        yield LevelLoaded(this.level, this._exercises);
+        yield LevelLoaded(this.level, this._exercises, this._exerciseDetection);
+      }
+    } else if (event is LoadDetections) {
+      this._exerciseDetection =
+          await Data.instance.getExerciseDetection(event.exerciseIds);
+      if (this._exerciseDetection == null) {
+        await new Future.delayed(const Duration(seconds: 5));
+        this.add(LoadDetections(event.exerciseIds));
+      } else {
+        yield ExerciseDetectionLoaded(this._exerciseDetection, this._exercises);
       }
     } else if (event is HarderExercise) {
       for (int i = 0; i < this._exercises.length; i++) {
@@ -47,7 +57,8 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
 
           for (var sub in exercise.substitutes) {
             if (sub.difficulty == newDifficulty) {
-              var error = await Data.instance.replaceExercise(exercise.id, sub.id);
+              var error =
+                  await Data.instance.replaceExercise(exercise.id, sub.id);
               if (error == null) {
                 this.add(Load());
               }
@@ -75,7 +86,8 @@ class LevelBloc extends Bloc<LevelEvent, LevelState> {
 
           for (var sub in exercise.substitutes) {
             if (sub.difficulty == newDifficulty) {
-              var error = await Data.instance.replaceExercise(exercise.id, sub.id);
+              var error =
+                  await Data.instance.replaceExercise(exercise.id, sub.id);
               if (error == null) {
                 this.add(Load());
               }
