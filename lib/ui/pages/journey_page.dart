@@ -458,8 +458,7 @@ class JourneyPage extends StatelessWidget {
         return 'Male';
       case UserGenderType.Female:
         return 'Female';
-      case UserGenderType.Common:
-        return 'Common';
+
       default:
         return null;
     }

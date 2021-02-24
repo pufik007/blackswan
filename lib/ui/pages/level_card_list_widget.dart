@@ -8,13 +8,17 @@ import '../../ui/widgets/map_bloc/bloc.dart';
 import 'package:intl/intl.dart';
 import '../../data/navigator_bloc/navigator_event.dart';
 import '../../data/navigator_bloc/navigator_bloc.dart';
+import '../../data/api/entities/user.dart';
 
 class LevelCardListWidget extends StatelessWidget {
   final Level level;
   final DateTime date;
   final ImageProvider image;
   final Alignment imageAlign;
-  const LevelCardListWidget(this.level, this.date, this.image, this.imageAlign);
+  final String userEmail;
+
+  const LevelCardListWidget(
+      this.level, this.date, this.image, this.imageAlign, this.userEmail);
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +29,8 @@ class LevelCardListWidget extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         }
         if (state is MapLoaded) {
-          return this._getLevelCardList(
-              state.levels, state.selectedLevelID, date, level);
+          return this._getLevelCardList(state.levels, state.selectedLevelID,
+              date, level, state.userEmail);
         }
 
         return null;
@@ -34,8 +38,8 @@ class LevelCardListWidget extends StatelessWidget {
     );
   }
 
-  Widget _getLevelCardList(
-      List<Level> levels, int selectedLevelID, DateTime date, Level level) {
+  Widget _getLevelCardList(List<Level> levels, int selectedLevelID,
+      DateTime date, Level level, user) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
@@ -169,19 +173,6 @@ Widget firstDuration(totalDuration) {
       ]));
 }
 
-Widget iconStars() {
-  return Container(
-    padding: EdgeInsets.symmetric(vertical: 55.0, horizontal: 20.0),
-    child: AspectRatio(
-      aspectRatio: 5,
-      child: SvgPicture.asset(
-        'assets/map/stars/stars_0.svg',
-        alignment: Alignment.topCenter,
-      ),
-    ),
-  );
-}
-
 class LevelCard extends StatelessWidget {
   final Level level;
   final bool isSelected;
@@ -232,7 +223,6 @@ class LevelCard extends StatelessWidget {
                                 firstLevel(level),
                                 firstExercises(level.exerciseVariantsCount),
                                 firstDuration(level.totalDuration),
-                                iconStars()
                               ],
                             )
                           ],

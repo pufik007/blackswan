@@ -8,7 +8,6 @@ import 'package:tensorfit/ui/pages/level_bloc/bloc.dart';
 import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 import 'level_bloc/level_bloc.dart';
 
-
 class LevelPage extends StatelessWidget {
   final Level level;
   final ImageProvider image;
@@ -30,7 +29,7 @@ class LevelPage extends StatelessWidget {
     if (state is LevelLoaded) {
       return FloatingActionButton(
         foregroundColor: Colors.white,
-        backgroundColor: Colors.orange[800],
+        backgroundColor: Colors.deepPurple,
         elevation: 6.0,
         child: Icon(
           Icons.download_sharp,
@@ -46,7 +45,7 @@ class LevelPage extends StatelessWidget {
     } else if (state is ExerciseDetectionLoading) {
       return FloatingActionButton(
         foregroundColor: Colors.white,
-        backgroundColor: Colors.orange[800],
+        backgroundColor: Colors.deepPurple,
         elevation: 6.0,
         child: CircularProgressIndicator(),
         onPressed: () {},
@@ -54,7 +53,7 @@ class LevelPage extends StatelessWidget {
     } else if (state is ExerciseDetectionLoaded) {
       return FloatingActionButton(
         foregroundColor: Colors.white,
-        backgroundColor: Colors.orange[800],
+        backgroundColor: Colors.deepPurple,
         elevation: 6.0,
         child: Icon(
           Icons.play_circle_outline,
@@ -326,13 +325,14 @@ class LevelPage extends StatelessWidget {
                     child: AspectRatio(
                       aspectRatio: 4 / 3,
                       child: Container(
-                          margin: EdgeInsets.all(15),
-                          child: Text(
-                              "${exercise.numberOfReps.toString()} points",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.purple))),
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(
+                                  'assets/tutorialExercises/squats.gif'),
+                              fit: BoxFit.cover),
+                        ),
+                      ),
+
                       // child: Image(
                       //     image: AssetImage('assets/test.png'),
                       //     fit: BoxFit.cover),

@@ -4,6 +4,8 @@ import 'package:tensorfit/ui/widgets/map_bloc/bloc.dart' as map;
 import 'level_card_list_widget.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
 import './home_page.dart';
+import './profile_page.dart';
+import '../../data/api/entities/user.dart';
 
 class HomePageAlt extends StatefulWidget {
   @override
@@ -17,6 +19,7 @@ class _HomePageState extends State<HomePageAlt> {
   ImageProvider image;
   Alignment imageAlign;
   DateTime date;
+  String userEmail;
   @override
   void initState() {
     super.initState();
@@ -62,27 +65,52 @@ class _HomePageState extends State<HomePageAlt> {
                                 style: TextStyle(
                                     fontSize: 32, color: Colors.white)),
                           ),
-                          Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: RaisedButton(
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => HomePage()));
-                                },
-                                color: Colors.red,
-                                child: Text(
-                                  'Change',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                              ))
+                          Column(
+                            children: [
+                              Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: RaisedButton(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5)),
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HomePage()));
+                                    },
+                                    color: Colors.deepPurple,
+                                    child: Text(
+                                      'Change',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  )),
+                              Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: RaisedButton(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5)),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ProfilePage(
+                                                  _mapBloc.state.userEmail)));
+                                    },
+                                    color: Colors.deepPurple,
+                                    child: Text(
+                                      'Profile',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  )),
+                            ],
+                          )
                         ],
                       ),
                       Container(
                           height: 400,
                           child: LevelCardListWidget(
-                              level, date, image, imageAlign)),
+                              level, date, image, imageAlign, userEmail)),
                     ]),
               ),
             ],

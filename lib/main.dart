@@ -10,7 +10,7 @@ import 'data/app_bloc/bloc.dart';
 import 'data/api/entities/level.dart';
 import 'ui/pages/create_account_page.dart';
 import 'ui/pages/first_page.dart';
-import 'ui/pages/home_page.dart';
+import 'ui/pages/home_page_alt.dart';
 import 'ui/pages/log_in_page.dart';
 import 'ui/pages/logo_page.dart';
 import 'ui/pages/journey_page.dart';
@@ -21,7 +21,6 @@ import 'data/api/entities/exercise_detection.dart';
 import 'ui/camera_alt/end_of_exercises_page.dart';
 import 'ui/pages/tutorial/tutorial.dart';
 import 'ui/pages/tutorialOfExercises/camera_page_for_tutorial.dart';
-
 
 List<CameraDescription> cameras;
 
@@ -181,7 +180,7 @@ class _AppState extends State<App> {
                   '/create_journey': (context) => JourneyPage(false, true),
                   '/end_of_exercises': (context) => EndOfExercisesPage(),
                 },
-                home: HomePage(),
+                home: HomePageAlt(),
               ),
             );
           }

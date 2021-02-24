@@ -6,6 +6,7 @@ import 'package:tensorfit/data/navigator_bloc/bloc.dart';
 import 'package:tensorfit/ui/widgets/map_bloc/bloc.dart' as map;
 import 'package:tensorfit/ui/widgets/map_widget.dart';
 import './home_page_alt.dart';
+import './profile_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -20,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   final _rightImages = List<Image>();
   final _leftImagesH = List<Image>();
   final _rightImagesH = List<Image>();
+  String userEmail;
 
   @override
   void initState() {
@@ -83,47 +85,6 @@ class _HomePageState extends State<HomePage> {
                             color: color,
                           ),
                           Text(
-                            'Journey',
-                            style: style,
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        BlocProvider.of<HomeNavigatorBloc>(context)
-                            .add(NavigateToCreateJourney());
-                      },
-                    ),
-                    IconButton(
-                      iconSize: size * 2,
-                      icon: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Icon(
-                            Icons.crop_square,
-                            size: size,
-                            color: color,
-                          ),
-                          Text(
-                            'Logout',
-                            style: style,
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        BlocProvider.of<AppBloc>(context).add(Logout());
-                      },
-                    ),
-                    IconButton(
-                      iconSize: size * 2,
-                      icon: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Icon(
-                            Icons.crop_square,
-                            size: size,
-                            color: color,
-                          ),
-                          Text(
                             'Change',
                             style: style,
                           ),
@@ -137,21 +98,69 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                     IconButton(
-                      icon: Icon(
-                        Icons.crop_square,
-                        size: size,
-                        color: color,
+                      iconSize: size * 2,
+                      icon: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Icon(
+                            Icons.crop_square,
+                            size: size,
+                            color: color,
+                          ),
+                          Text(
+                            'Profile',
+                            style: style,
+                          ),
+                        ],
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                ProfilePage(_mapBloc.state.userEmail)));
+                      },
                     ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.crop_square,
-                        size: size,
-                        color: color,
-                      ),
-                      onPressed: () {},
-                    ),
+
+                    // IconButton(
+                    //   iconSize: size * 2,
+                    //   icon: Column(
+                    //     mainAxisSize: MainAxisSize.min,
+                    //     children: <Widget>[
+                    //       Icon(
+                    //         Icons.crop_square,
+                    //         size: size,
+                    //         color: color,
+                    //       ),
+                    //       Text(
+                    //         'Journey',
+                    //         style: style,
+                    //       ),
+                    //     ],
+                    //   ),
+                    //   onPressed: () {
+                    //     BlocProvider.of<HomeNavigatorBloc>(context)
+                    //         .add(NavigateToCreateJourney());
+                    //   },
+                    // ),
+                    // IconButton(
+                    //   iconSize: size * 2,
+                    //   icon: Column(
+                    //     mainAxisSize: MainAxisSize.min,
+                    //     children: <Widget>[
+                    //       Icon(
+                    //         Icons.crop_square,
+                    //         size: size,
+                    //         color: color,
+                    //       ),
+                    //       Text(
+                    //         'Logout',
+                    //         style: style,
+                    //       ),
+                    //     ],
+                    //   ),
+                    //   onPressed: () {
+                    //     BlocProvider.of<AppBloc>(context).add(Logout());
+                    //   },
+                    // ),
                   ],
                 ),
               ),
