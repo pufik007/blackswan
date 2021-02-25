@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../check_my_training/check_my_training_page.dart';
-import '../../pages/home_page.dart';
+import '../../../data/api/entities/level.dart';
+import '../../../ui/pages/level_page.dart';
 
 class EndOfExercisesPage extends StatelessWidget {
+  final Level level;
+
+  EndOfExercisesPage(this.level);
+
   @override
   Widget build(BuildContext context) {
     var heightBg = MediaQuery.of(context).size.height;
@@ -176,8 +181,15 @@ class EndOfExercisesPage extends StatelessWidget {
                 child: Container(
                     child: RaisedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => HomePage()));
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LevelPage(
+                            level,
+                            Image.asset('assets/map/levels/left/1.png').image,
+                            Alignment.centerLeft),
+                      ),
+                    );
                   },
                   child: Text(
                     'Ok',
