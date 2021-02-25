@@ -17,12 +17,13 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
         var levels = await Data.instance.getLevels();
         var journey = await Data.instance.getJourney(false);
+        var userEmail = Data.instance.getUserEmail();
 
         if (levels == null || journey == null) {
           await new Future.delayed(const Duration(seconds: 5));
           this.add(Load());
         } else {
-          yield MapLoaded(levels, journey.currentLevelID);
+          yield MapLoaded(levels, journey.currentLevelID, userEmail);
         }
       }
     }

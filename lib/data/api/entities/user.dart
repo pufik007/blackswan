@@ -11,7 +11,15 @@ class User {
   final String locale;
   final String gender;
 
-  User({this.id, this.email, this.provider, this.dateOfBirth, this.height, this.weight, this.locale, this.gender});
+  User(
+      {this.id,
+      this.email,
+      this.provider,
+      this.dateOfBirth,
+      this.height,
+      this.weight,
+      this.locale,
+      this.gender});
 
   User update(
     DateTime newDateOfBirth,
@@ -28,9 +36,6 @@ class User {
         break;
       case UserGenderType.Female:
         textGender = 'female';
-        break;
-      case UserGenderType.Common:
-        textGender = 'common';
         break;
     }
     return User(

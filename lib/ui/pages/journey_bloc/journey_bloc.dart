@@ -31,7 +31,7 @@ class JourneyBloc extends Bloc<JourneyEvent, JourneyState> {
 
   JourneyInputType _inputType;
 
-  UserDataType _userDataType = UserDataType.DateOfBirth;
+  UserDataType _userDataType = UserDataType.Gender;
   DateTime _dateOfBirth;
   int _weight;
   int _height;
@@ -41,7 +41,9 @@ class JourneyBloc extends Bloc<JourneyEvent, JourneyState> {
 
   @override
   JourneyState get initialState {
-    this._inputType = this._fillUserData ? JourneyInputType.UserData : JourneyInputType.UserGoal;
+    this._inputType = this._fillUserData
+        ? JourneyInputType.UserData
+        : JourneyInputType.UserGoal;
     return this._state();
   }
 
@@ -66,15 +68,16 @@ class JourneyBloc extends Bloc<JourneyEvent, JourneyState> {
         yield this._state(jump: true);
       }
     } else if (event is UpdateUser) {
-      var res = await Data.instance.fillUserData(this._dateOfBirth, this._height, this._weight, this._gender);
+      var res = await Data.instance.fillUserData(
+          this._dateOfBirth, this._height, this._weight, this._gender);
       if (res == null) {
         this._inputType = JourneyInputType.UserGoal;
         yield this._state();
       }
     } else if (event is CreateJourney) {
       var goals = List<Goal>();
-      for(var goal in Data.instance.goals) {
-        if(this._selectedGoals.contains(goal.id)) {
+      for (var goal in Data.instance.goals) {
+        if (this._selectedGoals.contains(goal.id)) {
           goals.add(goal);
         }
       }
@@ -101,12 +104,15 @@ class JourneyBloc extends Bloc<JourneyEvent, JourneyState> {
         yield this._state();
       }
     } else if (event is SelectGoal) {
-      if (this._inputType == JourneyInputType.UserGoal && !this._selectedGoals.contains(event.goalID) && this._selectedGoals.length < 2) {
+      if (this._inputType == JourneyInputType.UserGoal &&
+          !this._selectedGoals.contains(event.goalID) &&
+          this._selectedGoals.length < 2) {
         this._selectedGoals.add(event.goalID);
         yield this._state();
       }
     } else if (event is DeselectGoal) {
-      if (this._inputType == JourneyInputType.UserGoal && this._selectedGoals.contains(event.goalID)) {
+      if (this._inputType == JourneyInputType.UserGoal &&
+          this._selectedGoals.contains(event.goalID)) {
         this._selectedGoals.remove(event.goalID);
         yield this._state();
       }
@@ -115,7 +121,8 @@ class JourneyBloc extends Bloc<JourneyEvent, JourneyState> {
 
   JourneyState _state({bool jump = false}) {
     if (this._inputType == JourneyInputType.UserData) {
-      return JourneyDataState(this._userDataType, jump, this._dateOfBirth, this._weight, this._height, this._gender);
+      return JourneyDataState(this._userDataType, jump, this._dateOfBirth,
+          this._weight, this._height, this._gender);
     } else {
       var goals = List<Goal>();
       for (var value in Data.instance.goals) {

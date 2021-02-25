@@ -255,6 +255,11 @@ class Data {
     }
   }
 
+  String getUserEmail() {
+    var userEmail = this._settings.user.email;
+    return userEmail;
+  }
+
   Future<List<Level>> getLevels() async {
     var res = await Api.getLevels(
       this._settings.user,

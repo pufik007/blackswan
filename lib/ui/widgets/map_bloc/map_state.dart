@@ -6,6 +6,8 @@ import 'package:tensorfit/data/api/entities/level.dart';
 @immutable
 abstract class MapState extends Equatable {
   MapState();
+
+  String get userEmail => null;
 }
 
 class MapInit extends MapState {
@@ -21,9 +23,10 @@ class MapLoading extends MapState {
 class MapLoaded extends MapState {
   final List<Level> levels;
   final int selectedLevelID;
+  final String userEmail;
 
-  MapLoaded(this.levels,this.selectedLevelID);
+  MapLoaded(this.levels, this.selectedLevelID, this.userEmail);
 
   @override
-  List<Object> get props => [this.levels,this.selectedLevelID];
+  List<Object> get props => [this.levels, this.selectedLevelID, this.userEmail];
 }

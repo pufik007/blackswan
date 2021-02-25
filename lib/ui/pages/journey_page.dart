@@ -93,7 +93,8 @@ class JourneyPage extends StatelessWidget {
           if (this._controller.positions.length > 0) {
             this._controller.jumpToItem(items.indexOf(state.height));
           } else {
-            this._controller = FixedExtentScrollController(initialItem: items.indexOf(state.height));
+            this._controller = FixedExtentScrollController(
+                initialItem: items.indexOf(state.height));
           }
         }
         selectWidget = Container(
@@ -103,10 +104,13 @@ class JourneyPage extends StatelessWidget {
             itemExtent: 70,
             childCount: items.length,
             itemBuilder: (context, index) {
-              return Center(child: Text('${items[index]}${this._info(UserDataType.Height)}'));
+              return Center(
+                  child: Text(
+                      '${items[index]}${this._info(UserDataType.Height)}'));
             },
             onSelectedItemChanged: (int index) {
-              BlocProvider.of<JourneyBloc>(context).add(SelectHeight(items[index]));
+              BlocProvider.of<JourneyBloc>(context)
+                  .add(SelectHeight(items[index]));
             },
             backgroundColor: Colors.transparent,
           ),
@@ -119,7 +123,8 @@ class JourneyPage extends StatelessWidget {
           if (this._controller.positions.length > 0) {
             this._controller.jumpToItem(items.indexOf(state.weight));
           } else {
-            this._controller = FixedExtentScrollController(initialItem: items.indexOf(state.weight));
+            this._controller = FixedExtentScrollController(
+                initialItem: items.indexOf(state.weight));
           }
         }
         selectWidget = Container(
@@ -129,10 +134,13 @@ class JourneyPage extends StatelessWidget {
             itemExtent: 70,
             childCount: items.length,
             itemBuilder: (context, index) {
-              return Center(child: Text('${items[index]}${this._info(UserDataType.Weight)}'));
+              return Center(
+                  child: Text(
+                      '${items[index]}${this._info(UserDataType.Weight)}'));
             },
             onSelectedItemChanged: (int index) {
-              BlocProvider.of<JourneyBloc>(context).add(SelectWeight(items[index]));
+              BlocProvider.of<JourneyBloc>(context)
+                  .add(SelectWeight(items[index]));
             },
             backgroundColor: Colors.transparent,
           ),
@@ -145,7 +153,8 @@ class JourneyPage extends StatelessWidget {
           if (this._controller.positions.length > 0) {
             this._controller.jumpToItem(items.indexOf(state.gender));
           } else {
-            this._controller = FixedExtentScrollController(initialItem: items.indexOf(state.gender));
+            this._controller = FixedExtentScrollController(
+                initialItem: items.indexOf(state.gender));
           }
         }
         selectWidget = Container(
@@ -158,7 +167,8 @@ class JourneyPage extends StatelessWidget {
               return Center(child: Text(this._gender(items[index])));
             },
             onSelectedItemChanged: (int index) {
-              BlocProvider.of<JourneyBloc>(context).add(SelectGender(items[index]));
+              BlocProvider.of<JourneyBloc>(context)
+                  .add(SelectGender(items[index]));
             },
             backgroundColor: Colors.transparent,
           ),
@@ -199,9 +209,11 @@ class JourneyPage extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
-                                Text(this._title(state.type), style: theme.textTheme.subhead),
+                                Text(this._title(state.type),
+                                    style: theme.textTheme.subhead),
                                 SizedBox(height: 20),
-                                Text(this._description(state.type), style: theme.textTheme.body1),
+                                Text(this._description(state.type),
+                                    style: theme.textTheme.body1),
                               ],
                             ),
                           ),
@@ -211,7 +223,8 @@ class JourneyPage extends StatelessWidget {
                               child: selectWidget,
                             ),
                           ),
-                          this._userDataButton(context, state.type == UserDataType.Gender),
+                          this._userDataButton(
+                              context, state.type == UserDataType.Gender),
                         ],
                       ),
                     ),
@@ -220,21 +233,21 @@ class JourneyPage extends StatelessWidget {
               ),
             ),
           ),
-          FractionallySizedBox(
-            widthFactor: 0.075,
-            child: Center(
-              child: DotsIndicator(
-                axis: Axis.vertical,
-                dotsCount: 4,
-                position: UserDataType.values.indexOf(state.type).toDouble(),
-                decorator: DotsDecorator(
-                  color: theme.focusColor,
-                  activeColor: theme.unselectedWidgetColor,
-                  spacing: EdgeInsets.all(10.0),
-                ),
-              ),
-            ),
-          )
+          // FractionallySizedBox(
+          //   widthFactor: 0.075,
+          //   child: Center(
+          //     child: DotsIndicator(
+          //       axis: Axis.vertical,
+          //       dotsCount: 1,
+          //       position: UserDataType.values.indexOf(state.type).toDouble(),
+          //       decorator: DotsDecorator(
+          //         color: theme.focusColor,
+          //         activeColor: theme.unselectedWidgetColor,
+          //         spacing: EdgeInsets.all(10.0),
+          //       ),
+          //     ),
+          //   ),
+          // )
         ],
       ),
       onWillPop: () async {
@@ -260,7 +273,8 @@ class JourneyPage extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text('What dreams will we embody?', style: theme.textTheme.title),
+                  Text('What dreams will we embody?',
+                      style: theme.textTheme.title),
                   this._buildGoals(context, state),
                 ],
               ),
@@ -272,7 +286,8 @@ class JourneyPage extends StatelessWidget {
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               onPressed: state.valid
                   ? () {
-                      BlocProvider.of<JourneyBloc>(context).add(CreateJourney());
+                      BlocProvider.of<JourneyBloc>(context)
+                          .add(CreateJourney());
                       if (this.isReset) {
                         Navigator.pop(context);
                       }
@@ -316,7 +331,8 @@ class JourneyPage extends StatelessWidget {
               ),
               width: size,
               height: size,
-              child: this._buildGoal(context, goal, state.selectedGoals.contains(goal.id), state.selectGoals),
+              child: this._buildGoal(context, goal,
+                  state.selectedGoals.contains(goal.id), state.selectGoals),
             ));
             for (var i = 1; i < 6; i++) {
               goal = state.goals[i];
@@ -327,7 +343,8 @@ class JourneyPage extends StatelessWidget {
                 ),
                 width: size,
                 height: size,
-                child: this._buildGoal(context, goal, state.selectedGoals.contains(goal.id), state.selectGoals),
+                child: this._buildGoal(context, goal,
+                    state.selectedGoals.contains(goal.id), state.selectGoals),
               ));
             }
 
@@ -340,7 +357,8 @@ class JourneyPage extends StatelessWidget {
     );
   }
 
-  Widget _buildGoal(BuildContext context, Goal goal, bool selected, bool enabled) {
+  Widget _buildGoal(
+      BuildContext context, Goal goal, bool selected, bool enabled) {
     var theme = Theme.of(context);
 
     return RawMaterialButton(
@@ -352,13 +370,18 @@ class JourneyPage extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(
           fontWeight: FontWeight.w700,
-          color: selected ? Colors.grey[300] : (enabled ? Color.fromRGBO(31, 32, 35, 1) : Color.fromRGBO(31, 32, 35, 1)),
+          color: selected
+              ? Colors.grey[300]
+              : (enabled
+                  ? Color.fromRGBO(31, 32, 35, 1)
+                  : Color.fromRGBO(31, 32, 35, 1)),
         ),
       ),
       onPressed: enabled || selected
           ? () {
               if (selected) {
-                BlocProvider.of<JourneyBloc>(context).add(DeselectGoal(goal.id));
+                BlocProvider.of<JourneyBloc>(context)
+                    .add(DeselectGoal(goal.id));
               } else {
                 BlocProvider.of<JourneyBloc>(context).add(SelectGoal(goal.id));
               }
@@ -435,8 +458,7 @@ class JourneyPage extends StatelessWidget {
         return 'Male';
       case UserGenderType.Female:
         return 'Female';
-      case UserGenderType.Common:
-        return 'Common';
+
       default:
         return null;
     }

@@ -1,5 +1,7 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
+
+import '../check_my_training/check_my_training_page.dart';
+import '../../pages/home_page.dart';
 
 class EndOfExercisesPage extends StatelessWidget {
   @override
@@ -115,14 +117,21 @@ class EndOfExercisesPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: RaisedButton(
-                      color: Colors.transparent,
-                      elevation: 0,
-                      onPressed: () {},
-                      child: Text(
-                        'CHECK MY TRAINING BY COACH',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
-                      ),
-                    ),
+                        color: Colors.transparent,
+                        elevation: 0,
+                        onPressed: () {},
+                        child: RaisedButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => CheckMyTraining()));
+                          },
+                          child: Text(
+                            'CHECK MY TRAINING BY COACH',
+                            style: TextStyle(color: Colors.white, fontSize: 15),
+                          ),
+                          color: Colors.transparent,
+                          elevation: 0,
+                        )),
                   ),
                   SizedBox(
                     height: heightBg * 0.02,
@@ -165,7 +174,11 @@ class EndOfExercisesPage extends StatelessWidget {
                 color: Colors.purple[800],
                 onPressed: () {},
                 child: Container(
-                  padding: EdgeInsets.only(top: 15, bottom: 15),
+                    child: RaisedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => HomePage()));
+                  },
                   child: Text(
                     'Ok',
                     style: TextStyle(
@@ -173,7 +186,9 @@ class EndOfExercisesPage extends StatelessWidget {
                       fontSize: 18,
                     ),
                   ),
-                ),
+                  color: Colors.transparent,
+                  elevation: 0,
+                )),
               ),
             ),
           ],
