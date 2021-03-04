@@ -779,7 +779,7 @@ class _CameraPredictionPageState extends State<CameraPageTutorial> {
     return RaisedButton(
       onPressed: () {
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => EndOfExercisesPage()));
+            MaterialPageRoute(builder: (context) => EndOfExercisesPage(level)));
       },
       elevation: 0,
       color: Colors.transparent,
