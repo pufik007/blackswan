@@ -127,7 +127,7 @@ class LevelPage extends StatelessWidget {
     var duration = 0;
     for (final exercise in exercises) {
       if (exercise.duration != null) {
-        duration += (exercise.duration / 60).floor();
+        duration += (exercise.duration);
       }
     }
 
@@ -206,7 +206,7 @@ class LevelPage extends StatelessWidget {
                             ),
                             Icon(Icons.alarm, color: color),
                             SizedBox(width: 10),
-                            Text('$duration min',
+                            Text('${(duration / 60).round()} min',
                                 style: theme.primaryTextTheme.subtitle),
                             Expanded(
                               child: Align(
