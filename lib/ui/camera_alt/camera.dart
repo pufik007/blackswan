@@ -58,9 +58,8 @@ class _CameraState extends State<Camera> {
                 widget.setRecognitions(recognitions, img.height, img.width);
 
                 isDetecting = false;
-            });
+              });
             }
-            
           }
         });
       });
@@ -93,7 +92,52 @@ class _CameraState extends State<Camera> {
           screenRatio > previewRatio ? screenH : screenW / previewW * previewH,
       maxWidth:
           screenRatio > previewRatio ? screenH / previewH * previewW : screenW,
-      child: CameraPreview(controller),
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Stack(
+          children: [
+            CameraPreview(controller),
+            Container(
+              alignment: Alignment.bottomRight,
+              child: IconButton(
+                icon: Icon(
+                  Icons.switch_camera,
+                  size: 35,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  onCameraSwitch();
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  void onCameraSwitch() async {
+    final CameraDescription cameraDescription =
+        (controller.description == widget.cameras[0])
+            ? widget.cameras[1]
+            : widget.cameras[0];
+    if (controller != null) {
+      await controller.dispose();
+    }
+    controller = CameraController(cameraDescription, ResolutionPreset.medium);
+    controller.addListener(() {
+      if (mounted) setState(() {});
+    });
+
+    try {
+      await controller.initialize();
+    } on CameraException catch (e) {
+      print(e);
+    }
+
+    if (mounted) {
+      setState(() {});
+    }
   }
 }
