@@ -22,9 +22,6 @@ import 'exercises_counter.dart';
 import 'pose_space_point.dart';
 import 'bbox.dart';
 import 'pose_joint_lib.dart';
-import 'package:vptree/space_point.dart';
-import 'package:vptree/vptree_factory.dart';
-import 'package:vptree/vptree.dart';
 import './end_of_exercises/end_of_exercises.dart';
 import '../../data/api/entities/exercise_detection.dart';
 
@@ -427,7 +424,8 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
         namesExercise = exerciseInfo.exercise.name;
         _startTimerExercises(exerciseInfo);
       } else {
-        Navigator.of(context).pushReplacementNamed('/end_of_exercises');
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => EndOfExercisesPage(level)));
       }
     } else {
       if (namesExercise != null) {
@@ -463,8 +461,8 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   endPageExercisesButton() {
     return RaisedButton(
       onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => EndOfExercisesPage(widget.level)));
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => EndOfExercisesPage(level)));
       },
       elevation: 0,
       color: Colors.transparent,
