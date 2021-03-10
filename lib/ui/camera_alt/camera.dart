@@ -28,7 +28,7 @@ class _CameraState extends State<Camera> {
       print('No camera is found');
     } else {
       controller =
-          new CameraController(widget.cameras[1], ResolutionPreset.high);
+          new CameraController(widget.cameras[0], ResolutionPreset.high);
       controller.initialize().then((_) {
         if (!mounted) {
           return;
@@ -91,13 +91,11 @@ class _CameraState extends State<Camera> {
       maxWidth:
           screenRatio > previewRatio ? screenH / previewH * previewW : screenW,
       child: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
             CameraPreview(controller),
             Container(
-              alignment: Alignment.bottomRight,
+              alignment: Alignment.bottomCenter,
               child: IconButton(
                 icon: Icon(
                   Icons.switch_camera,
