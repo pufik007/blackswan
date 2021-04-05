@@ -140,6 +140,7 @@ class _CameraState extends State<Camera> {
               }).toList(),
               imageHeight: img.height,
               imageWidth: img.width,
+              rotation: widget.cameras[1].sensorOrientation,
               numResults: 2,
             ).then((recognitions) {
               int endTime = new DateTime.now().millisecondsSinceEpoch;
