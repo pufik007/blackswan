@@ -23,12 +23,13 @@ class _CameraState extends State<Camera> {
   @override
   void initState() {
     super.initState();
+    var cameraDescription = widget.cameras[0];
 
     if (widget.cameras == null || widget.cameras.length < 1) {
       print('No camera is found');
     } else {
       controller =
-          new CameraController(widget.cameras[0], ResolutionPreset.high);
+          new CameraController(cameraDescription, ResolutionPreset.high);
       controller.initialize().then((_) {
         if (!mounted) {
           return;
@@ -48,6 +49,7 @@ class _CameraState extends State<Camera> {
                 }).toList(),
                 imageHeight: img.height,
                 imageWidth: img.width,
+                rotation: cameraDescription.sensorOrientation,
                 numResults: 2,
               ).then((recognitions) {
                 int endTime = new DateTime.now().millisecondsSinceEpoch;
@@ -140,7 +142,7 @@ class _CameraState extends State<Camera> {
               }).toList(),
               imageHeight: img.height,
               imageWidth: img.width,
-              rotation: widget.cameras[1].sensorOrientation,
+              rotation: cameraDescription.sensorOrientation,
               numResults: 2,
             ).then((recognitions) {
               int endTime = new DateTime.now().millisecondsSinceEpoch;

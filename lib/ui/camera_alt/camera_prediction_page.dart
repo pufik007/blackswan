@@ -213,6 +213,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   }
 
   List<PoseJointLib> extractPoseSpacePoints(List<dynamic> _recognitions) {
+    int startTime = new DateTime.now().millisecondsSinceEpoch;
     var poseJointLib = List<PoseJointLib>();
     List<List<double>> pose = List<List<double>>();
     List<double> confidence = List<double>();
@@ -240,14 +241,19 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
         });
         print('pose right here - $pose');
         print(confidence);
+        int startTimeReps = new DateTime.now().millisecondsSinceEpoch;
         repsCount = repsCounter.repsCounter(
           pose,
           confidence,
           bbox,
         );
         print('repsCount - $repsCount');
+        int endTimeReps = new DateTime.now().millisecondsSinceEpoch;
+        print("Detection took Reps ${endTimeReps - startTimeReps}");
       }
     }
+    int endTime = new DateTime.now().millisecondsSinceEpoch;
+    print("Detection took 2 ${endTime - startTime}");
     return poseJointLib;
   }
 
