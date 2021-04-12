@@ -79,10 +79,9 @@ class _HomePageState extends State<HomePage> {
                       icon: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Icon(
-                            Icons.crop_square,
-                            size: size,
-                            color: color,
+                          Image.asset(
+                            'assets/icon/icon_eye_2_pur.png',
+                            width: 44,
                           ),
                           Text(
                             'Change',
@@ -102,14 +101,19 @@ class _HomePageState extends State<HomePage> {
                       icon: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Icon(
-                            Icons.crop_square,
-                            size: size,
-                            color: color,
+                          Container(
+                            padding: EdgeInsets.only(top: 5),
+                            child: Image.asset(
+                              'assets/icon/icon_account_2_pur.png',
+                              width: 30,
+                            ),
                           ),
-                          Text(
-                            'Profile',
-                            style: style,
+                          Container(
+                            padding: EdgeInsets.only(top: 5),
+                            child: Text(
+                              'Profile',
+                              style: style,
+                            ),
                           ),
                         ],
                       ),
