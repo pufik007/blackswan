@@ -23,14 +23,13 @@ class _CameraState extends State<Camera> {
   @override
   void initState() {
     super.initState();
+    var cameraDescription = widget.cameras[0];
 
     if (widget.cameras == null || widget.cameras.length < 1) {
       print('No camera is found');
     } else {
-      controller = new CameraController(
-        widget.cameras[0],
-        ResolutionPreset.medium,
-      );
+      controller =
+          new CameraController(cameraDescription, ResolutionPreset.high);
       controller.initialize().then((_) {
         if (!mounted) {
           return;
@@ -50,6 +49,7 @@ class _CameraState extends State<Camera> {
                 }).toList(),
                 imageHeight: img.height,
                 imageWidth: img.width,
+                rotation: cameraDescription.sensorOrientation,
                 numResults: 2,
               ).then((recognitions) {
                 int endTime = new DateTime.now().millisecondsSinceEpoch;
@@ -93,13 +93,11 @@ class _CameraState extends State<Camera> {
       maxWidth:
           screenRatio > previewRatio ? screenH / previewH * previewW : screenW,
       child: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
             CameraPreview(controller),
             Container(
-              alignment: Alignment.bottomRight,
+              alignment: Alignment.bottomCenter,
               child: IconButton(
                 icon: Icon(
                   Icons.switch_camera,
@@ -125,19 +123,38 @@ class _CameraState extends State<Camera> {
     if (controller != null) {
       await controller.dispose();
     }
-    controller = CameraController(cameraDescription, ResolutionPreset.medium);
-    controller.addListener(() {
-      if (mounted) setState(() {});
-    });
-
-    try {
-      await controller.initialize();
-    } on CameraException catch (e) {
-      print(e);
-    }
-
-    if (mounted) {
+    controller = CameraController(cameraDescription, ResolutionPreset.high);
+    controller.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
       setState(() {});
-    }
+      controller.startImageStream((CameraImage img) {
+        if (!isDetecting) {
+          isDetecting = true;
+
+          int startTime = new DateTime.now().millisecondsSinceEpoch;
+          print('fps - $fpsThreshold');
+          if (startTime > fpsThreshold) {
+            Tflite.runPoseNetOnFrame(
+              bytesList: img.planes.map((plane) {
+                return plane.bytes;
+              }).toList(),
+              imageHeight: img.height,
+              imageWidth: img.width,
+              rotation: cameraDescription.sensorOrientation,
+              numResults: 2,
+            ).then((recognitions) {
+              int endTime = new DateTime.now().millisecondsSinceEpoch;
+              print("Detection took ${endTime - startTime}");
+
+              widget.setRecognitions(recognitions, img.height, img.width);
+
+              isDetecting = false;
+            });
+          }
+        }
+      });
+    });
   }
 }

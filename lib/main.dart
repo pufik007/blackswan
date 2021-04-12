@@ -178,7 +178,6 @@ class _AppState extends State<App> {
                 },
                 routes: {
                   '/create_journey': (context) => JourneyPage(false, true),
-                  '/end_of_exercises': (context) => EndOfExercisesPage(),
                 },
                 home: HomePageAlt(),
               ),
