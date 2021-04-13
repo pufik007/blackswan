@@ -496,13 +496,13 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                     widget.cameras,
                     setRecognitions,
                   ),
-                  BndBox(
-                    _recognitions == null ? [] : _recognitions,
-                    math.max(_imageHeight, _imageWidth),
-                    math.min(_imageHeight, _imageWidth),
-                    screen.height,
-                    screen.width,
-                  ),
+                  // BndBox(
+                  //   _recognitions == null ? [] : _recognitions,
+                  //   math.max(_imageHeight, _imageWidth),
+                  //   math.min(_imageHeight, _imageWidth),
+                  //   screen.height,
+                  //   screen.width,
+                  // ),
                   Center(
                     child: Text('$repsCount',
                         style: TextStyle(
