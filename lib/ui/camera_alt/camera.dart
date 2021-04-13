@@ -29,7 +29,7 @@ class _CameraState extends State<Camera> {
       print('No camera is found');
     } else {
       controller =
-          new CameraController(cameraDescription, ResolutionPreset.high);
+          new CameraController(cameraDescription, ResolutionPreset.medium);
       controller.initialize().then((_) {
         if (!mounted) {
           return;
@@ -124,7 +124,7 @@ class _CameraState extends State<Camera> {
     if (controller != null) {
       await controller.dispose();
     }
-    controller = CameraController(cameraDescription, ResolutionPreset.high);
+    controller = CameraController(cameraDescription, ResolutionPreset.medium);
     controller.initialize().then((_) {
       if (!mounted) {
         return;
