@@ -430,8 +430,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
         namesExercise = exerciseInfo.exercise.name;
         _startTimerExercises(exerciseInfo);
       } else {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => EndOfExercisesPage(level)));
+        Navigator.of(context).pop();
       }
     } else {
       if (namesExercise != null) {
@@ -510,7 +509,6 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                           color: Colors.red,
                           fontSize: 20,
                         )),
-                  ),
                   Padding(
                     padding: EdgeInsets.all(25),
                     child: Align(
@@ -531,18 +529,9 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                                   fontSize: 40,
                                 ))),
                   ),
-                  Row(
-                    children: [
-                      Container(
-                          child: Container(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            endPageExercisesButton(),
-                          ],
-                        ),
-                      )),
-                    ],
+                  Container(
+                    alignment: Alignment.bottomLeft,
+                    child: endPageExercisesButton(),
                   ),
                   Align(
                       alignment: Alignment.bottomCenter,
@@ -559,6 +548,63 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                       createExerciseTimerOrEndLevel(
                           context, state.exercises, widget.exerciseDetection),
                     ],
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Container(
+                      margin: const EdgeInsets.all(16),
+                      width: 150,
+                      height: 100,
+                      alignment: Alignment.topRight,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.transparent),
+                        borderRadius:
+                            const BorderRadius.all(const Radius.circular(4)),
+                        color: Color.fromRGBO(114, 114, 114, 40),
+                      ),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Icon(
+                              Icons.brightness_1_rounded,
+                              size: 30,
+                              color: _counter >= 3 ? Colors.red : Colors.green,
+                            ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Text(
+                                    '$repsCount',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 26,
+                                    ),
+                                  )),
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(
+                                        const Radius.circular(4)),
+                                    color: Colors.deepPurple),
+                                child: Text(
+                                  'BETA',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 22,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),

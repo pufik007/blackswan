@@ -98,6 +98,7 @@ class _CameraState extends State<Camera> {
             CameraPreview(controller),
             Container(
               alignment: Alignment.bottomCenter,
+              padding: EdgeInsets.only(bottom: 20),
               child: IconButton(
                 icon: Icon(
                   Icons.switch_camera,
