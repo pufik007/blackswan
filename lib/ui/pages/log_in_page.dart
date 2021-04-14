@@ -58,33 +58,33 @@ class _LogInPageState extends State<LogInPage> {
     );
 
     var loginButtons = List<Widget>();
-    loginButtons.add(TensorfitBorderedButton(
-      title: S.of(context).login_facebook,
-      height: double.maxFinite,
-      icon: SvgPicture.asset('assets/login/facebook.svg'),
-      onPressed: () {
-        this._bloc.add(LoginByFacebook());
-      },
-    ));
-    loginButtons.add(TensorfitBorderedButton(
-      title: S.of(context).login_google,
-      height: double.maxFinite,
-      icon: SvgPicture.asset('assets/login/google.svg'),
-      onPressed: () {
-        this._bloc.add(LoginByGoogle());
-      },
-    ));
+    // loginButtons.add(TensorfitBorderedButton(
+    //   title: S.of(context).login_facebook,
+    //   height: double.maxFinite,
+    //   icon: SvgPicture.asset('assets/login/facebook.svg'),
+    //   onPressed: () {
+    //     this._bloc.add(LoginByFacebook());
+    //   },
+    // ));
+    // loginButtons.add(TensorfitBorderedButton(
+    //   title: S.of(context).login_google,
+    //   height: double.maxFinite,
+    //   icon: SvgPicture.asset('assets/login/google.svg'),
+    //   onPressed: () {
+    //     this._bloc.add(LoginByGoogle());
+    //   },
+    // ));
 
-    if (Platform.isMacOS) {
-      loginButtons.add(TensorfitBorderedButton(
-        title: S.of(context).login_apple,
-        height: double.maxFinite,
-        icon: SvgPicture.asset('assets/login/apple.svg'),
-        onPressed: () {
-          this._bloc.add(LoginByApple());
-        },
-      ));
-    }
+    // if (Platform.isMacOS) {
+    //   loginButtons.add(TensorfitBorderedButton(
+    //     title: S.of(context).login_apple,
+    //     height: double.maxFinite,
+    //     icon: SvgPicture.asset('assets/login/apple.svg'),
+    //     onPressed: () {
+    //       this._bloc.add(LoginByApple());
+    //     },
+    //   ));
+    // }
 
     return Center(
       child: FractionallySizedBox(
@@ -99,7 +99,8 @@ class _LogInPageState extends State<LogInPage> {
                     widthFactor: 0.5,
                     child: AspectRatio(
                       aspectRatio: 5,
-                      child: SvgPicture.asset('assets/logo.svg', fit: BoxFit.fitWidth),
+                      child: SvgPicture.asset('assets/logo.svg',
+                          fit: BoxFit.fitWidth),
                     ),
                   ),
                   Expanded(
@@ -114,8 +115,12 @@ class _LogInPageState extends State<LogInPage> {
                 children: <Widget>[
                   divider,
                   Container(
-                    padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-                    child: Text(S.of(context).login_or, style: TextStyle(color: theme.disabledColor, fontWeight: FontWeight.w500)),
+                    padding: EdgeInsets.only(
+                        left: 20, right: 20, top: 10, bottom: 10),
+                    child: Text(S.of(context).login_or,
+                        style: TextStyle(
+                            color: theme.disabledColor,
+                            fontWeight: FontWeight.w500)),
                   ),
                   divider,
                 ],
@@ -125,7 +130,9 @@ class _LogInPageState extends State<LogInPage> {
               child: BlocBuilder(
                 bloc: this._bloc,
                 builder: (context, state) {
-                  Color emailColor = state.error == null ? theme.buttonColor : theme.errorColor;
+                  Color emailColor = state.error == null
+                      ? theme.buttonColor
+                      : theme.errorColor;
 
                   Widget emailTextField = TextField(
                     autocorrect: false,
@@ -135,10 +142,12 @@ class _LogInPageState extends State<LogInPage> {
                       labelText: S.of(context).login_email,
                       labelStyle: TextStyle(color: emailColor),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: buttonBorderWidth, color: emailColor),
+                        borderSide: BorderSide(
+                            width: buttonBorderWidth, color: emailColor),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: buttonBorderWidth, color: emailColor),
+                        borderSide: BorderSide(
+                            width: buttonBorderWidth, color: emailColor),
                       ),
                     ),
                     onChanged: (value) {
@@ -161,7 +170,8 @@ class _LogInPageState extends State<LogInPage> {
                             color: theme.errorColor,
                           ),
                           onPressed: () {
-                            this._showError(context, 'Login failed', state.error);
+                            this._showError(
+                                context, 'Login failed', state.error);
                           },
                         ),
                       ],
@@ -179,10 +189,14 @@ class _LogInPageState extends State<LogInPage> {
                           labelText: S.of(context).login_password,
                           labelStyle: TextStyle(color: theme.buttonColor),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(width: buttonBorderWidth, color: theme.buttonColor),
+                            borderSide: BorderSide(
+                                width: buttonBorderWidth,
+                                color: theme.buttonColor),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(width: buttonBorderWidth, color: theme.buttonColor),
+                            borderSide: BorderSide(
+                                width: buttonBorderWidth,
+                                color: theme.buttonColor),
                           ),
                         ),
                         onChanged: (value) {
@@ -192,7 +206,9 @@ class _LogInPageState extends State<LogInPage> {
                       IconButton(
                         icon: Icon(
                           Icons.remove_red_eye,
-                          color: state.showPassword ? theme.buttonColor : theme.disabledColor,
+                          color: state.showPassword
+                              ? theme.buttonColor
+                              : theme.disabledColor,
                         ),
                         onPressed: () {
                           this._bloc.add(ChangeShowPassword());

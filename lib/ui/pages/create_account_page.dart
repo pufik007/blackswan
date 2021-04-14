@@ -34,12 +34,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   @override
   Widget build(BuildContext context) {
     if (this._bloc == null) {
-      this._bloc = LoginBloc(BlocProvider.of<AppBloc>(context));   
+      this._bloc = LoginBloc(BlocProvider.of<AppBloc>(context));
     }
 
-      return LoginAdapt(
-        child: this._buildBody(context),
-        minAspectRatio: 0.7,
+    return LoginAdapt(
+      child: this._buildBody(context),
+      minAspectRatio: 0.7,
     );
   }
 
@@ -59,33 +59,33 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     );
 
     var loginButtons = List<Widget>();
-    loginButtons.add(TensorfitBorderedButton(
-      title: S.of(context).login_facebook,
-      height: double.maxFinite,
-      icon: SvgPicture.asset('assets/login/facebook.svg'),
-      onPressed: () {
-        this._bloc.add(LoginByFacebook());
-      },
-    ));
-    loginButtons.add(TensorfitBorderedButton(
-      title: S.of(context).login_google,
-      height: double.maxFinite,
-      icon: SvgPicture.asset('assets/login/google.svg'),
-      onPressed: () {
-        this._bloc.add(LoginByGoogle());
-      },
-    ));
+    // loginButtons.add(TensorfitBorderedButton(
+    //   title: S.of(context).login_facebook,
+    //   height: double.maxFinite,
+    //   icon: SvgPicture.asset('assets/login/facebook.svg'),
+    //   onPressed: () {
+    //     this._bloc.add(LoginByFacebook());
+    //   },
+    // ));
+    // loginButtons.add(TensorfitBorderedButton(
+    //   title: S.of(context).login_google,
+    //   height: double.maxFinite,
+    //   icon: SvgPicture.asset('assets/login/google.svg'),
+    //   onPressed: () {
+    //     this._bloc.add(LoginByGoogle());
+    //   },
+    // ));
 
-    if (Platform.isMacOS) {
-      loginButtons.add(TensorfitBorderedButton(
-        title: S.of(context).login_apple,
-        height: double.maxFinite,
-        icon: SvgPicture.asset('assets/login/apple.svg'),
-        onPressed: () {
-          this._bloc.add(LoginByApple());
-        },
-      ));
-    }
+    // if (Platform.isMacOS) {
+    //   loginButtons.add(TensorfitBorderedButton(
+    //     title: S.of(context).login_apple,
+    //     height: double.maxFinite,
+    //     icon: SvgPicture.asset('assets/login/apple.svg'),
+    //     onPressed: () {
+    //       this._bloc.add(LoginByApple());
+    //     },
+    //   ));
+    // }
 
     return Center(
       child: FractionallySizedBox(
@@ -100,7 +100,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     widthFactor: 0.5,
                     child: AspectRatio(
                       aspectRatio: 5,
-                      child: SvgPicture.asset('assets/logo.svg', fit: BoxFit.fitWidth),
+                      child: SvgPicture.asset('assets/logo.svg',
+                          fit: BoxFit.fitWidth),
                     ),
                   ),
                   Expanded(
@@ -117,8 +118,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 children: <Widget>[
                   divider,
                   Container(
-                    padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-                    child: Text(S.of(context).login_or, style: TextStyle(color: theme.disabledColor, fontWeight: FontWeight.w500)),
+                    padding: EdgeInsets.only(
+                        left: 20, right: 20, top: 10, bottom: 10),
+                    child: Text(S.of(context).login_or,
+                        style: TextStyle(
+                            color: theme.disabledColor,
+                            fontWeight: FontWeight.w500)),
                   ),
                   divider,
                 ],
@@ -128,7 +133,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               child: BlocBuilder(
                 bloc: this._bloc,
                 builder: (context, state) {
-                  Color emailColor = state.error == null ? theme.buttonColor : theme.errorColor;
+                  Color emailColor = state.error == null
+                      ? theme.buttonColor
+                      : theme.errorColor;
 
                   Widget emailTextField = TextField(
                     autocorrect: false,
@@ -138,10 +145,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       labelText: S.of(context).login_email,
                       labelStyle: TextStyle(color: emailColor),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: buttonBorderWidth, color: emailColor),
+                        borderSide: BorderSide(
+                            width: buttonBorderWidth, color: emailColor),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: buttonBorderWidth, color: emailColor),
+                        borderSide: BorderSide(
+                            width: buttonBorderWidth, color: emailColor),
                       ),
                     ),
                     onChanged: (value) {
@@ -165,7 +174,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             color: theme.errorColor,
                           ),
                           onPressed: () {
-                            this._showError(context, 'Create account failed', state.error);
+                            this._showError(
+                                context, 'Create account failed', state.error);
                           },
                         ),
                       ],
@@ -182,10 +192,14 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                           labelText: S.of(context).login_password,
                           labelStyle: TextStyle(color: theme.buttonColor),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(width: buttonBorderWidth, color: theme.buttonColor),
+                            borderSide: BorderSide(
+                                width: buttonBorderWidth,
+                                color: theme.buttonColor),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(width: buttonBorderWidth, color: theme.buttonColor),
+                            borderSide: BorderSide(
+                                width: buttonBorderWidth,
+                                color: theme.buttonColor),
                           ),
                         ),
                         onChanged: (value) {
@@ -195,7 +209,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       IconButton(
                         icon: Icon(
                           Icons.remove_red_eye,
-                          color: state.showPassword ? theme.buttonColor : theme.disabledColor,
+                          color: state.showPassword
+                              ? theme.buttonColor
+                              : theme.disabledColor,
                         ),
                         onPressed: () {
                           this._bloc.add(ChangeShowPassword());
@@ -232,12 +248,15 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             children: [
                               TextSpan(
                                 text: S.of(context).login_terms_text,
-                                style: theme.textTheme.button.copyWith(color: theme.disabledColor),
+                                style: theme.textTheme.button
+                                    .copyWith(color: theme.disabledColor),
                               ),
                               TextSpan(
                                 text: S.of(context).login_terms_url,
-                                style: theme.textTheme.button
-                                    .copyWith(color: theme.disabledColor, decoration: TextDecoration.underline, fontWeight: FontWeight.w900),
+                                style: theme.textTheme.button.copyWith(
+                                    color: theme.disabledColor,
+                                    decoration: TextDecoration.underline,
+                                    fontWeight: FontWeight.w900),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     print('terms_of_service');
