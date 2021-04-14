@@ -110,58 +110,58 @@ class EndOfExercisesPage extends StatelessWidget {
                   SizedBox(
                     height: heightBg * 0.02,
                   ),
-                  Container(
-                    width: widthBg * 0.75,
-                    decoration: BoxDecoration(
-                      border: Border(
-                        top: BorderSide(width: 3.0, color: Colors.white),
-                        left: BorderSide(width: 3.0, color: Colors.white),
-                        right: BorderSide(width: 3.0, color: Colors.white),
-                        bottom: BorderSide(width: 3.0, color: Colors.white),
-                      ),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: RaisedButton(
-                        color: Colors.transparent,
-                        elevation: 0,
-                        onPressed: () {},
-                        child: RaisedButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => CheckMyTraining()));
-                          },
-                          child: Text(
-                            'CHECK MY TRAINING BY COACH',
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          ),
-                          color: Colors.transparent,
-                          elevation: 0,
-                        )),
-                  ),
-                  SizedBox(
-                    height: heightBg * 0.02,
-                  ),
-                  Container(
-                    width: widthBg * 0.75,
-                    decoration: BoxDecoration(
-                      border: Border(
-                        top: BorderSide(width: 3.0, color: Colors.white),
-                        left: BorderSide(width: 3.0, color: Colors.white),
-                        right: BorderSide(width: 3.0, color: Colors.white),
-                        bottom: BorderSide(width: 3.0, color: Colors.white),
-                      ),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: RaisedButton(
-                      color: Colors.transparent,
-                      elevation: 0,
-                      onPressed: () {},
-                      child: Text(
-                        'SHARE MY RESULT',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   width: widthBg * 0.75,
+                  //   decoration: BoxDecoration(
+                  //     border: Border(
+                  //       top: BorderSide(width: 3.0, color: Colors.white),
+                  //       left: BorderSide(width: 3.0, color: Colors.white),
+                  //       right: BorderSide(width: 3.0, color: Colors.white),
+                  //       bottom: BorderSide(width: 3.0, color: Colors.white),
+                  //     ),
+                  //     borderRadius: BorderRadius.circular(5),
+                  //   ),
+                  // child: RaisedButton(
+                  //     color: Colors.transparent,
+                  //     elevation: 0,
+                  //     onPressed: () {},
+                  //     child: RaisedButton(
+                  //       onPressed: () {
+                  //         Navigator.of(context).push(MaterialPageRoute(
+                  //             builder: (context) => CheckMyTraining()));
+                  //       },
+                  //       child: Text(
+                  //         'CHECK MY TRAINING BY COACH',
+                  //         style: TextStyle(color: Colors.white, fontSize: 15),
+                  //       ),
+                  //       color: Colors.transparent,
+                  //       elevation: 0,
+                  //     )),
+                  // ),
+                  // SizedBox(
+                  //   height: heightBg * 0.02,
+                  // ),
+                  // Container(
+                  //   width: widthBg * 0.75,
+                  //   decoration: BoxDecoration(
+                  //     border: Border(
+                  //       top: BorderSide(width: 3.0, color: Colors.white),
+                  //       left: BorderSide(width: 3.0, color: Colors.white),
+                  //       right: BorderSide(width: 3.0, color: Colors.white),
+                  //       bottom: BorderSide(width: 3.0, color: Colors.white),
+                  //     ),
+                  //     borderRadius: BorderRadius.circular(5),
+                  //   ),
+                  //   child: RaisedButton(
+                  //     color: Colors.transparent,
+                  //     elevation: 0,
+                  //     onPressed: () {},
+                  //     child: Text(
+                  //       'SHARE MY RESULT',
+                  //       style: TextStyle(color: Colors.white, fontSize: 15),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
