@@ -502,13 +502,6 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                   //   screen.height,
                   //   screen.width,
                   // ),
-                  Center(
-                    child: Text('$repsCount',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red,
-                          fontSize: 20,
-                        )),
                   Padding(
                     padding: EdgeInsets.all(25),
                     child: Align(
