@@ -45,67 +45,64 @@ class _HomePageState extends State<HomePageAlt> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 30.0, horizontal: 10.0),
-                        child: Text(
-                          'Here will be a city allustration',
-                          style: TextStyle(
-                            fontSize: 21,
-                            color: Colors.white,
-                          ),
+                        margin: EdgeInsets.only(top: 80),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 10.0),
+                              child: Text('Workout plan',
+                                  style: TextStyle(
+                                      fontSize: 32, color: Colors.white)),
+                            ),
+                            Column(
+                              children: [
+                                Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child: RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      onPressed: () {
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    HomePage()));
+                                      },
+                                      color: Colors.deepPurple,
+                                      child: Text(
+                                        'Change',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    )),
+                                Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child: RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProfilePage(_mapBloc
+                                                        .state.userEmail)));
+                                      },
+                                      color: Colors.deepPurple,
+                                      child: Text(
+                                        'Profile',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    )),
+                              ],
+                            )
+                          ],
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 10.0),
-                            child: Text('Workout plan',
-                                style: TextStyle(
-                                    fontSize: 32, color: Colors.white)),
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                  child: RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5)),
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  HomePage()));
-                                    },
-                                    color: Colors.deepPurple,
-                                    child: Text(
-                                      'Change',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  )),
-                              Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                  child: RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5)),
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => ProfilePage(
-                                                  _mapBloc.state.userEmail)));
-                                    },
-                                    color: Colors.deepPurple,
-                                    child: Text(
-                                      'Profile',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  )),
-                            ],
-                          )
-                        ],
                       ),
                       Container(
                           height: 400,
