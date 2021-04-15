@@ -204,25 +204,33 @@ class LevelPage extends StatelessWidget {
                               child: Text('${exercises.length} exercises',
                                   style: theme.primaryTextTheme.subtitle),
                             ),
-                            Icon(Icons.alarm, color: color),
-                            SizedBox(width: 10),
-                            Text('${(duration / 60).round()} min',
-                                style: theme.primaryTextTheme.subtitle),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: IconButton(
-                                  icon: Icon(Icons.chevron_left,
-                                      color: Colors.blue),
-                                  onPressed: () {},
-                                ),
+                            Container(
+                              margin: EdgeInsets.only(right: 20),
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.alarm, color: color),
+                                  SizedBox(width: 10),
+                                  Text('${(duration / 60).round()} min',
+                                      style: theme.primaryTextTheme.subtitle),
+                                ],
                               ),
-                            ),
-                            IconButton(
-                              icon:
-                                  Icon(Icons.chevron_right, color: Colors.blue),
-                              onPressed: () {},
-                            ),
+                            )
+
+                            // Expanded(
+                            //   child: Align(
+                            //     alignment: Alignment.centerRight,
+                            //     child: IconButton(
+                            //       icon: Icon(Icons.chevron_left,
+                            //           color: Colors.blue),
+                            //       onPressed: () {},
+                            //     ),
+                            //   ),
+                            // ),
+                            // IconButton(
+                            //   icon:
+                            //       Icon(Icons.chevron_right, color: Colors.blue),
+                            //   onPressed: () {},
+                            // ),
                           ],
                         ),
                       ),
