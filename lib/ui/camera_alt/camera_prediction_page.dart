@@ -452,7 +452,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                 ),
               )
             : Text(
-                "$_counterExercise sec",
+                _counterExercise != null ? "$_counterExercise sec" : "",
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
@@ -466,8 +466,12 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   endPageExercisesButton() {
     return RaisedButton(
       onPressed: () {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => EndOfExercisesPage(level)));
+        Future.delayed(Duration.zero, () {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EndOfExercisesPage(widget.level)));
+        });
       },
       elevation: 0,
       color: Colors.transparent,
@@ -529,7 +533,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                   Align(
                       alignment: Alignment.bottomCenter,
                       child: (_counterExercise != null)
-                          ? Text('$namesExercise',
+                          ? Text(namesExercise != null ? '$namesExercise' : '',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red,
@@ -571,7 +575,7 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
                               Padding(
                                   padding: const EdgeInsets.all(8),
                                   child: Text(
-                                    '$repsCount',
+                                    repsCount != null ? '$repsCount' : '',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
