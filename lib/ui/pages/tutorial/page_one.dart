@@ -125,7 +125,7 @@ class _PageOneState extends State<PageOne> {
                     Container(
                       padding: EdgeInsets.only(bottom: 10.0),
                       child: DotsIndicator(
-                        dotsCount: 6,
+                        dotsCount: 3,
                         decorator: DotsDecorator(activeColor: Colors.white),
                         position: widget.currentPage,
                       ),

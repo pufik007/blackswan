@@ -111,8 +111,9 @@ class _PageTwoState extends State<PageTwo> {
                 ),
                 Container(
                   padding: EdgeInsets.only(bottom: 52.0),
+                  alignment: Alignment.center,
                   child: DotsIndicator(
-                    dotsCount: 6,
+                    dotsCount: 3,
                     decorator: DotsDecorator(activeColor: Colors.black),
                     position: widget.currentPage,
                   ),
