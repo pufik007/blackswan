@@ -17,14 +17,13 @@ class _PageOneState extends State<PageOne> {
   @override
   void initState() {
     super.initState();
-    _controller =
-        VideoPlayerController.network('https://tensorfit.com/video/demo.mp4')
-          ..initialize().then((_) {
-            _controller.play();
-            _controller.setLooping(true);
-            _controller.setVolume(0.5);
-            setState(() {});
-          });
+    _controller = VideoPlayerController.asset('assets/tensorfit_video.mp4')
+      ..initialize().then((_) {
+        _controller.play();
+        _controller.setLooping(true);
+        _controller.setVolume(0.5);
+        setState(() {});
+      });
   }
 
   @override
@@ -110,7 +109,7 @@ class _PageOneState extends State<PageOne> {
                           vertical: widthBg * 0.05,
                           horizontal: heightBg * 0.15),
                       onPressed: () {
-                        Navigator.push(context,
+                        Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) => App()));
                         setState(() {
                           _controller.setVolume(0);
