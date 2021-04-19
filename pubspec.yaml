@@ -93,11 +93,11 @@ flutter:
     - assets/backgroundEndOfExercises.png
     - assets/tutorialExercises/squats.gif
     - assets/tensor-logo.png
-    - assets/backgroundEndPage.png
     - assets/icon/icon_account.png
     - assets/icon/icon_eye.png
     - assets/icon/icon_account_1_pur.png
     - assets/icon/icon_eye_1_pur.png
     - assets/icon/icon_account_2_pur.png
     - assets/icon/icon_eye_2_pur.png
+    - assets/backgr.jpg
 

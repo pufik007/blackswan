@@ -53,9 +53,10 @@ class _PageOneState extends State<PageOne> {
                 child: FittedBox(
                   fit: BoxFit.cover,
                   child: SizedBox(
-                    width: _controller.value.size?.width ?? 0,
-                    height: _controller.value.size?.height ?? 0,
-                    child: VideoPlayer(_controller),
+                    child: Image.asset(
+                      'assets/backgr.jpg',
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),
