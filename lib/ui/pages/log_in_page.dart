@@ -109,23 +109,23 @@ class _LogInPageState extends State<LogInPage> {
                 ],
               ),
             ),
-            FractionallySizedBox(
-              widthFactor: 0.8,
-              child: Row(
-                children: <Widget>[
-                  divider,
-                  Container(
-                    padding: EdgeInsets.only(
-                        left: 20, right: 20, top: 10, bottom: 10),
-                    child: Text(S.of(context).login_or,
-                        style: TextStyle(
-                            color: theme.disabledColor,
-                            fontWeight: FontWeight.w500)),
-                  ),
-                  divider,
-                ],
-              ),
-            ),
+            // FractionallySizedBox(
+            //   widthFactor: 0.8,
+            //   child: Row(
+            //     children: <Widget>[
+            // divider,
+            // Container(
+            //   padding: EdgeInsets.only(
+            //       left: 20, right: 20, top: 10, bottom: 10),
+            //   child: Text(S.of(context).login_or,
+            //       style: TextStyle(
+            //           color: theme.disabledColor,
+            //           fontWeight: FontWeight.w500)),
+            // ),
+            // divider,
+            //     ],
+            //   ),
+            // ),
             Expanded(
               child: BlocBuilder(
                 bloc: this._bloc,
