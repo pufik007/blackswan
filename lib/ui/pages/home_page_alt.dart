@@ -20,8 +20,15 @@ class _HomePageState extends State<HomePageAlt> {
   Alignment imageAlign;
   DateTime date;
   String userEmail;
+  final imgChoose = List<Image>();
   @override
   void initState() {
+    for (var i = 0; i < 6; i++) {
+      imgChoose.add(Image.asset('assets/map/levels/left/${i + 1}.png'));
+      imgChoose.add(Image.asset('assets/map/levels/right/${i + 1}.png'));
+      imgChoose.add(Image.asset('assets/map/levels/left/${i + 1}.png'));
+      imgChoose.add(Image.asset('assets/map/levels/right/${i + 1}.png'));
+    }
     super.initState();
   }
 
@@ -35,7 +42,7 @@ class _HomePageState extends State<HomePageAlt> {
     return BlocProvider(
       create: (context) => this._mapBloc,
       child: Scaffold(
-          backgroundColor: Colors.indigo[800],
+          backgroundColor: Colors.black,
           body: Stack(
             children: <Widget>[
               Container(
@@ -106,8 +113,8 @@ class _HomePageState extends State<HomePageAlt> {
                       ),
                       Container(
                           height: 400,
-                          child: LevelCardListWidget(
-                              level, date, image, imageAlign, userEmail)),
+                          child: LevelCardListWidget(level, date, image,
+                              imageAlign, userEmail, imgChoose)),
                     ]),
               ),
             ],

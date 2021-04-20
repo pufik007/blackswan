@@ -334,13 +334,19 @@ class LevelPage extends StatelessWidget {
                       aspectRatio: 4 / 3,
                       child: Container(
                         decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(
-                                  'assets/tutorialExercises/squats.gif'),
-                              fit: BoxFit.cover),
+                          color: Colors.deepPurple,
+                          borderRadius: BorderRadius.circular(15),
                         ),
+                        child: Image.asset('assets/tensor-logo.png'),
                       ),
-
+                      // child: Container(
+                      //   decoration: BoxDecoration(
+                      //     image: DecorationImage(
+                      //         image: AssetImage(
+                      //             'assets/tutorialExercises/squats.gif'),
+                      //         fit: BoxFit.cover),
+                      //   ),
+                      // ),
                       // child: Image(
                       //     image: AssetImage('assets/test.png'),
                       //     fit: BoxFit.cover),
