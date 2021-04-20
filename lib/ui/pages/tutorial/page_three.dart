@@ -67,7 +67,7 @@ class _PageThreeState extends State<PageThree> {
               padding: EdgeInsets.symmetric(
                   vertical: widthBg * 0.05, horizontal: heightBg * 0.15),
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                     context, MaterialPageRoute(builder: (context) => App()));
               },
               color: Colors.deepPurple,

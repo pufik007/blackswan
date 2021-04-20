@@ -98,7 +98,7 @@ class _PageTwoState extends State<PageTwo> {
                     padding: EdgeInsets.symmetric(
                         vertical: widthBg * 0.05, horizontal: heightBg * 0.15),
                     onPressed: () {
-                      Navigator.push(context,
+                      Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => App()));
                       setState(() {
                         _controller.setVolume(0);
