@@ -95,7 +95,6 @@ flutter:
     - assets/backgroundEndOfExercises.png
     - assets/tutorialExercises/squats.gif
     - assets/tensor-logo.png
-    - assets/backgroundEndPage.png
     - assets/icon/icon_account.png
     - assets/icon/icon_eye.png
     - assets/icon/icon_account_1_pur.png
@@ -103,6 +102,7 @@ flutter:
     - assets/icon/icon_account_2_pur.png
     - assets/icon/icon_eye_2_pur.png
     - assets/icon/main_icon.jpg
+    - assets/backgr.jpg
 
 flutter_icons:
    android: "launcher_icon"

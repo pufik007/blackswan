@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../check_my_training/check_my_training_page.dart';
 import '../../../data/api/entities/level.dart';
 import '../../../ui/pages/level_page.dart';
 
@@ -38,7 +37,7 @@ class EndOfExercisesPage extends StatelessWidget {
               height: heightBg * 0.77,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/backgroundEndPage.png'),
+                    image: AssetImage('assets/backgroundEndOfExercises.png'),
                     fit: BoxFit.cover),
                 borderRadius: BorderRadius.circular(20),
               ),
