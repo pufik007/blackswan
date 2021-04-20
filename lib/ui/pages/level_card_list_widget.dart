@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
+import 'package:tensorfit/ui/widgets/map_widget.dart';
 import '../../ui/widgets/map_bloc/bloc.dart';
 import 'package:intl/intl.dart';
 import '../../data/navigator_bloc/navigator_event.dart';
@@ -16,9 +17,10 @@ class LevelCardListWidget extends StatelessWidget {
   final ImageProvider image;
   final Alignment imageAlign;
   final String userEmail;
+  final List<Image> imgChoose;
 
-  const LevelCardListWidget(
-      this.level, this.date, this.image, this.imageAlign, this.userEmail);
+  const LevelCardListWidget(this.level, this.date, this.image, this.imageAlign,
+      this.userEmail, this.imgChoose);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class LevelCardListWidget extends StatelessWidget {
         }
         if (state is MapLoaded) {
           return this._getLevelCardList(state.levels, state.selectedLevelID,
-              date, level, state.userEmail);
+              date, level, state.userEmail, imgChoose);
         }
 
         return null;
@@ -39,15 +41,15 @@ class LevelCardListWidget extends StatelessWidget {
   }
 
   Widget _getLevelCardList(List<Level> levels, int selectedLevelID,
-      DateTime date, Level level, user) {
+      DateTime date, Level level, user, List<Image> imgChoose) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: <Widget>[
-              this._getLevels(
-                  context, constraints.maxWidth, levels, selectedLevelID, date),
+              this._getLevels(context, constraints.maxWidth, levels,
+                  selectedLevelID, date, imgChoose),
             ],
           ),
         );
@@ -56,13 +58,15 @@ class LevelCardListWidget extends StatelessWidget {
   }
 
   Widget _getLevels(context, double width, List<Level> levels,
-      int selectedLevelID, DateTime date) {
+      int selectedLevelID, DateTime date, List<Image> imgChoose) {
     date = DateTime.now();
     var items = List<Widget>();
     var houseCount = levels.length;
     for (int i = 0; i < houseCount; i++) {
       var level = levels[i];
-      items.add(this._getLevel(level, level.id == selectedLevelID, date));
+      var correctImg = imgChoose[i];
+      items.add(
+          this._getLevel(level, level.id == selectedLevelID, date, correctImg));
       date = date.add(Duration(days: 1));
     }
     return Row(
@@ -70,14 +74,15 @@ class LevelCardListWidget extends StatelessWidget {
     );
   }
 
-  Widget _getLevel(Level level, bool isSelected, DateTime date) {
+  Widget _getLevel(
+      Level level, bool isSelected, DateTime date, Image imgChoose) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
       child: LevelCard(
-        date: date,
-        level: level,
-        isSelected: isSelected,
-      ),
+          date: date,
+          level: level,
+          isSelected: isSelected,
+          imgChoose: imgChoose),
     );
   }
 }
@@ -169,8 +174,12 @@ Widget firstDuration(totalDuration) {
         Text(
           '${duration.round()} min',
           style: TextStyle(fontSize: 15, color: Colors.black),
-        )
+        ),
       ]));
+}
+
+Widget chooseHouse(imgChoose) {
+  return Image.asset(imgChoose.image.assetName);
 }
 
 class LevelCard extends StatelessWidget {
@@ -180,16 +189,18 @@ class LevelCard extends StatelessWidget {
   final DateTime date;
   final ImageProvider image;
   final Alignment imageAlign;
+  final Image imgChoose;
 
-  const LevelCard(
-      {Key key,
-      this.level,
-      this.isSelected,
-      this.motivationText,
-      this.date,
-      this.image,
-      this.imageAlign})
-      : super(key: key);
+  const LevelCard({
+    Key key,
+    this.level,
+    this.isSelected,
+    this.motivationText,
+    this.date,
+    this.image,
+    this.imageAlign,
+    this.imgChoose,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -223,6 +234,7 @@ class LevelCard extends StatelessWidget {
                                 firstLevel(level),
                                 firstExercises(level.exerciseVariantsCount),
                                 firstDuration(level.totalDuration),
+                                chooseHouse(imgChoose),
                               ],
                             )
                           ],
