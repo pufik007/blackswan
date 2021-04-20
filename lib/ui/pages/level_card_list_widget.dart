@@ -92,10 +92,15 @@ Widget title(date) {
   String formatted = formatter.format(date);
 
   return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(10),
+      ),
+      color: Colors.green[300],
+    ),
     padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
     height: 40,
     width: 300,
-    color: Colors.green[300],
     child: Align(
       alignment: Alignment.topLeft,
       child: RichText(
@@ -212,10 +217,13 @@ class LevelCard extends StatelessWidget {
               Alignment.centerLeft));
         },
         child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+          ),
           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
           height: 520,
           width: 220,
-          color: Colors.white,
           child: Padding(
             padding: EdgeInsets.all(0),
             child: Stack(children: <Widget>[
