@@ -76,7 +76,7 @@ class _PageThreeState extends State<PageThree> {
             ),
           ),
           DotsIndicator(
-            dotsCount: 6,
+            dotsCount: 3,
             decorator: DotsDecorator(activeColor: Colors.white),
             position: widget.currentPage,
           ),
