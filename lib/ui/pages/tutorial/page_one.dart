@@ -96,6 +96,9 @@ class _PageOneState extends State<PageOne> {
                                 size: 20,
                               ),
                             ),
+                            SizedBox(
+                              width: 10,
+                            ),
                             Text('See it in action',
                                 style: TextStyle(
                                     fontSize: 17, color: Colors.black)),
