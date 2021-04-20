@@ -12,17 +12,17 @@ class PageOne extends StatefulWidget {
 }
 
 class _PageOneState extends State<PageOne> {
-  VideoPlayerController _controller;
+  VideoPlayerController _videoPlayerController;
 
   @override
   void initState() {
     super.initState();
-    _controller =
+    _videoPlayerController =
         VideoPlayerController.network('https://tensorfit.com/video/demo.mp4')
           ..initialize().then((_) {
-            _controller.play();
-            _controller.setLooping(true);
-            _controller.setVolume(0.5);
+            _videoPlayerController.play();
+            _videoPlayerController.setLooping(true);
+            _videoPlayerController.setVolume(0.5);
             setState(() {});
           });
   }
@@ -114,7 +114,7 @@ class _PageOneState extends State<PageOne> {
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) => App()));
                         setState(() {
-                          _controller.setVolume(0);
+                          _videoPlayerController.setVolume(0);
                         });
                       },
                       color: Colors.deepPurple,
@@ -157,7 +157,7 @@ class _PageOneState extends State<PageOne> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    _videoPlayerController.dispose();
   }
 }
 
@@ -169,18 +169,21 @@ class _PlayerVideoAndPopPage extends StatefulWidget {
 class _PlayerVideoAndPopPageState extends State<_PlayerVideoAndPopPage> {
   VideoPlayerController _videoPlayerController;
   bool startedPlaying = false;
+  Future<void> _initializeVideoPlayerFuture;
 
   @override
   void initState() {
     super.initState();
 
     _videoPlayerController =
-        VideoPlayerController.network('https://tensorfit.com/video/demo.mp4');
+        VideoPlayerController.asset('assets/tensorfit_demo.mp4');
     _videoPlayerController.addListener(() {
       if (startedPlaying && !_videoPlayerController.value.isPlaying) {
         Navigator.pop(context);
       }
     });
+
+    _initializeVideoPlayerFuture = _videoPlayerController.initialize();
   }
 
   @override
@@ -198,21 +201,40 @@ class _PlayerVideoAndPopPageState extends State<_PlayerVideoAndPopPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      elevation: 0,
-      child: Center(
-        child: FutureBuilder<bool>(
-          future: started(),
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            if (snapshot.data == true) {
-              return AspectRatio(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
+      ),
+      body: FutureBuilder(
+        future: _initializeVideoPlayerFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Center(
+              child: AspectRatio(
                 aspectRatio: _videoPlayerController.value.aspectRatio,
                 child: VideoPlayer(_videoPlayerController),
-              );
+              ),
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.deepPurple,
+        onPressed: () {
+          setState(() {
+            if (_videoPlayerController.value.isPlaying) {
+              _videoPlayerController.pause();
             } else {
-              return const Text('waiting for video to load');
+              _videoPlayerController.play();
             }
-          },
+          });
+        },
+        child: Icon(
+          _videoPlayerController.value.isPlaying
+              ? Icons.pause
+              : Icons.play_arrow,
         ),
       ),
     );
