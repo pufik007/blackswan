@@ -111,7 +111,7 @@ class _PageOneState extends State<PageOne> {
                           vertical: widthBg * 0.05,
                           horizontal: heightBg * 0.15),
                       onPressed: () {
-                        Navigator.push(context,
+                        Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) => App()));
                         setState(() {
                           _controller.setVolume(0);
@@ -127,7 +127,7 @@ class _PageOneState extends State<PageOne> {
                     Container(
                       padding: EdgeInsets.only(bottom: 10.0),
                       child: DotsIndicator(
-                        dotsCount: 6,
+                        dotsCount: 3,
                         decorator: DotsDecorator(activeColor: Colors.white),
                         position: widget.currentPage,
                       ),
