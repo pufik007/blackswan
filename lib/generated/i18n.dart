@@ -24,7 +24,7 @@ class S implements WidgetsLocalizations {
   String get first_create_account => "CREATE ACCOUNT";
   String get first_have_account => "Already have an account?";
   String get first_skip => "SKIP";
-  String get first_tagline => "we help you achieve something by doing something else";
+  String get first_tagline => "Get in fit with AI coach";
   String get first_welcome => "welcome to";
   String get login_apple => "Continue with Apple";
   String get login_email => "Email";
