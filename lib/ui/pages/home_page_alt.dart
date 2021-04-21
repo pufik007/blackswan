@@ -6,6 +6,7 @@ import 'package:tensorfit/data/api/entities/level.dart';
 import './home_page.dart';
 import './profile_page.dart';
 import '../../data/api/entities/user.dart';
+import 'motivational_quotes.dart';
 
 class HomePageAlt extends StatefulWidget {
   @override
@@ -112,7 +113,7 @@ class _HomePageState extends State<HomePageAlt> {
                         ),
                       ),
                       Container(
-                          height: 400,
+                          height: 500,
                           child: LevelCardListWidget(level, date, image,
                               imageAlign, userEmail, imgChoose)),
                     ]),
