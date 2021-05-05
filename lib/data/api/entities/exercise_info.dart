@@ -76,9 +76,10 @@ class Exercise {
   final int id;
   final String name;
   final String description;
+  final String gifUrl;
   final List<ExerciseTrait> traits;
 
-  Exercise({this.id, this.name, this.description, this.traits});
+  Exercise({this.id, this.name, this.description, this.gifUrl, this.traits});
 
   factory Exercise.fromJson(Map<String, dynamic> json) {
     if (json == null) {
@@ -89,6 +90,7 @@ class Exercise {
       id: json['id'],
       name: json['name'],
       description: json['description'],
+      gifUrl: json['example_url'],
       traits: ExerciseTrait.fromJsonArray(json['exercise_traits']),
     );
   }
@@ -97,6 +99,7 @@ class Exercise {
         'id': this.id,
         'name': this.name,
         'description': this.description,
+        'example_url': this.gifUrl,
         'exercise_traits': this.traits,
       };
 }
