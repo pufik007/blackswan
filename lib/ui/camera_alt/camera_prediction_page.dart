@@ -56,79 +56,37 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
   exerciseDetectionChangeTypes(exerciseDetection) {
     var detectionList = exerciseDetection.patternFrames;
 
-    var poseSpacePointA1 = PoseSpacePoint(
-      detectionList['A']['11'].pose,
-      detectionList['A']['11'].confidence,
-      detectionList['A']['11'].bbox,
-    );
-    var poseSpacePointA2 = PoseSpacePoint(
-      detectionList['A']['11'].pose,
-      detectionList['A']['11'].confidence,
-      detectionList['A']['11'].bbox,
-    );
-    var poseSpacePointA3 = PoseSpacePoint(
-      detectionList['A']['11'].pose,
-      detectionList['A']['11'].confidence,
-      detectionList['A']['11'].bbox,
-    );
-    var poseSpacePointA4 = PoseSpacePoint(
-      detectionList['A']['11'].pose,
-      detectionList['A']['11'].confidence,
-      detectionList['A']['11'].bbox,
-    );
-    var poseSpacePointA5 = PoseSpacePoint(
-      detectionList['A']['11'].pose,
-      detectionList['A']['11'].confidence,
-      detectionList['A']['11'].bbox,
-    );
+    List<SpacePoint> poseSpacePointA = [];
+    List<SpacePoint> poseSpacePointB = [];
 
-    var poseSpacePointB1 = PoseSpacePoint(
-      detectionList['A']['11'].pose,
-      detectionList['A']['11'].confidence,
-      detectionList['A']['11'].bbox,
-    );
-    var poseSpacePointB2 = PoseSpacePoint(
-      detectionList['A']['11'].pose,
-      detectionList['A']['11'].confidence,
-      detectionList['A']['11'].bbox,
-    );
-    var poseSpacePointB3 = PoseSpacePoint(
-      detectionList['A']['11'].pose,
-      detectionList['A']['11'].confidence,
-      detectionList['A']['11'].bbox,
-    );
-    var poseSpacePointB4 = PoseSpacePoint(
-      detectionList['A']['11'].pose,
-      detectionList['A']['11'].confidence,
-      detectionList['A']['11'].bbox,
-    );
-    var poseSpacePointB5 = PoseSpacePoint(
-      detectionList['A']['11'].pose,
-      detectionList['A']['11'].confidence,
-      detectionList['A']['11'].bbox,
-    );
+    for (var i in detectionList['A'].values) {
+      poseSpacePointA.add(PoseSpacePoint(
+        i.pose,
+        i.confidence,
+        i.bbox,
+      ));
+    }
 
-    var vpTreeA = new VpTreeFactory().build([
-      poseSpacePointA1 as SpacePoint,
-      poseSpacePointA2 as SpacePoint,
-      poseSpacePointA3 as SpacePoint,
-      poseSpacePointA4 as SpacePoint,
-      poseSpacePointA5 as SpacePoint
-    ], 6, (spacePointA, spacePointB) {
+    for (var i in detectionList['B'].values) {
+      poseSpacePointB.add(PoseSpacePoint(
+        i.pose,
+        i.confidence,
+        i.bbox,
+      ));
+    }
+
+    var vpTreeA = new VpTreeFactory().build(poseSpacePointA, 6,
+        (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
     });
 
-    var vpTreeB = new VpTreeFactory().build([
-      poseSpacePointB1 as SpacePoint,
-      poseSpacePointB2 as SpacePoint,
-      poseSpacePointB3 as SpacePoint,
-      poseSpacePointB4 as SpacePoint,
-      poseSpacePointB5 as SpacePoint
-    ], 6, (spacePointA, spacePointB) {
+    var vpTreeB = new VpTreeFactory().build(poseSpacePointB, 6,
+        (spacePointA, spacePointB) {
       return VpTreeManager.distance(
           spacePointA as PoseSpacePoint, spacePointB as PoseSpacePoint);
     });
+
     var vpTreesPool = Map<String, VpTree>();
     vpTreesPool['A'] = vpTreeA;
     vpTreesPool['B'] = vpTreeB;
@@ -403,8 +361,9 @@ class _CameraPredictionPageState extends State<CameraPredictionPage> {
 
   ExerciseDetection extractCurrentExerciseDetection(
       List<ExerciseDetection> exercisesDetection, ExerciseInfo exerciseInfo) {
-    exerciseDetection = exercisesDetection.firstWhere(
-        (element) => element.id == exerciseInfo.exercise.id, orElse: () {
+    exerciseDetection = exercisesDetection
+        .firstWhere((element) => element.exerciseId == exerciseInfo.exercise.id,
+            orElse: () {
       return null;
     });
 
