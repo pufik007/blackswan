@@ -4,7 +4,7 @@ description: Tensorfit fitness application.
 version: 1.0.0+4
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.7.0 <3.14.0"
 
 dependencies:
   ml_linalg: ^12.17.2
@@ -12,11 +12,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  image: ^2.1.12  
+  image: ^3.0.0 
 
-  web_socket_channel: ^1.1.0
+  web_socket_channel: ^2.0.0
 
-  flutter_svg: ^0.19.3
+  flutter_svg: ^0.21.0
 
   flutter_bloc: ^3.0.0
 
@@ -27,8 +27,6 @@ dependencies:
   after_layout: ^1.0.7+2
 
   intl: ^0.16.0
-
-  firebase_auth: ^0.15.5+3
 
   google_sign_in: ^4.2.0
 
@@ -46,6 +44,13 @@ dependencies:
   
   vptree: ^0.1.0
 
+  http: ^0.13.0
+
+  firebase_core: ^1.4.0
+
+  cloud_firestore: ^2.4.0
+
+
   #cupertino_icons: ^0.1.2
 
 dev_dependencies:
@@ -56,9 +61,9 @@ dev_dependencies:
   
   tflite: 1.1.1
 
-  test: ^1.15.2
+  test: ^1.16.4
 
-  flutter_launcher_icons: ^0.7.4
+  flutter_launcher_icons: ^0.9.0
 
 flutter:
   uses-material-design: true
@@ -104,6 +109,13 @@ flutter:
     - assets/icon/main_icon.jpg
     - assets/backgr.jpg
     - assets/tensorfit_demo.mp4
+    - assets/imgLevelPage/img_1.png
+    - assets/imgLevelPage/img_2.png
+    - assets/tutorPageBackgr.png
+    - assets/genderPage/man.png
+    - assets/genderPage/manRed.png
+    - assets/genderPage/woman.png
+    - assets/genderPage/womanRed.png
 
 flutter_icons:
    android: "launcher_icon"

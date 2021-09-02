@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:after_layout/after_layout.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,9 +21,7 @@ import 'ui/pages/level_page.dart';
 import 'package:camera/camera.dart';
 import 'ui/camera_alt/camera_prediction_page.dart';
 import 'data/api/entities/exercise_detection.dart';
-import 'ui/camera_alt/end_of_exercises_page.dart';
 import 'ui/pages/tutorial/tutorial.dart';
-import 'ui/pages/tutorialOfExercises/camera_page_for_tutorial.dart';
 
 List<CameraDescription> cameras;
 
@@ -37,6 +38,15 @@ Future<Null> main() async {
 class OneTimePage extends StatefulWidget {
   @override
   SplashState createState() => SplashState();
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
 }
 
 class SplashState extends State<OneTimePage>
@@ -74,6 +84,15 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
   // ignore: close_sinks
   final _appBloc = AppBloc()..add(Load());
 

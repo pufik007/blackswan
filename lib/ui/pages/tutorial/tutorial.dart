@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'page_one.dart';
-import 'page_two.dart';
-import 'page_three.dart';
+import '../../../main.dart';
 
 class Tutorial extends StatelessWidget {
   @override
@@ -12,174 +10,77 @@ class Tutorial extends StatelessWidget {
         backgroundColor: Colors.transparent,
         body: Padding(
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-          child: PageViewDemo(),
+          child: PageOne(),
         ),
       ),
     );
   }
 }
 
-class PageViewDemo extends StatefulWidget {
+class PageOne extends StatefulWidget {
   @override
-  _PageViewDemoState createState() => _PageViewDemoState();
+  _PageOneState createState() => _PageOneState();
 }
 
-class _PageViewDemoState extends State<PageViewDemo> {
-  PageController _controller = PageController(initialPage: 0);
-  double currentPage = 0;
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    _controller.addListener(() {
-      setState(() {
-        currentPage = _controller.page;
-      });
-    });
-    super.initState();
-  }
-
+class _PageOneState extends State<PageOne> {
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      controller: _controller,
-      children: [
-        PageOne(currentPage),
-        PageTwo(currentPage),
-        PageThree(currentPage),
-        // FourePage(),
-        // MyPage5Widget(),
-        // MyPage6Widget(),
-      ],
-    );
-  }
-}
+    var heightBg = MediaQuery.of(context).size.height;
+    var widthBg = MediaQuery.of(context).size.width;
 
-class MyPage4Widget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {//TO DO удалить после вёрстки
-    return Column(
-      children: <Widget>[
-        Row(
-          children: [
-            MyBox(darkGreen, height: 50),
-          ],
-        ),
-        Row(
-          children: [
-            MyBox(lightGreen),
-            MyBox(lightGreen),
-          ],
-        ),
-        MyBox(mediumGreen, text: 'PageView 4'),
-        Row(
-          children: [
-            MyBox(lightGreen, height: 200),
-            MyBox(lightGreen, height: 200),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class MyPage5Widget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {//TO DO удалить после вёрстки
-    return Column(
-      children: <Widget>[
-        Row(
-          children: [
-            MyBox(darkGreen, height: 50),
-          ],
-        ),
-        Row(
-          children: [
-            MyBox(lightGreen),
-            MyBox(lightGreen),
-          ],
-        ),
-        MyBox(mediumGreen, text: 'PageView 5'),
-        Row(
-          children: [
-            MyBox(lightGreen, height: 200),
-            MyBox(lightGreen, height: 200),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class MyPage6Widget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {//TO DO удалить после вёрстки
-    return Column(
-      children: <Widget>[
-        Row(
-          children: [
-            MyBox(darkGreen, height: 50),
-          ],
-        ),
-        Row(
-          children: [
-            MyBox(lightGreen),
-            MyBox(lightGreen),
-          ],
-        ),
-        MyBox(mediumGreen, text: 'PageView 6'),
-        Row(
-          children: [
-            MyBox(lightGreen, height: 200),
-            MyBox(lightGreen, height: 200),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-const lightBlue = Color(0xff00bbff);
-const mediumBlue = Color(0xff00a2fc);
-const darkBlue = Color(0xff0075c9);
-
-final lightGreen = Colors.green.shade300;
-final mediumGreen = Colors.green.shade600;
-final darkGreen = Colors.green.shade900;
-
-final lightRed = Colors.red.shade300;
-final mediumRed = Colors.red.shade600;
-final deepOrange = Colors.deepOrange[900];
-
-class MyBox extends StatelessWidget {
-  final Color color;
-  final double height;
-  final String text;
-
-  MyBox(this.color, {this.height, this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        margin: EdgeInsets.all(10),
-        color: color,
-        height: (height == null) ? 150 : height,
-        child: (text == null)
-            ? null
-            : Center(
-                child: Text(
-                  text,
-                  style: TextStyle(
-                    fontSize: 50,
-                    color: Colors.white,
+    if (heightBg != null && widthBg != null) {
+      if (heightBg >= 800) {
+        heightBg = MediaQuery.of(context).size.height;
+      } else {
+        heightBg = MediaQuery.of(context).size.height * 1.1;
+      }
+      if (widthBg >= 380) {
+        widthBg = MediaQuery.of(context).size.width;
+      } else {
+        widthBg = MediaQuery.of(context).size.width * 1.1;
+      }
+    }
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/tutorPageBackgr.png'),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Center(
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        side: BorderSide(color: Colors.deepPurple)),
+                    padding: EdgeInsets.symmetric(
+                        vertical: widthBg * 0.05, horizontal: heightBg * 0.15),
+                    onPressed: () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => App()));
+                    },
+                    color: Colors.deepPurple,
+                    child: Text('Get started',
+                        style: TextStyle(fontSize: 17, color: Colors.white)),
                   ),
                 ),
-              ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 32,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

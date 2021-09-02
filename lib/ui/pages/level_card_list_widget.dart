@@ -2,14 +2,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:tensorfit/data/api/entities/level.dart';
-import 'package:tensorfit/ui/widgets/map_widget.dart';
 import '../../ui/widgets/map_bloc/bloc.dart';
-import 'package:intl/intl.dart';
 import '../../data/navigator_bloc/navigator_event.dart';
 import '../../data/navigator_bloc/navigator_bloc.dart';
-import '../../data/api/entities/user.dart';
 import 'motivational_quotes.dart';
 
 class LevelCardListWidget extends StatelessWidget {
@@ -53,8 +49,8 @@ class LevelCardListWidget extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
+          scrollDirection: Axis.vertical,
+          child: Column(
             children: <Widget>[
               this._getLevels(context, constraints.maxWidth, levels,
                   selectedLevelID, date, imgChoose, quotesList),
@@ -85,7 +81,7 @@ class LevelCardListWidget extends StatelessWidget {
           level, level.id == selectedLevelID, date, correctImg, correctQuote));
       date = date.add(Duration(days: 1));
     }
-    return Row(
+    return Column(
       children: items,
     );
   }
@@ -94,6 +90,8 @@ class LevelCardListWidget extends StatelessWidget {
       MotivationalQuotes correctQuote) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+      height: 280,
+      width: double.infinity,
       child: LevelCard(
         date: date,
         level: level,
@@ -105,25 +103,21 @@ class LevelCardListWidget extends StatelessWidget {
   }
 }
 
-Widget title(date) {
-  var formatter = DateFormat.MMMd();
-  String formatted = formatter.format(date);
-
+Widget title(level) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(10),
       ),
-      color: Colors.green[300],
+      color: Colors.deepPurple,
     ),
     padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
     height: 40,
-    width: 300,
     child: Align(
       alignment: Alignment.topLeft,
       child: RichText(
         text: TextSpan(
-          text: '$formatted',
+          text: 'Level ${level.number}',
           style: TextStyle(color: Colors.white, fontSize: 25),
           children: <TextSpan>[],
         ),
@@ -135,9 +129,7 @@ Widget title(date) {
 Widget subTitle(motivationText) {
   return Container(
     padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-    height: 60,
-    width: 320,
-    color: Colors.green[300],
+    color: Colors.deepPurple,
     child: Align(
       alignment: Alignment.bottomLeft,
       child: RichText(
@@ -201,10 +193,6 @@ Widget firstDuration(totalDuration) {
       ]));
 }
 
-Widget chooseHouse(imgChoose) {
-  return Image.asset(imgChoose.image.assetName);
-}
-
 Widget chooseQuote(correctQuote) {
   return Padding(
     padding: const EdgeInsets.all(8),
@@ -259,7 +247,7 @@ class LevelCard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Colors.white,
+            color: Colors.black12,
           ),
           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
           height: 520,
@@ -277,13 +265,12 @@ class LevelCard extends StatelessWidget {
                           children: <Widget>[
                             Column(
                               children: <Widget>[
-                                title(date),
+                                title(level),
                                 subTitle(level.motivationText),
                                 firstLevel(level),
                                 firstExercises(level.exerciseVariantsCount),
                                 firstDuration(level.totalDuration),
                                 chooseQuote(correctQuote),
-                                chooseHouse(imgChoose),
                               ],
                             )
                           ],
