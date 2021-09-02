@@ -50,14 +50,14 @@ class _LogInPageState extends State<LogInPage> {
 
   Widget _buildBody(BuildContext context) {
     var theme = Theme.of(context);
-    var divider = Expanded(
-      child: Divider(
-        color: theme.disabledColor,
-        thickness: _dividerThickness,
-      ),
-    );
+    // var divider = Expanded(
+    //   child: Divider(
+    //     color: theme.disabledColor,
+    //     thickness: _dividerThickness,
+    //   ),
+    // );
 
-    var loginButtons = List<Widget>();
+    // var loginButtons = List<Widget>();
     // loginButtons.add(TensorfitBorderedButton(
     //   title: S.of(context).login_facebook,
     //   height: double.maxFinite,
@@ -103,9 +103,9 @@ class _LogInPageState extends State<LogInPage> {
                           fit: BoxFit.fitWidth),
                     ),
                   ),
-                  Expanded(
-                    child: this._wrap(loginButtons),
-                  ),
+                  // Expanded(
+                  //   child: this._wrap(loginButtons),
+                  // ),
                 ],
               ),
             ),
@@ -228,20 +228,38 @@ class _LogInPageState extends State<LogInPage> {
                           ],
                         ),
                       ),
-                      TensorfitButton(
-                        title: S.of(context).login_log_in,
+                      RaisedButton(
+                        padding: EdgeInsets.all(15),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)),
                         onPressed: state.enable
                             ? () {
                                 this._bloc.add(Login());
                               }
                             : null,
+                        color: Colors.deepPurple,
+                        child: Text(
+                          'LOG IN',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
-                      FlatButton(
-                        child: Text(S.of(context).login_forgot_your_password),
-                        onPressed: () {
-                          print('forgot_password');
-                        },
+                      SizedBox(
+                        height: 30,
                       ),
+                      // TensorfitButton(
+                      //   title: S.of(context).login_log_in,
+                      //   onPressed: state.enable
+                      //       ? () {
+                      //           this._bloc.add(Login());
+                      //         }
+                      //       : null,
+                      // ),
+                      // FlatButton(
+                      //   child: Text(S.of(context).login_forgot_your_password),
+                      //   onPressed: () {
+                      //     print('forgot_password');
+                      //   },
+                      // ),
                     ],
                   );
                 },

@@ -46,6 +46,11 @@ dependencies:
 
   http: ^0.13.0
 
+  firebase_core: ^1.4.0
+
+  cloud_firestore: ^2.4.0
+
+
   #cupertino_icons: ^0.1.2
 
 dev_dependencies:
@@ -104,6 +109,13 @@ flutter:
     - assets/icon/main_icon.jpg
     - assets/backgr.jpg
     - assets/tensorfit_demo.mp4
+    - assets/imgLevelPage/img_1.png
+    - assets/imgLevelPage/img_2.png
+    - assets/tutorPageBackgr.png
+    - assets/genderPage/man.png
+    - assets/genderPage/manRed.png
+    - assets/genderPage/woman.png
+    - assets/genderPage/womanRed.png
 
 flutter_icons:
    android: "launcher_icon"

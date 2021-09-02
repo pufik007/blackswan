@@ -83,7 +83,7 @@ class LevelPage extends StatelessWidget {
                 children: <Widget>[
                   this._buildHeader(context, state.exercises),
                   this._buildExercises(context, state.exercises),
-                  _buildFab(context, state),
+                  // _buildFab(context, state),
                   SizedBox(
                     height: 5,
                   ),
@@ -318,7 +318,7 @@ class LevelPage extends StatelessWidget {
           }
         },
         child: Material(
-          color: Colors.white,
+          color: Colors.deepPurple,
           child: RawMaterialButton(
             child: Container(
               height: info.size.width / 4,
@@ -395,13 +395,13 @@ class LevelPage extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(padding),
-                color: Colors.white,
+                color: Colors.deepPurple,
               ),
               padding: EdgeInsets.only(top: padding),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(padding),
-                  color: Colors.white,
+                  color: Colors.deepPurple,
                 ),
                 padding: EdgeInsets.only(bottom: padding),
                 child: Column(

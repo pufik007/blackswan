@@ -21,9 +21,7 @@ import 'ui/pages/level_page.dart';
 import 'package:camera/camera.dart';
 import 'ui/camera_alt/camera_prediction_page.dart';
 import 'data/api/entities/exercise_detection.dart';
-import 'ui/camera_alt/end_of_exercises_page.dart';
 import 'ui/pages/tutorial/tutorial.dart';
-import 'ui/pages/tutorialOfExercises/camera_page_for_tutorial.dart';
 
 List<CameraDescription> cameras;
 

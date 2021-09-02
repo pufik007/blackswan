@@ -23,7 +23,8 @@ abstract class Api {
       Map<String, String> headers = {"Content-type": "application/json"};
       var body = jsonEncode({"email": login, "password": password});
 
-      var httpRes = await http.post(Uri.parse('$_url/auth'), headers: headers, body: body);
+      var httpRes = await http.post(Uri.parse('$_url/auth'),
+          headers: headers, body: body);
 
       if (httpRes.statusCode == 200) {
         var user = User.fromJson(json.decode(httpRes.body));
@@ -48,12 +49,12 @@ abstract class Api {
 
   static Future<PrivateResponse> login(String login, String password) async {
     try {
-      HttpOverrides.global = new MyHttpOverrides ();
+      HttpOverrides.global = new MyHttpOverrides();
       Map<String, String> headers = {"Content-type": "application/json"};
       var body = jsonEncode({"email": login, "password": password});
 
-      var httpRes =
-          await http.post(Uri.parse('$_url/auth/sign_in'), headers: headers, body: body);//
+      var httpRes = await http.post(Uri.parse('$_url/auth/sign_in'),
+          headers: headers, body: body); //
 
       if (httpRes.statusCode == 200) {
         var user = User.fromJson(json.decode(httpRes.body));
@@ -81,8 +82,10 @@ abstract class Api {
       Map<String, String> headers = {"Content-type": "application/json"};
       var body = jsonEncode({"id_token": tokenID});
 
-      var httpRes = await http.post(Uri.parse('$_url/auth/google_oauth2/validate'),
-          headers: headers, body: body);
+      var httpRes = await http.post(
+          Uri.parse('$_url/auth/google_oauth2/validate'),
+          headers: headers,
+          body: body);
 
       if (httpRes.statusCode == 200) {
         var user = User.fromJson(json.decode(httpRes.body));
@@ -147,6 +150,7 @@ abstract class Api {
   }
 
   static Future<PublicResponse> getGoals() async {
+    HttpOverrides.global = new MyHttpOverrides();
     try {
       var httpRes = await http.get(Uri.parse('$_url/public/goals'));
 
@@ -168,6 +172,7 @@ abstract class Api {
 
   static Future<PrivateResponse> getJourney(
       String uid, String client, String token) async {
+    HttpOverrides.global = new MyHttpOverrides();
     try {
       Map<String, String> headers = {
         "uid": uid,
@@ -175,7 +180,8 @@ abstract class Api {
         "access-token": token,
       };
 
-      var httpRes = await http.get(Uri.parse('$_url/journey'), headers: headers);
+      var httpRes =
+          await http.get(Uri.parse('$_url/journey'), headers: headers);
 
       print(httpRes.body);
 
@@ -198,6 +204,7 @@ abstract class Api {
 
   static Future<PrivateResponse> createJourney(
       String uid, String client, String token) async {
+    HttpOverrides.global = new MyHttpOverrides();
     try {
       Map<String, String> headers = {
         "uid": uid,
@@ -208,8 +215,8 @@ abstract class Api {
 
       var body = jsonEncode(Journey(difficulty: 'normal').toJson());
 
-      var httpRes =
-          await http.post(Uri.parse('$_url/journey'), headers: headers, body: body);
+      var httpRes = await http.post(Uri.parse('$_url/journey'),
+          headers: headers, body: body);
 
       if (httpRes.statusCode == 200) {
         var journey = Journey.fromJson(json.decode(httpRes.body));
@@ -240,8 +247,8 @@ abstract class Api {
 
       var body = jsonEncode(user.toJson());
 
-      var httpRes =
-          await http.patch(Uri.parse('$_url/auth'), headers: headers, body: body);
+      var httpRes = await http.patch(Uri.parse('$_url/auth'),
+          headers: headers, body: body);
 
       if (httpRes.statusCode == 200) {
         var newUser = User.fromJson(json.decode(httpRes.body));
@@ -272,8 +279,8 @@ abstract class Api {
 
       var body = jsonEncode({"goals": goals});
 
-      var httpRes =
-          await http.patch(Uri.parse('$_url/dreams'), headers: headers, body: body);
+      var httpRes = await http.patch(Uri.parse('$_url/dreams'),
+          headers: headers, body: body);
 
       if (httpRes.statusCode == 200) {
         var newToken = httpRes.headers['access-token'];
@@ -332,7 +339,8 @@ abstract class Api {
         "Content-type": "application/json",
       };
 
-      var httpRes = await http.get(Uri.parse('$_url/levels/$levelID/exercise_variants'),
+      var httpRes = await http.get(
+          Uri.parse('$_url/levels/$levelID/exercise_variants'),
           headers: headers);
 
       print(httpRes.body);
@@ -402,7 +410,8 @@ abstract class Api {
       };
 
       var httpRes = await http.get(
-          Uri.parse('$_url/exercise_detections?exercise_ids=${exerciseIds.join(',')}'),
+          Uri.parse(
+              '$_url/exercise_detections?exercise_ids=${exerciseIds.join(',')}'),
           headers: headers);
 
       print(httpRes.body);
