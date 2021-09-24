@@ -83,7 +83,7 @@ class LevelPage extends StatelessWidget {
                 children: <Widget>[
                   this._buildHeader(context, state.exercises),
                   this._buildExercises(context, state.exercises),
-                  // _buildFab(context, state),
+                  _buildFab(context, state),
                   SizedBox(
                     height: 5,
                   ),
@@ -337,7 +337,19 @@ class LevelPage extends StatelessWidget {
                           color: Colors.deepPurple,
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child: Image.asset('assets/tensor-logo.png'),
+                        child: Image.asset(items.isEmpty
+                            ? 'assets/tutorialExercises/1.gif'
+                            : items.length == 1
+                                ? 'assets/tutorialExercises/2.gif'
+                                : items.length == 2
+                                    ? 'assets/tutorialExercises/3.gif'
+                                    : items.length == 3
+                                        ? 'assets/tutorialExercises/4.gif'
+                                        : items.length == 4
+                                            ? 'assets/tutorialExercises/5.gif'
+                                            : items.length == 5
+                                                ? 'assets/tutorialExercises/6.gif'
+                                                : 'assets/tutorialExercises/7.gif'),
                       ),
                       // child: Container(
                       //   decoration: BoxDecoration(

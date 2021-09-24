@@ -98,7 +98,13 @@ flutter:
     - assets/video.mp4
     - assets/journey.png
     - assets/backgroundEndOfExercises.png
-    - assets/tutorialExercises/squats.gif
+    - assets/tutorialExercises/1.gif
+    - assets/tutorialExercises/2.gif
+    - assets/tutorialExercises/3.gif
+    - assets/tutorialExercises/4.gif
+    - assets/tutorialExercises/5.gif
+    - assets/tutorialExercises/6.gif
+    - assets/tutorialExercises/7.gif
     - assets/tensor-logo.png
     - assets/icon/icon_account.png
     - assets/icon/icon_eye.png

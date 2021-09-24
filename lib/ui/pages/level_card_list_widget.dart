@@ -90,7 +90,7 @@ class LevelCardListWidget extends StatelessWidget {
       MotivationalQuotes correctQuote) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-      height: 280,
+      height: 300,
       width: double.infinity,
       child: LevelCard(
         date: date,
